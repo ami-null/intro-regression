@@ -1,0 +1,10 @@
+\newenvironment{sitemize}{%
+    \mode<presentation>{\begin{itemize}}%
+    \mode<article>{\def\item{\par\noindent\ignorespaces}}%
+}{%
+    \mode<presentation>{\end{itemize}}%
+    \mode<article>{\par}%
+}
+
+
+\newcommand{\svspace}[1]{\mode<presentation>{\vspace{#1}}}
