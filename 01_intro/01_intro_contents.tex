@@ -67,6 +67,26 @@
 \end{frame}
 
 
+\begin{frame}{Interpretation of the Parameters}
+	\begin{center}
+		% Schematic diagram of the regression line
+		\begin{tikzpicture}[scale=1]
+			\draw[->] (0,0) -- (4.2,0) node[right] {$x$};
+			\draw[->] (0,0) -- (0,3.5) node[above] {$y$};
+			\draw[thick, blue] (0,0.6) -- (4,3.4)
+				node[right] {$\hat{y}=\hat{\beta}_0+\hat{\beta}_1 x$};
+			\draw[dashed] (0,0.6) -- (-0.1,0.6)
+				node[left] {$\hat{\beta}_0$};
+			% slope triangle
+			\draw[<->] (1.5,1.35) -- (2.5,1.35)
+				node[midway, below] {$1$};
+			\draw[<->] (2.5,1.35) -- (2.5,2.05)
+				node[midway, right] {$\hat{\beta}_1$};
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+
 \begin{frame}{Assumptions of the SLR Model}
 	\begin{sitemize}
 		\item \textbf{Linearity:} the mean of $y$ is a linear function of $x$, i.e.\ $E[\varepsilon_i] = 0$
@@ -209,7 +229,7 @@
 	Define
 	\[
 		S_{xy} = \sum_i (x_i - \bar x)(y_i - \bar y) = \sum_i x_i y_i - n\bar x\bar y, \qquad
-	S_{xx} = \sum_i (x_i - \bar x)^2 = \sum_i x_i^2 - n\bar x^2
+		S_{xx} = \sum_i (x_i - \bar x)^2 = \sum_i x_i^2 - n\bar x^2
 	\]
 	\pause
 	\[
