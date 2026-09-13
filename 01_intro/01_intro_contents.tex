@@ -375,7 +375,10 @@
 	\[
 		\sum_i x_i y_i = \sum_i x_i \hat y_i \quad\Longrightarrow\quad \boxed{\sum_i x_i\hat\varepsilon_i = 0}
 	\]
-	\pause
+\end{frame}
+
+
+\begin{frame}{Property 4 \& 5: Weighted Residuals Sum to Zero (cont.)}
 	For the last property, write $\hat y_i = \hat\beta_0 + \hat\beta_1 x_i$ and use both results just derived:
 	\[
 		\sum_i \hat y_i\hat\varepsilon_i = \hat\beta_0\underbrace{\sum_i \hat\varepsilon_i}_{=0} + \hat\beta_1\underbrace{\sum_i x_i\hat\varepsilon_i}_{=0} = 0
@@ -383,7 +386,6 @@
 	\[
 		\boxed{\sum_i \hat y_i \hat\varepsilon_i = 0}
 	\]
-	Every one of these five properties traces back to the two normal equations you already derived.
 \end{frame}
 
 
@@ -415,7 +417,7 @@
 \end{frame}
 
 
-\section{Finding the Expected Value of \(SS_E\)}
+\section{Finding the Expected Value of \texorpdfstring{\(SS_E\)}{SSE}}
 
 
 \begin{frame}{Why $E[SS_E] = (n-2)\sigma^2$: Rewriting the Residual}
