@@ -318,6 +318,75 @@
 \end{frame}
 
 
+\section{Other Useful Properties of the Least-Squares Fit}
+
+
+\begin{frame}{Other Useful Properties of the Least-Squares Fit}
+	Beyond unbiasedness and BLUE, the OLS fit has several algebraic properties that follow directly from the normal equations --- worth knowing since they show up in diagnostics and in software output.
+	\svspace{0.5em}
+	\begin{sitemize}
+		\item The residuals always sum to zero: $\sum_i \hat\varepsilon_i = 0$
+		\item The observed and fitted values have the same sum: $\sum_i y_i = \sum_i \hat y_i$
+		\item The fitted line always passes through the centroid $(\bar x, \bar y)$
+		\item Residuals weighted by $x_i$ sum to zero: $\sum_i x_i \hat\varepsilon_i = 0$
+		\item Residuals weighted by $\hat y_i$ sum to zero: $\sum_i \hat y_i \hat\varepsilon_i = 0$
+	\end{sitemize}
+\end{frame}
+
+
+\begin{frame}{Property 1 \& 2: Residuals Sum to Zero}
+	Recall the first normal equation from earlier:
+	\[
+		\sum_i y_i = n\hat\beta_0 + \hat\beta_1\sum_i x_i
+	\]
+	\pause
+	Since $\hat y_i = \hat\beta_0 + \hat\beta_1 x_i$, summing over $i$ gives
+	\[
+		\sum_i \hat y_i = n\hat\beta_0 + \hat\beta_1\sum_i x_i
+	\]
+	\pause
+	The right-hand sides are identical, so
+	\[
+		\boxed{\sum_i y_i = \sum_i \hat y_i} \quad\Longrightarrow\quad \sum_i(y_i - \hat y_i) = \sum_i \hat\varepsilon_i = 0
+	\]
+	This is not a coincidence --- it is forced by the very equation OLS solves to find $\hat\beta_0$.
+\end{frame}
+
+
+\begin{frame}{Property 3: The Fitted Line Passes Through $(\bar x, \bar y)$}
+	Divide the previous result $\sum_i y_i = \sum_i \hat y_i$ by $n$:
+	\[
+		\bar y = \overline{\hat y} = \frac{1}{n}\sum_i(\hat\beta_0 + \hat\beta_1 x_i) = \hat\beta_0 + \hat\beta_1 \bar x
+	\]
+	\pause
+	So the point $(\bar x, \bar y)$ satisfies the fitted equation exactly --- the \textbf{centroid} of the data always lies on the regression line.
+	\svspace{0.5em}
+	This matches how we solved for $\hat\beta_0$ earlier: we built the line to pass through $(\bar x,\bar y)$ by construction.
+\end{frame}
+
+
+\begin{frame}{Property 4 \& 5: Weighted Residuals Sum to Zero}
+	Recall the second normal equation:
+	\[
+		\sum_i x_i y_i = \hat\beta_0\sum_i x_i + \hat\beta_1\sum_i x_i^2
+	\]
+	\pause
+	Since $x_i\hat y_i = \hat\beta_0 x_i + \hat\beta_1 x_i^2$, summing gives $\sum_i x_i\hat y_i$ equal to the same right-hand side, so
+	\[
+		\sum_i x_i y_i = \sum_i x_i \hat y_i \quad\Longrightarrow\quad \boxed{\sum_i x_i\hat\varepsilon_i = 0}
+	\]
+	\pause
+	For the last property, write $\hat y_i = \hat\beta_0 + \hat\beta_1 x_i$ and use both results just derived:
+	\[
+		\sum_i \hat y_i\hat\varepsilon_i = \hat\beta_0\underbrace{\sum_i \hat\varepsilon_i}_{=0} + \hat\beta_1\underbrace{\sum_i x_i\hat\varepsilon_i}_{=0} = 0
+	\]
+	\[
+		\boxed{\sum_i \hat y_i \hat\varepsilon_i = 0}
+	\]
+	Every one of these five properties traces back to the two normal equations you already derived.
+\end{frame}
+
+
 \section{Estimating the Error Variance \texorpdfstring{$\sigma^2$}{sigma-squared}}
 
 
@@ -344,6 +413,9 @@
 	\]
 	so $MS_E$ is an unbiased estimator of the error variance. This quantity underlies standard errors, confidence intervals, and hypothesis tests for $\beta_0$ and $\beta_1$ --- topics for the next lecture.
 \end{frame}
+
+
+\section{Finding the Expected Value of \(SS_E\)}
 
 
 \begin{frame}{Why $E[SS_E] = (n-2)\sigma^2$: Rewriting the Residual}
