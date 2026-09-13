@@ -14,6 +14,7 @@
 	\end{sitemize}
 \end{frame}
 
+
 \begin{frame}{Why Regression?}
 	\begin{sitemize}
 		\item \textbf{Business:} does advertising spend increase sales, and by how much?
@@ -23,6 +24,7 @@
 		\item \textbf{Environment:} how does fertilizer amount relate to crop yield?
 	\end{sitemize}
 \end{frame}
+
 
 \section{Simple Linear Regression (SLR)}
 
@@ -38,7 +40,7 @@
 		\item $\beta_1$: the slope --- the expected or average change in sales for a one-unit increase \(X\)
 		\item $\epsilon_i$: random error --- everything affecting \(Y\) that \(X\) does not capture
 		\item $\beta_0, \beta_1$ are unknown \textbf{population parameters}; we estimate them from data as $\hat\beta_0, \hat\beta_1$
-\end{sitemize}
+	\end{sitemize}
 \end{frame}
 
 
@@ -64,50 +66,82 @@
 
 \end{frame}
 
+
 \begin{frame}{Assumptions of the SLR Model}
-\begin{sitemize}
-    \item \textbf{Linearity:} the mean of $y$ is a linear function of $x$, i.e.\ $E[\varepsilon_i] = 0$
-    \item \textbf{Constant variance (homoscedasticity):} $\operatorname{Var}(\varepsilon_i) = \sigma^2$ for all $i$
-    \item \textbf{Independence:} $\operatorname{Cov}(\varepsilon_i, \varepsilon_j) = 0$ for $i \neq j$
-    \item \textbf{Normality}: $\varepsilon_i \sim N(0, \sigma^2)$
-    \item $x_i$ values are fixed, known constants, measured without error
-\end{sitemize}
+	\begin{sitemize}
+		\item \textbf{Linearity:} the mean of $y$ is a linear function of $x$, i.e.\ $E[\varepsilon_i] = 0$
+		\item \textbf{Independence:} $\operatorname{Cov}(\varepsilon_i, \varepsilon_j) = 0$ for $i \neq j$
+		\item \textbf{Normality}: $\varepsilon_i \sim N(0, \sigma^2)$
+		\item \textbf{Constant variance (homoscedasticity):} $\operatorname{Var}(\varepsilon_i) = \sigma^2$ for all $i$
+		\item $x_i$ values are fixed, known constants, measured without error
+	\end{sitemize}
 \end{frame}
+
 
 \section{Ordinary Least Squares (OLS) Estimation}
 
-\begin{frame}{The Least Squares Idea}
-We want a line $\hat y = \hat\beta_0 + \hat\beta_1 x$ that fits the scatter of (spend, sales) points as closely as possible.
 
-\begin{center}
-\begin{tikzpicture}[scale=0.75]
-    \draw[->] (-0.5,0) -- (7.5,0) node[right] {$x$ (Ad spend)};
-    \draw[->] (0,-0.5) -- (0,6.2) node[above] {$y$ (Sales)};
-    \fill (1,1.2) circle (2pt);
-    \fill (2,2.3) circle (2pt);
-    \fill (3,2.0) circle (2pt);
-    \fill (4,3.8) circle (2pt);
-    \fill (5,4.0) circle (2pt);
-    \fill (6,5.3) circle (2pt);
-    \draw[thick, mDarkTeal] (0,0.5) -- (7,6.1) node[right, black] {$\hat y = \hat\beta_0 + \hat\beta_1 x$};
-    \draw[dashed, red] (1,1.2) -- (1,1.3);
-    \draw[dashed, red] (2,2.3) -- (2,2.1);
-    \draw[dashed, red] (3,2.0) -- (3,2.9);
-    \draw[dashed, red] (4,3.8) -- (4,3.7);
-    \draw[dashed, red] (5,4.0) -- (5,4.5);
-    \draw[dashed, red] (6,5.3) -- (6,5.3);
-\end{tikzpicture}
-\end{center}
-
+\begin{frame}{The Regression Line}
+	\begin{columns}
+		\begin{column}{0.42\textwidth}
+			We want a line $\hat y = \hat\beta_0 + \hat\beta_1 x$ that fits the scatter of (spend, sales) points as closely as possible.
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{center}
+				\begin{tikzpicture}[scale=0.75]
+					\draw[->] (-0.5,0) -- (7.5,0) node[below] {$x$ (Ad spend)};
+					\draw[->] (0,-0.5) -- (0,6.2) node[above] {$y$ (Sales)};
+					\fill (1,1.2) circle (2pt);
+					\fill (2,2.3) circle (2pt);
+					\fill (3,2.0) circle (2pt);
+					\fill (4,3.8) circle (2pt);
+					\fill (5,4.0) circle (2pt);
+					\fill (6,5.3) circle (2pt);
+					\draw[thick, mDarkTeal] (0,0.5) -- (7,6.1) node[above, black] {$\hat y = \hat\beta_0 + \hat\beta_1 x$};
+					% \draw[dashed, red] (1,1.2) -- (1,1.3);
+					% \draw[dashed, red] (2,2.3) -- (2,2.1);
+					% \draw[dashed, red] (3,2.0) -- (3,2.9);
+					% \draw[dashed, red] (4,3.8) -- (4,3.7);
+					% \draw[dashed, red] (5,4.0) -- (5,4.5);
+					% \draw[dashed, red] (6,5.3) -- (6,5.3);
+				\end{tikzpicture}
+			\end{center}
+		\end{column}
+	\end{columns}
 \end{frame}
 
 
 \begin{frame}{Residuals}
-	For each data point, the \textbf{residual} is the vertical gap between the observed $y_i$ and the fitted value $\hat y_i$:
-	\[
-		\hat\varepsilon_i = y_i - \hat y_i = y_i - \hat\beta_0 - \hat\beta_1 x_i
-	\]
-	Ordinary Least Squares (OLS) chooses $\hat\beta_0, \hat\beta_1$ to make these residuals collectively as small as possible.
+	\begin{columns}
+		\begin{column}{0.42\textwidth}
+			For each data point, the \textbf{residual} is the vertical gap between the observed $y_i$ and the fitted value $\hat y_i$:
+			\[
+				\hat\varepsilon_i = y_i - \hat y_i = y_i - \hat\beta_0 - \hat\beta_1 x_i
+			\]
+			Ordinary Least Squares (OLS) chooses $\hat\beta_0, \hat\beta_1$ to make these residuals collectively as small as possible.
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{center}
+				\begin{tikzpicture}[scale=0.75]
+					\draw[->] (-0.5,0) -- (7.5,0) node[below] {$x$ (Ad spend)};
+					\draw[->] (0,-0.5) -- (0,6.2) node[above] {$y$ (Sales)};
+					\fill (1,1.2) circle (2pt);
+					\fill (2,2.3) circle (2pt);
+					\fill (3,2.0) circle (2pt);
+					\fill (4,3.8) circle (2pt);
+					\fill (5,4.0) circle (2pt);
+					\fill (6,5.3) circle (2pt);
+					\draw[thick, mDarkTeal] (0,0.5) -- (7,6.1) node[above, black] {$\hat y = \hat\beta_0 + \hat\beta_1 x$};
+					\draw[dashed, red] (1,1.2) -- (1,1.3);
+					\draw[dashed, red] (2,2.3) -- (2,2.1);
+					\draw[dashed, red] (3,2.0) -- (3,2.9);
+					\draw[dashed, red] (4,3.8) -- (4,3.7);
+					\draw[dashed, red] (5,4.0) -- (5,4.5);
+					\draw[dashed, red] (6,5.3) -- (6,5.3);
+				\end{tikzpicture}
+			\end{center}
+		\end{column}
+	\end{columns}
 \end{frame}
 
 
@@ -147,7 +181,7 @@ We want a line $\hat y = \hat\beta_0 + \hat\beta_1 x$ that fits the scatter of (
 	\]
 	\svspace{0.5em}
 	\pause
-	This is a system of two linear equations in two unknowns, $\hat\beta_0$ and $\hat\beta_1$. We solve it directly using algebra --- no matrices needed for the simple linear case.
+	This is a system of two linear equations in two unknowns, $\hat\beta_0$ and $\hat\beta_1$. We solve it directly using algebra.
 \end{frame}
 
 
@@ -184,7 +218,6 @@ We want a line $\hat y = \hat\beta_0 + \hat\beta_1 x$ that fits the scatter of (
 \end{frame}
 
 
-
 \begin{frame}{Solving for $\hat\beta_0$}
 	Having solved for $\hat\beta_1$, we plug back into the first normal equation:
 	\[
@@ -195,6 +228,7 @@ We want a line $\hat y = \hat\beta_0 + \hat\beta_1 x$ that fits the scatter of (
 	Interpretation for our example: $\hat\beta_1$ is the estimated extra sales revenue per extra unit of advertising spend, and the fitted line passes through the point of averages $(\bar x, \bar y)$.
 \end{frame}
 
+
 \begin{frame}{OLS Estimators --- Summary}
 	\[
 		\hat\beta_1 = \frac{S_{xy}}{S_{xx}}, \qquad \hat\beta_0 = \bar y - \hat\beta_1 \bar x, \qquad \hat y_i = \hat\beta_0 + \hat\beta_1 x_i
@@ -204,115 +238,124 @@ We want a line $\hat y = \hat\beta_0 + \hat\beta_1 x$ that fits the scatter of (
 
 \begin{frame}{The Fitted Line}
 	\begin{center}
-		\includegraphics[width=0.65\textwidth]{figures/ad_sales_scatter.pdf}
+		\includegraphics[width=0.5\textwidth]{figures/ad_sales_scatter.pdf}
 	\end{center}
 \end{frame}
 
+
 \section{Properties of the OLS Estimators}
 
+
 \begin{frame}{Rewriting $\hat\beta_1$ as a Linear Combination of the $y_i$}
-Since $\sum_i (x_i - \bar x)\bar y = 0$, we can write
-\[
-\hat\beta_1 = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{S_{xx}} = \frac{\sum_i (x_i - \bar x) y_i}{S_{xx}} = \sum_{i=1}^n c_i y_i, \qquad c_i = \frac{x_i - \bar x}{S_{xx}}
-\]
-\pause
-The weights $c_i$ satisfy two useful properties, both provable directly from the definition of $S_{xx}$:
-\[
-\sum_i c_i = 0, \qquad \sum_i c_i x_i = 1, \qquad \sum_i c_i^2 = \frac{1}{S_{xx}}
-\]
-These properties are all we need to establish unbiasedness and variance.
+	Since $\sum_i (x_i - \bar x)\bar y = 0$, we can write
+	\[
+		\hat\beta_1 = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{S_{xx}} = \frac{\sum_i (x_i - \bar x) y_i}{S_{xx}} = \sum_{i=1}^n c_i y_i, \qquad c_i = \frac{x_i - \bar x}{S_{xx}}
+	\]
+	\pause
+	The weights $c_i$ satisfy two useful properties, both provable directly from the definition of $S_{xx}$:
+	\[
+		\sum_i c_i = 0, \qquad \sum_i c_i x_i = 1, \qquad \sum_i c_i^2 = \frac{1}{S_{xx}}
+	\]
+	These properties are all we need to establish unbiasedness and variance.
 \end{frame}
+
 
 \begin{frame}{Unbiasedness of $\hat\beta_1$}
-Treating the $x_i$ as fixed and using $y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$:
-\[
-E[\hat\beta_1] = E\left[\sum_i c_i y_i\right] = \sum_i c_i E[y_i] = \sum_i c_i(\beta_0 + \beta_1 x_i)
-\]
-\pause
-\[
-= \beta_0 \underbrace{\sum_i c_i}_{=0} + \beta_1 \underbrace{\sum_i c_i x_i}_{=1} = \beta_1
-\]
-\pause
-\[
-\boxed{E[\hat\beta_1] = \beta_1}
-\]
-On average, across repeated samples, the OLS slope estimate equals the true slope.
+	Treating the $x_i$ as fixed and using $y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$:
+	\[
+		E[\hat\beta_1] = E\left[\sum_i c_i y_i\right] = \sum_i c_i E[y_i] = \sum_i c_i(\beta_0 + \beta_1 x_i)
+	\]
+	\pause
+	\[
+		= \beta_0 \underbrace{\sum_i c_i}_{=0} + \beta_1 \underbrace{\sum_i c_i x_i}_{=1} = \beta_1
+	\]
+	\pause
+	\[
+		\boxed{E[\hat\beta_1] = \beta_1}
+	\]
+	On average, across repeated samples, the OLS slope estimate equals the true slope.
 \end{frame}
+
 
 \begin{frame}{Unbiasedness of $\hat\beta_0$}
-Using $\hat\beta_0 = \bar y - \hat\beta_1 \bar x$ and $E[\bar y] = \beta_0 + \beta_1 \bar x$:
-\[
-E[\hat\beta_0] = E[\bar y] - \bar x\, E[\hat\beta_1] = (\beta_0 + \beta_1 \bar x) - \bar x \beta_1
-\]
-\pause
-\[
-\boxed{E[\hat\beta_0] = \beta_0}
-\]
-Both OLS estimators are unbiased: they neither systematically overestimate nor underestimate the true parameters.
+	Using $\hat\beta_0 = \bar y - \hat\beta_1 \bar x$ and $E[\bar y] = \beta_0 + \beta_1 \bar x$:
+	\[
+		E[\hat\beta_0] = E[\bar y] - \bar x\, E[\hat\beta_1] = (\beta_0 + \beta_1 \bar x) - \bar x \beta_1
+	\]
+	\pause
+	\[
+		\boxed{E[\hat\beta_0] = \beta_0}
+	\]
+	Both OLS estimators are unbiased: they neither systematically overestimate nor underestimate the true parameters.
 \end{frame}
+
 
 \begin{frame}{Variance of the OLS Estimators}
-Because the $\varepsilon_i$ are independent with common variance $\sigma^2$, and $\hat\beta_1 = \sum_i c_i y_i$ with $\operatorname{Var}(y_i) = \sigma^2$:
-\[
-\operatorname{Var}(\hat\beta_1) = \sum_i c_i^2 \operatorname{Var}(y_i) = \sigma^2 \sum_i c_i^2 = \frac{\sigma^2}{S_{xx}}
-\]
-\pause
-A similar calculation for $\hat\beta_0 = \bar y - \hat\beta_1 \bar x$ gives
-\[
-\operatorname{Var}(\hat\beta_0) = \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right)
-\]
-\pause
-More spread-out $x$ values (larger $S_{xx}$) give more precise slope estimates --- intuitively, advertising spend that varies a lot from month to month tells us more about its effect on sales than spend that barely changes.
+	Because the $\varepsilon_i$ are independent with common variance $\sigma^2$, and $\hat\beta_1 = \sum_i c_i y_i$ with $\operatorname{Var}(y_i) = \sigma^2$:
+	\[
+		\operatorname{Var}(\hat\beta_1) = \sum_i c_i^2 \operatorname{Var}(y_i) = \sigma^2 \sum_i c_i^2 = \frac{\sigma^2}{S_{xx}}
+	\]
+	\pause
+	A similar calculation for $\hat\beta_0 = \bar y - \hat\beta_1 \bar x$ gives
+	\[
+		\operatorname{Var}(\hat\beta_0) = \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right)
+	\]
+	\pause
+	More spread-out $x$ values (larger $S_{xx}$) give more precise slope estimates --- intuitively, advertising spend that varies a lot from month to month tells us more about its effect on sales than spend that barely changes.
 \end{frame}
 
+
 \begin{frame}{The Gauss--Markov Theorem: OLS Is BLUE}
-Among all estimators of $\beta_0$ and $\beta_1$ that are:
-\begin{sitemize}
-    \item \textbf{L}inear in the $y_i$, and
-    \item \textbf{U}nbiased,
-\end{sitemize}
-the OLS estimators $\hat\beta_0, \hat\beta_1$ have the smallest possible variance.
-\svspace{0.5em}
-\pause
-This is why OLS is called \textbf{BLUE}: the \textbf{B}est \textbf{L}inear \textbf{U}nbiased \textbf{E}stimator. ``Best'' here means minimum variance, not that OLS makes no errors --- it means no other linear, unbiased method can do better, under the SLR assumptions.
+	Among all estimators of $\beta_0$ and $\beta_1$ that are:
+	\begin{sitemize}
+		\item \textbf{L}inear in the $y_i$, and
+		\item \textbf{U}nbiased,
+	\end{sitemize}
+	the OLS estimators $\hat\beta_0, \hat\beta_1$ have the smallest possible variance.
+	\svspace{0.5em}
+	\pause
+	This is why OLS is called \textbf{BLUE}: the \textbf{B}est \textbf{L}inear \textbf{U}nbiased \textbf{E}stimator. ``Best'' here means minimum variance, not that OLS makes no errors --- it means no other linear, unbiased method can do better, under the SLR assumptions.
 \end{frame}
+
 
 \section{Estimating the Error Variance \texorpdfstring{$\sigma^2$}{sigma-squared}}
 
+
 \begin{frame}{Residuals and the Error Sum of Squares}
-The parameter $\sigma^2$ measures how much sales vary around the regression line for a given level of advertising spend --- it is unknown and must be estimated from the residuals.
-\svspace{0.5em}
-Define the \textbf{error sum of squares}:
-\[
-SS_E = \sum_{i=1}^n \hat\varepsilon_i^2 = \sum_{i=1}^n (y_i - \hat y_i)^2
-\]
-\pause
-It can be shown that $E[SS_E] = (n-2)\sigma^2$. The divisor $n-2$ reflects that two degrees of freedom were used up in estimating $\beta_0$ and $\beta_1$ before we could compute residuals.
+	The parameter $\sigma^2$ measures how much sales vary around the regression line for a given level of advertising spend --- it is unknown and must be estimated from the residuals.
+	\svspace{0.5em}
+	Define the \textbf{error sum of squares}:
+	\[
+		SS_E = \sum_{i=1}^n \hat\varepsilon_i^2 = \sum_{i=1}^n (y_i - \hat y_i)^2
+	\]
+	\pause
+	It can be shown that $E[SS_E] = (n-2)\sigma^2$. The divisor $n-2$ reflects that two degrees of freedom were used up in estimating $\beta_0$ and $\beta_1$ before we could compute residuals.
 \end{frame}
 
+
 \begin{frame}{An Unbiased Estimator of $\sigma^2$}
-\[
-\boxed{\hat\sigma^2 = MS_E = \frac{SS_E}{n-2}}
-\]
-\pause
-Since $E[SS_E] = (n-2)\sigma^2$, it follows immediately that
-\[
-E[\hat\sigma^2] = \sigma^2
-\]
-so $MS_E$ is an unbiased estimator of the error variance. This quantity underlies standard errors, confidence intervals, and hypothesis tests for $\beta_0$ and $\beta_1$ --- topics for the next lecture.
+	\[
+		\boxed{\hat\sigma^2 = MS_E = \frac{SS_E}{n-2}}
+	\]
+	\pause
+	Since $E[SS_E] = (n-2)\sigma^2$, it follows immediately that
+	\[
+		E[\hat\sigma^2] = \sigma^2
+	\]
+	so $MS_E$ is an unbiased estimator of the error variance. This quantity underlies standard errors, confidence intervals, and hypothesis tests for $\beta_0$ and $\beta_1$ --- topics for the next lecture.
 \end{frame}
 
 
 \begin{frame}{Why $E[SS_E] = (n-2)\sigma^2$: Rewriting the Residual}
-Recall $\hat\beta_0 = \bar y - \hat\beta_1 \bar x$. Substituting into $\hat y_i = \hat\beta_0 + \hat\beta_1 x_i$:
-\[
-\hat y_i = (\bar y - \hat\beta_1\bar x) + \hat\beta_1 x_i = \bar y + \hat\beta_1(x_i - \bar x)
-\]
-\pause
-So each residual splits into a piece explained by $x$ and a leftover piece:
-\[
-y_i - \hat y_i = (y_i - \bar y) - \hat\beta_1(x_i - \bar x)
-\]
+	Recall $\hat\beta_0 = \bar y - \hat\beta_1 \bar x$. Substituting into $\hat y_i = \hat\beta_0 + \hat\beta_1 x_i$:
+	\[
+		\hat y_i = (\bar y - \hat\beta_1\bar x) + \hat\beta_1 x_i = \bar y + \hat\beta_1(x_i - \bar x)
+	\]
+	\pause
+	So each residual splits into a piece explained by $x$ and a leftover piece:
+	\[
+		y_i - \hat y_i = (y_i - \bar y) - \hat\beta_1(x_i - \bar x)
+	\]
 \end{frame}
  
 
@@ -327,64 +370,66 @@ y_i - \hat y_i = (y_i - \bar y) - \hat\beta_1(x_i - \bar x)
 
 
 \begin{frame}{Simplifying $SS_E$}
-So far:
-\[
-SS_E = S_{yy} - 2\hat\beta_1 S_{xy} + \hat\beta_1^2 S_{xx}
-\]
-\pause
-Since $\hat\beta_1 = S_{xy}/S_{xx}$, we have $S_{xy} = \hat\beta_1 S_{xx}$, so
-\[
-\hat\beta_1^2 S_{xx} = \hat\beta_1(\hat\beta_1 S_{xx}) = \hat\beta_1 S_{xy}
-\]
-\pause
-The last two terms combine into one:
-\[
--2\hat\beta_1 S_{xy} + \hat\beta_1 S_{xy} = -\hat\beta_1 S_{xy}
-\]
-\pause
-\[
-\boxed{SS_E = S_{yy} - \hat\beta_1 S_{xy}}
-\]
-% This is the identity you may already recognize from ANOVA-style decompositions. We now need $E[S_{yy}]$ and $E[\hat\beta_1 S_{xy}]$ separately.
+	So far:
+	\[
+		SS_E = S_{yy} - 2\hat\beta_1 S_{xy} + \hat\beta_1^2 S_{xx}
+	\]
+	\pause
+	Since $\hat\beta_1 = S_{xy}/S_{xx}$, we have $S_{xy} = \hat\beta_1 S_{xx}$, so
+	\[
+		\hat\beta_1^2 S_{xx} = \hat\beta_1(\hat\beta_1 S_{xx}) = \hat\beta_1 S_{xy}
+	\]
+	\pause
+	The last two terms combine into one:
+	\[
+		-2\hat\beta_1 S_{xy} + \hat\beta_1 S_{xy} = -\hat\beta_1 S_{xy}
+	\]
+	\pause
+	\[
+		\boxed{SS_E = S_{yy} - \hat\beta_1 S_{xy}}
+	\]
+	% This is the identity you may already recognize from ANOVA-style decompositions. We now need $E[S_{yy}]$ and $E[\hat\beta_1 S_{xy}]$ separately.
 \end{frame}
  
+
 \begin{frame}{Expectation of $S_{yy}$}
-Subtracting $\bar y = \beta_0 + \beta_1\bar x + \bar\varepsilon$ from $y_i = \beta_0+\beta_1 x_i+\varepsilon_i$:
-\[
-y_i - \bar y = \beta_1(x_i-\bar x) + (\varepsilon_i - \bar\varepsilon)
-\]
-\pause
-Squaring and summing:
-\[
-S_{yy} = \beta_1^2 S_{xx} + 2\beta_1\sum_i(x_i-\bar x)(\varepsilon_i-\bar\varepsilon) + \sum_i(\varepsilon_i-\bar\varepsilon)^2
-\]
-\pause
-The $x_i$ are fixed constants and $E[\varepsilon_i-\bar\varepsilon]=0$, so the middle term vanishes in expectation. For the last term, using $E[\varepsilon_i^2]=\sigma^2$ and $\operatorname{Var}(\bar\varepsilon)=\sigma^2/n$:
-\[
-\sum_i(\varepsilon_i-\bar\varepsilon)^2 = \sum_i\varepsilon_i^2 - n\bar\varepsilon^2
-\;\Rightarrow\;
-E\Big[\sum_i(\varepsilon_i-\bar\varepsilon)^2\Big] = n\sigma^2 - n\cdot\frac{\sigma^2}{n} = (n-1)\sigma^2
-\]
-\pause
-\[
-\boxed{E[S_{yy}] = \beta_1^2 S_{xx} + (n-1)\sigma^2}
-\]
+	Subtracting $\bar y = \beta_0 + \beta_1\bar x + \bar\varepsilon$ from $y_i = \beta_0+\beta_1 x_i+\varepsilon_i$:
+	\[
+		y_i - \bar y = \beta_1(x_i-\bar x) + (\varepsilon_i - \bar\varepsilon)
+	\]
+	\pause
+	Squaring and summing:
+	\[
+		S_{yy} = \beta_1^2 S_{xx} + 2\beta_1\sum_i(x_i-\bar x)(\varepsilon_i-\bar\varepsilon) + \sum_i(\varepsilon_i-\bar\varepsilon)^2
+	\]
+	\pause
+	The $x_i$ are fixed constants and $E[\varepsilon_i-\bar\varepsilon]=0$, so the middle term vanishes in expectation. For the last term, using $E[\varepsilon_i^2]=\sigma^2$ and $\operatorname{Var}(\bar\varepsilon)=\sigma^2/n$:
+	\[
+		\sum_i(\varepsilon_i-\bar\varepsilon)^2 = \sum_i\varepsilon_i^2 - n\bar\varepsilon^2
+		\;\Rightarrow\;
+		E\Big[\sum_i(\varepsilon_i-\bar\varepsilon)^2\Big] = n\sigma^2 - n\cdot\frac{\sigma^2}{n} = (n-1)\sigma^2
+	\]
+	\pause
+	\[
+		\boxed{E[S_{yy}] = \beta_1^2 S_{xx} + (n-1)\sigma^2}
+	\]
 \end{frame}
  
+
 \begin{frame}{Expectation of $\hat\beta_1 S_{xy}$}
-Using $S_{xy} = \hat\beta_1 S_{xx}$ again:
-\[
-\hat\beta_1 S_{xy} = \hat\beta_1^2 S_{xx}
-\]
-\pause
-Since $E[\hat\beta_1] = \beta_1$ and $\operatorname{Var}(\hat\beta_1) = \sigma^2/S_{xx}$:
-\[
-E[\hat\beta_1^2] = \operatorname{Var}(\hat\beta_1) + \big(E[\hat\beta_1]\big)^2 = \frac{\sigma^2}{S_{xx}} + \beta_1^2
-\]
-\pause
-\[
-E[\hat\beta_1 S_{xy}] = S_{xx}\left(\frac{\sigma^2}{S_{xx}} + \beta_1^2\right) = \sigma^2 + \beta_1^2 S_{xx}
-\]
+	Using $S_{xy} = \hat\beta_1 S_{xx}$ again:
+	\[
+		\hat\beta_1 S_{xy} = \hat\beta_1^2 S_{xx}
+	\]
+	\pause
+	Since $E[\hat\beta_1] = \beta_1$ and $\operatorname{Var}(\hat\beta_1) = \sigma^2/S_{xx}$:
+	\[
+		E[\hat\beta_1^2] = \operatorname{Var}(\hat\beta_1) + \big(E[\hat\beta_1]\big)^2 = \frac{\sigma^2}{S_{xx}} + \beta_1^2
+	\]
+	\pause
+	\[
+		E[\hat\beta_1 S_{xy}] = S_{xx}\left(\frac{\sigma^2}{S_{xx}} + \beta_1^2\right) = \sigma^2 + \beta_1^2 S_{xx}
+	\]
 \end{frame}
 
 
