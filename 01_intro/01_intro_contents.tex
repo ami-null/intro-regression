@@ -7,22 +7,22 @@
 	Instead of treating events in a system as isolated, regression lets us ask: \emph{if this variable changes, how does that one respond, on average?}
 	\svspace{0.5em}
 
-	\begin{sitemize}
+	\begin{itemize}
 		\item Response variable: what we want to explain or predict (denoted $y$)
 		\item Predictor variable(s): what we use to explain it (denoted $x$)
 		\item The regression equation summarizes the average relationship between them
-	\end{sitemize}
+	\end{itemize}
 \end{frame}
 
 
 \begin{frame}{Why Regression?}
-	\begin{sitemize}
+	\begin{itemize}
 		\item \textbf{Business:} does advertising spend increase sales, and by how much?
 		\item \textbf{Medicine:} how does drug dosage affect blood pressure reduction?
 		\item \textbf{Engineering:} how does curing temperature affect concrete strength?
 		\item \textbf{Economics:} how does income relate to household spending?
 		\item \textbf{Environment:} how does fertilizer amount relate to crop yield?
-	\end{sitemize}
+	\end{itemize}
 \end{frame}
 
 
@@ -35,12 +35,12 @@
 		Y = \beta_0 + \beta_1 X + \epsilon, \qquad \epsilon \sim N(0, \sigma^2)
 	\]
 
-	\begin{sitemize}
+	\begin{itemize}
 		\item $\beta_0$: the intercept --- expected or average value of \(Y\) when the value of \(X\) is zero
 		\item $\beta_1$: the slope --- the expected or average change in sales for a one-unit increase \(X\)
 		\item $\epsilon_i$: random error --- everything affecting \(Y\) that \(X\) does not capture
 		\item $\beta_0, \beta_1$ are unknown \textbf{population parameters}; we estimate them from data as $\hat\beta_0, \hat\beta_1$
-	\end{sitemize}
+	\end{itemize}
 \end{frame}
 
 
@@ -57,12 +57,12 @@
 	
 	What are the interpretation of \(\hat{\beta}_0\) and \(\hat{\beta}_1\) in this context?
 
-	% \begin{sitemize}
+	% \begin{itemize}
 	% 	\item $\beta_0$: the intercept --- expected sales when advertising spend is zero
 	% 	\item $\beta_1$: the slope --- the expected change in sales for a one-unit increase in advertising spend
 	% 	\item $\varepsilon_i$: random error --- everything affecting sales that $x$ does not capture
 	% 	\item $\beta_0, \beta_1$ are unknown \textbf{population parameters}; we estimate them from data as $\hat\beta_0, \hat\beta_1$
-	% \end{sitemize}
+	% \end{itemize}
 
 \end{frame}
 
@@ -88,13 +88,13 @@
 
 
 \begin{frame}{Assumptions of the SLR Model}
-	\begin{sitemize}
+	\begin{itemize}
 		\item \textbf{Linearity:} the mean of $y$ is a linear function of $x$, i.e.\ $E[\varepsilon_i] = 0$
 		\item \textbf{Independence:} $\operatorname{Cov}(\varepsilon_i, \varepsilon_j) = 0$ for $i \neq j$
 		\item \textbf{Normality}: $\varepsilon_i \sim N(0, \sigma^2)$
 		\item \textbf{Constant variance (homoscedasticity):} $\operatorname{Var}(\varepsilon_i) = \sigma^2$ for all $i$
 		\item $x_i$ values are fixed, known constants, measured without error
-	\end{sitemize}
+	\end{itemize}
 \end{frame}
 
 
@@ -327,10 +327,10 @@
 
 \begin{frame}{The Gauss--Markov Theorem: OLS Is BLUE}
 	Among all estimators of $\beta_0$ and $\beta_1$ that are:
-	\begin{sitemize}
+	\begin{itemize}
 		\item \textbf{L}inear in the $y_i$, and
 		\item \textbf{U}nbiased,
-	\end{sitemize}
+	\end{itemize}
 	the OLS estimators $\hat\beta_0, \hat\beta_1$ have the smallest possible variance.
 	\svspace{0.5em}
 	\pause
@@ -344,13 +344,13 @@
 \begin{frame}{Other Useful Properties of the Least-Squares Fit}
 	Beyond unbiasedness and BLUE, the OLS fit has several algebraic properties that follow directly from the normal equations --- worth knowing since they show up in diagnostics and in software output.
 	\svspace{0.5em}
-	\begin{sitemize}
+	\begin{itemize}
 		\item The residuals always sum to zero: $\sum_i \hat\varepsilon_i = 0$
 		\item The observed and fitted values have the same sum: $\sum_i y_i = \sum_i \hat y_i$
 		\item The fitted line always passes through the centroid $(\bar x, \bar y)$
 		\item Residuals weighted by $x_i$ sum to zero: $\sum_i x_i \hat\varepsilon_i = 0$
 		\item Residuals weighted by $\hat y_i$ sum to zero: $\sum_i \hat y_i \hat\varepsilon_i = 0$
-	\end{sitemize}
+	\end{itemize}
 \end{frame}
 
 
