@@ -39,6 +39,16 @@
 \newcommand{\svspace}[1]{\mode<presentation>{\vspace{#1}}}
 
 
+% \dual{slide wording}{book wording}
+% Lets a single spot in content.tex say something terse on slides and
+% something fuller in the article/book output, using beamer's own
+% <presentation>/<article> modes (no custom \ifbeamer flag needed).
+\newcommand{\dual}[2]{%
+  \mode<presentation>{#1}%
+  \mode<article>{#2}%
+}
+
+
 \definecolor{airforceblue}{rgb}{0.36, 0.54, 0.66}
 \hypersetup{
     colorlinks=true,
