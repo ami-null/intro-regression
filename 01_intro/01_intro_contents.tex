@@ -111,12 +111,12 @@
 				\begin{tikzpicture}[scale=0.75]
 					\draw[->] (-0.5,0) -- (7.5,0) node[below] {$x$ (Ad spend)};
 					\draw[->] (0,-0.5) -- (0,6.2) node[above] {$y$ (Sales)};
-					\fill (1,1.2) circle (2pt);
-					\fill (2,2.3) circle (2pt);
+					\fill (1,0.8) circle (2pt);
+					\fill (2,2.6) circle (2pt);
 					\fill (3,2.0) circle (2pt);
-					\fill (4,3.8) circle (2pt);
+					\fill (4,3.3) circle (2pt);
 					\fill (5,4.0) circle (2pt);
-					\fill (6,5.3) circle (2pt);
+					\fill (6,5.5) circle (2pt);
 					\draw[thick, mDarkTeal] (0,0.5) -- (7,6.1) node[above, black] {$\hat y = \hat\beta_0 + \hat\beta_1 x$};
 					% \draw[dashed, red] (1,1.2) -- (1,1.3);
 					% \draw[dashed, red] (2,2.3) -- (2,2.1);
@@ -145,19 +145,19 @@
 				\begin{tikzpicture}[scale=0.75]
 					\draw[->] (-0.5,0) -- (7.5,0) node[below] {$x$ (Ad spend)};
 					\draw[->] (0,-0.5) -- (0,6.2) node[above] {$y$ (Sales)};
-					\fill (1,1.2) circle (2pt);
-					\fill (2,2.3) circle (2pt);
+					\fill (1,0.8) circle (2pt);
+					\fill (2,2.6) circle (2pt);
 					\fill (3,2.0) circle (2pt);
-					\fill (4,3.8) circle (2pt);
+					\fill (4,3.3) circle (2pt);
 					\fill (5,4.0) circle (2pt);
-					\fill (6,5.3) circle (2pt);
+					\fill (6,5.5) circle (2pt);
 					\draw[thick, mDarkTeal] (0,0.5) -- (7,6.1) node[above, black] {$\hat y = \hat\beta_0 + \hat\beta_1 x$};
-					\draw[dashed, red] (1,1.2) -- (1,1.3);
-					\draw[dashed, red] (2,2.3) -- (2,2.1);
+					\draw[dashed, red] (1,0.8) -- (1,1.3);
+					\draw[dashed, red] (2,2.6) -- (2,2.1);
 					\draw[dashed, red] (3,2.0) -- (3,2.9);
-					\draw[dashed, red] (4,3.8) -- (4,3.7);
+					\draw[dashed, red] (4,3.3) -- (4,3.7);
 					\draw[dashed, red] (5,4.0) -- (5,4.5);
-					\draw[dashed, red] (6,5.3) -- (6,5.3);
+					\draw[dashed, red] (6,5.5) -- (6,5.3);
 				\end{tikzpicture}
 			\end{center}
 		\end{column}
@@ -286,13 +286,6 @@
 		r = \frac{\sqrt{\operatorname{V}(X)}}{\sqrt{\operatorname{V}(Y)}} \hat{\beta}_1.
 	\]
 \end{frame}
-
-
-% \begin{frame}{The Fitted Line}
-% 	\begin{center}
-% 		\includegraphics[width=0.5\textwidth]{figures/ad_sales_scatter.pdf}
-% 	\end{center}
-% \end{frame}
 
 
 \section{Numeric Example}
@@ -467,7 +460,7 @@
 	\[
 		\sum_i c_i = 0, \qquad \sum_i c_i x_i = 1, \qquad \sum_i c_i^2 = \frac{1}{S_{xx}}
 	\]
-	These properties are all we need to establish unbiasedness and variance.
+	These properties are needed to establish the unbiasedness of the estimators and find their variances.
 \end{frame}
 
 
@@ -484,7 +477,7 @@
 	\[
 		\boxed{E[\hat\beta_1] = \beta_1}
 	\]
-	On average, across repeated samples, the OLS slope estimate equals the true slope.
+	On average, across repeated samples, the OLS slope estimate equals the true parameter.
 \end{frame}
 
 
@@ -497,7 +490,7 @@
 	\[
 		\boxed{E[\hat\beta_0] = \beta_0}
 	\]
-	Both OLS estimators are unbiased: they neither systematically overestimate nor underestimate the true parameters.
+	Both OLS estimators are unbiased.
 \end{frame}
 
 
@@ -673,7 +666,6 @@
 	\[
 		\boxed{SS_E = S_{yy} - \hat\beta_1 S_{xy}}
 	\]
-	% This is the identity you may already recognize from ANOVA-style decompositions. We now need $E[S_{yy}]$ and $E[\hat\beta_1 S_{xy}]$ separately.
 \end{frame}
  
 
