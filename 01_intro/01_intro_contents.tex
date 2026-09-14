@@ -30,14 +30,14 @@
 
 
 \begin{frame}{The SLR Model Equation}
-	For an outcome variable \(Y\) an a single predictor variable \(X\), the model is given as
+	For an outcome variable \(Y\) and a single predictor variable \(X\), the model is given as
 	\[
 		Y = \beta_0 + \beta_1 X + \epsilon, \qquad \epsilon \sim N(0, \sigma^2)
 	\]
 
 	\begin{itemize}
 		\item $\beta_0$: the intercept --- expected or average value of \(Y\) when the value of \(X\) is zero
-		\item $\beta_1$: the slope --- the expected or average change in sales for a one-unit increase \(X\)
+		\item $\beta_1$: the slope --- the expected or average change in \(Y\) for a one-unit increase \(X\)
 		\item $\epsilon_i$: random error --- everything affecting \(Y\) that \(X\) does not capture
 		\item $\beta_0, \beta_1$ are unknown \textbf{population parameters}; we estimate them from data as $\hat\beta_0, \hat\beta_1$
 	\end{itemize}
@@ -55,7 +55,7 @@
 		\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i.
 	\]
 	
-	What are the interpretation of \(\hat{\beta}_0\) and \(\hat{\beta}_1\) in this context?
+	What are the interpretations of \(\hat{\beta}_0\) and \(\hat{\beta}_1\) in this context?
 
 	% \begin{itemize}
 	% 	\item $\beta_0$: the intercept --- expected sales when advertising spend is zero
@@ -294,12 +294,12 @@
 \begin{frame}{Example: The Rocket Propellant Data}
 	A rocket motor bonds an igniter propellant to a sustainer propellant inside a metal housing. The shear strength of that bond is a key quality characteristic, and it is suspected to depend on the age of the sustainer propellant batch.
 	\svspace{0.5em}
-	\begin{sitemize}
+	\begin{itemize}
 		\item $n = 20$ observations
 		\item $y_i$: shear strength (psi)
 		\item $x_i$: age of propellant batch (weeks)
 		\item Tentative model: $y = \beta_0 + \beta_1 x + \varepsilon$
-	\end{sitemize}
+	\end{itemize}
 	\svspace{0.5em}
 	We will fit this model with OLS and check the algebraic properties from the previous frames against real numbers.
 \end{frame}
