@@ -306,52 +306,55 @@
 
 
 \begin{frame}{The Data ($n = 20$)}
-	\begin{columns}[T]
+	\begin{center}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\centering%\scriptsize
+					\begin{tabular}{ccc}
+					\toprule
+					$i$ & $x_i$ (weeks) & $y_i$ (psi) \\
+					\midrule
+					1  & 15.50 & 2158.70 \\
+					2  & 23.75 & 1678.15 \\
+					3  & 8.00  & 2316.00 \\
+					4  & 17.00 & 2061.30 \\
+					5  & 5.50  & 2207.50 \\
+					6  & 19.00 & 1708.30 \\
+					7  & 24.00 & 1784.70 \\
+					8  & 2.50  & 2575.00 \\
+					9  & 7.50  & 2357.90 \\
+					10 & 11.00 & 2256.70 \\
+					\bottomrule
+				\end{tabular}
+			\end{column}
 		\begin{column}{0.5\textwidth}
 			\centering%\scriptsize
 				\begin{tabular}{ccc}
-				\toprule
-				$i$ & $x_i$ (weeks) & $y_i$ (psi) \\
-				\midrule
-				1  & 15.50 & 2158.70 \\
-				2  & 23.75 & 1678.15 \\
-				3  & 8.00  & 2316.00 \\
-				4  & 17.00 & 2061.30 \\
-				5  & 5.50  & 2207.50 \\
-				6  & 19.00 & 1708.30 \\
-				7  & 24.00 & 1784.70 \\
-				8  & 2.50  & 2575.00 \\
-				9  & 7.50  & 2357.90 \\
-				10 & 11.00 & 2256.70 \\
-				\bottomrule
-			\end{tabular}
-		\end{column}
-	\begin{column}{0.5\textwidth}
-		\centering%\scriptsize
-			\begin{tabular}{ccc}
-				\toprule
-				$i$ & $x_i$ (weeks) & $y_i$ (psi) \\
-				\midrule
-				11 & 13.00 & 2165.20 \\
-				12 & 3.75  & 2399.55 \\
-				13 & 25.00 & 1779.80 \\
-				14 & 9.75  & 2336.75 \\
-				15 & 22.00 & 1765.30 \\
-				16 & 18.00 & 2053.50 \\
-				17 & 6.00  & 2414.40 \\
-				18 & 12.50 & 2200.50 \\
-				19 & 2.00  & 2654.20 \\
-				20 & 21.50 & 1753.70 \\
-				\bottomrule
-			\end{tabular}
-		\end{column}
-	\end{columns}
+					\toprule
+					$i$ & $x_i$ (weeks) & $y_i$ (psi) \\
+					\midrule
+					11 & 13.00 & 2165.20 \\
+					12 & 3.75  & 2399.55 \\
+					13 & 25.00 & 1779.80 \\
+					14 & 9.75  & 2336.75 \\
+					15 & 22.00 & 1765.30 \\
+					16 & 18.00 & 2053.50 \\
+					17 & 6.00  & 2414.40 \\
+					18 & 12.50 & 2200.50 \\
+					19 & 2.00  & 2654.20 \\
+					20 & 21.50 & 1753.70 \\
+					\bottomrule
+				\end{tabular}
+			\end{column}
+		\end{columns}
+	\end{center}
 \end{frame}
 
 
 \begin{frame}{Scatter Diagram}
 	\begin{center}
-		\includegraphics[height=0.85\textheight, keepaspectratio]{figures/propellant_scatter.pdf}
+		\mode<presentation>{\includegraphics[height=0.85\textheight, keepaspectratio]{figures/propellant_scatter.pdf}}
+		\mode<article>{\includegraphics[height=0.4\textheight, keepaspectratio]{figures/propellant_scatter.pdf}}
 	\end{center}
 	\svspace{0.5em}
 	Strength decreases as the propellant batch ages.
@@ -387,59 +390,63 @@
 
 \begin{frame}{Fitted Line}
 	\begin{center}
-		\includegraphics[height=0.85\textheight, keepaspectratio]{figures/propellant_fitted_line.pdf}
+		\mode<presentation>{\includegraphics[height=0.85\textheight, keepaspectratio]{figures/propellant_fitted_line.pdf}}
+		\mode<article>{\includegraphics[height=0.4\textheight, keepaspectratio]{figures/propellant_fitted_line.pdf}}
 	\end{center}
 \end{frame}
 
 
 \begin{frame}{Fitted Line with Residuals}
 	\begin{center}
-		\includegraphics[height=0.85\textheight, keepaspectratio]{figures/propellant_residuals.pdf}
+		\mode<presentation>{\includegraphics[height=0.85\textheight, keepaspectratio]{figures/propellant_residuals.pdf}}
+		\mode<article>{\includegraphics[height=0.4\textheight, keepaspectratio]{figures/propellant_residuals.pdf}}
 	\end{center}
 \end{frame}
 
 
 \begin{frame}{Fitted Values and Residuals}
-	\begin{columns}[T]
-		\begin{column}{0.5\textwidth}
-			\centering\small
-			\begin{tabular}{cccc}
-				\toprule
-				$i$ & $y_i$ & $\hat y_i$ & $\hat\varepsilon_i$ \\
-				\midrule
-				1  & 2158.70 & 2051.94 & 106.76 \\
-				2  & 1678.15 & 1745.42 & -67.27 \\
-				3  & 2316.00 & 2330.59 & -14.59 \\
-				4  & 2061.30 & 1996.21 & 65.09 \\
-				5  & 2207.50 & 2423.48 & -215.98 \\
-				6  & 1708.30 & 1921.90 & -213.60 \\
-				7  & 1784.70 & 1736.14 & 48.56 \\
-				8  & 2575.00 & 2534.94 & 40.06 \\
-				9  & 2357.90 & 2349.17 & 8.73 \\
-				10 & 2256.70 & 2219.13 & 37.57 \\
-				\bottomrule
-			\end{tabular}
-		\end{column}
-		\begin{column}{0.5\textwidth}
-			\centering\small
-			\begin{tabular}{cccc}
-				\toprule
-				$i$ & $y_i$ & $\hat y_i$ & $\hat\varepsilon_i$ \\
-				\midrule
-				11 & 2165.20 & 2144.83 & 20.37 \\
-				12 & 2399.55 & 2488.50 & -88.95 \\
-				13 & 1779.80 & 1698.98 & 80.82 \\
-				14 & 2336.75 & 2265.58 & 71.17 \\
-				15 & 1765.30 & 1810.44 & -45.14 \\
-				16 & 2053.50 & 1959.06 & 94.44 \\
-				17 & 2414.40 & 2404.90 & 9.50 \\
-				18 & 2200.50 & 2163.40 & 37.10 \\
-				19 & 2654.20 & 2553.52 & 100.68 \\
-				20 & 1753.70 & 1829.02 & -75.32 \\
-				\bottomrule
-			\end{tabular}
-		\end{column}
-	\end{columns}
+	\begin{center}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\centering\small
+				\begin{tabular}{cccc}
+					\toprule
+					$i$ & $y_i$ & $\hat y_i$ & $\hat\varepsilon_i$ \\
+					\midrule
+					1  & 2158.70 & 2051.94 & 106.76 \\
+					2  & 1678.15 & 1745.42 & -67.27 \\
+					3  & 2316.00 & 2330.59 & -14.59 \\
+					4  & 2061.30 & 1996.21 & 65.09 \\
+					5  & 2207.50 & 2423.48 & -215.98 \\
+					6  & 1708.30 & 1921.90 & -213.60 \\
+					7  & 1784.70 & 1736.14 & 48.56 \\
+					8  & 2575.00 & 2534.94 & 40.06 \\
+					9  & 2357.90 & 2349.17 & 8.73 \\
+					10 & 2256.70 & 2219.13 & 37.57 \\
+					\bottomrule
+				\end{tabular}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\centering\small
+				\begin{tabular}{cccc}
+					\toprule
+					$i$ & $y_i$ & $\hat y_i$ & $\hat\varepsilon_i$ \\
+					\midrule
+					11 & 2165.20 & 2144.83 & 20.37 \\
+					12 & 2399.55 & 2488.50 & -88.95 \\
+					13 & 1779.80 & 1698.98 & 80.82 \\
+					14 & 2336.75 & 2265.58 & 71.17 \\
+					15 & 1765.30 & 1810.44 & -45.14 \\
+					16 & 2053.50 & 1959.06 & 94.44 \\
+					17 & 2414.40 & 2404.90 & 9.50 \\
+					18 & 2200.50 & 2163.40 & 37.10 \\
+					19 & 2654.20 & 2553.52 & 100.68 \\
+					20 & 1753.70 & 1829.02 & -75.32 \\
+					\bottomrule
+				\end{tabular}
+			\end{column}
+		\end{columns}
+	\end{center}
 	% \pause
 	\svspace{0.5em}
 	\centering
