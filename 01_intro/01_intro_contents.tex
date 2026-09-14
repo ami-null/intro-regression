@@ -260,6 +260,34 @@
 \end{frame}
 
 
+\begin{frame}{Estimator of \texorpdfstring{\(\beta_1\)}{beta1} in terms of Covariance}
+	Recall that
+	\[
+		\operatorname{CoV}(X, Y) = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{n-1} = \frac{S_{xy}}{n-1} 
+	\]
+	and
+	\[
+		\operatorname{V}(X) = \frac{\sum_i (x_i - \bar x)^2}{n-1} = \frac{S_{xx}}{n-1},
+	\]
+	hence,
+	\[
+		\hat{\beta}_1 = \frac{\operatorname{CoV}(X, Y)}{\operatorname{V}(X)}.
+	\]
+\end{frame}
+
+
+\begin{frame}{Relationship between \texorpdfstring{\(\hat{\beta}_1\)}{beta1hat} and the Correlation Coefficient}
+	Recall that the population correlation coefficient \(\rho\) is estimated by
+	\[
+		r = \frac{\operatorname{Cov}(X, Y)}{\sqrt{\operatorname{V}(X) \cdot \operatorname{V}(Y)}},
+	\]
+	therefore
+	\[
+		r = \frac{\sqrt{\operatorname{V}(X)}}{\sqrt{\operatorname{V}(Y)}} \hat{\beta}_1.
+	\]
+\end{frame}
+
+
 \begin{frame}{The Fitted Line}
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{figures/ad_sales_scatter.pdf}
