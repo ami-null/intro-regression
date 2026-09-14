@@ -317,9 +317,9 @@
 		\begin{column}{0.5\textwidth}
 			\centering%\scriptsize
 				\begin{tabular}{ccc}
-				\hline
+				\toprule
 				$i$ & $x_i$ (weeks) & $y_i$ (psi) \\
-				\hline
+				\midrule
 				1  & 15.50 & 2158.70 \\
 				2  & 23.75 & 1678.15 \\
 				3  & 8.00  & 2316.00 \\
@@ -330,15 +330,15 @@
 				8  & 2.50  & 2575.00 \\
 				9  & 7.50  & 2357.90 \\
 				10 & 11.00 & 2256.70 \\
-				\hline
+				\bottomrule
 			\end{tabular}
 		\end{column}
 	\begin{column}{0.5\textwidth}
 		\centering%\scriptsize
 			\begin{tabular}{ccc}
-				\hline
+				\toprule
 				$i$ & $x_i$ (weeks) & $y_i$ (psi) \\
-				\hline
+				\midrule
 				11 & 13.00 & 2165.20 \\
 				12 & 3.75  & 2399.55 \\
 				13 & 25.00 & 1779.80 \\
@@ -349,7 +349,7 @@
 				18 & 12.50 & 2200.50 \\
 				19 & 2.00  & 2654.20 \\
 				20 & 21.50 & 1753.70 \\
-				\hline
+				\bottomrule
 			\end{tabular}
 		\end{column}
 	\end{columns}
@@ -357,30 +357,11 @@
 
 
 \begin{frame}{Scatter Diagram}
-	% ---- R code to generate this figure ----
-	% library(ggplot2)
-	% propellant <- data.frame(
-	%   age = c(15.50,23.75,8.00,17.00,5.50,19.00,24.00,2.50,7.50,11.00,
-	%           13.00,3.75,25.00,9.75,22.00,18.00,6.00,12.50,2.00,21.50),
-	%   shear = c(2158.70,1678.15,2316.00,2061.30,2207.50,1708.30,1784.70,
-	%             2575.00,2357.90,2256.70,2165.20,2399.55,1779.80,2336.75,
-	%             1765.30,2053.50,2414.40,2200.50,2654.20,1753.70)
-	% )
-	% ggplot(propellant, aes(x = age, y = shear)) +
-	%   geom_point(size = 2, color = "#1b9e77") +
-	%   labs(x = "Age of Propellant (weeks)", y = "Shear Strength (psi)") +
-	%   theme_minimal() +
-	%   theme(
-	%     panel.background = element_rect(fill = "transparent", colour = NA),
-	%     plot.background  = element_rect(fill = "transparent", colour = NA)
-	%   )
-	% ggsave("propellant_scatter.pdf", bg = "transparent")
-	% -----------------------------------------
 	\begin{center}
-	% \includegraphics[width=0.7\textwidth]{figures/propellant_scatter.pdf}
+		\includegraphics[width=0.7\textwidth]{figures/propellant_scatter.pdf}
 	\end{center}
 	\svspace{0.5em}
-	Strength decreases as the propellant batch ages --- a clear negative linear trend, consistent with the straight-line model.
+	Strength decreases as the propellant batch ages.
 \end{frame}
 
 
@@ -416,9 +397,9 @@
 		\begin{column}{0.5\textwidth}
 			\centering\small
 			\begin{tabular}{cccc}
-				\hline
+				\toprule
 				$i$ & $y_i$ & $\hat y_i$ & $\hat\varepsilon_i$ \\
-				\hline
+				\midrule
 				1  & 2158.70 & 2051.94 & 106.76 \\
 				2  & 1678.15 & 1745.42 & -67.27 \\
 				3  & 2316.00 & 2330.59 & -14.59 \\
@@ -429,15 +410,15 @@
 				8  & 2575.00 & 2534.94 & 40.06 \\
 				9  & 2357.90 & 2349.17 & 8.73 \\
 				10 & 2256.70 & 2219.13 & 37.57 \\
-			\hline
+				\bottomrule
 			\end{tabular}
 		\end{column}
 		\begin{column}{0.5\textwidth}
 			\centering\small
 			\begin{tabular}{cccc}
-				\hline
+				\toprule
 				$i$ & $y_i$ & $\hat y_i$ & $\hat\varepsilon_i$ \\
-				\hline
+				\midrule
 				11 & 2165.20 & 2144.83 & 20.37 \\
 				12 & 2399.55 & 2488.50 & -88.95 \\
 				13 & 1779.80 & 1698.98 & 80.82 \\
@@ -448,7 +429,7 @@
 				18 & 2200.50 & 2163.40 & 37.10 \\
 				19 & 2654.20 & 2553.52 & 100.68 \\
 				20 & 1753.70 & 1829.02 & -75.32 \\
-				\hline
+				\bottomrule
 			\end{tabular}
 		\end{column}
 	\end{columns}
