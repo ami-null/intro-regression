@@ -13,24 +13,6 @@
 \end{frame}
 
 
-% \section{Assumptions Needed for Inference}
-
-% \begin{frame}{The Normal-Error Model}
-% 	\begin{itemize}
-% 	\item Estimation only needed $E[\varepsilon_i]=0$, $\Var(\varepsilon_i)=\sigma^2$, uncorrelated errors
-% 	\item For \emph{inference} we add one more assumption
-% 	\end{itemize}
-% 	\svspace{0.5em}
-% 	\[
-% 	\varepsilon_i \sim N(0,\sigma^2), \quad \text{independent}, \quad i=1,\dots,n
-% 	\]
-% 	\begin{itemize}
-% 	\item Equivalently, $Y_i \sim N(\beta_0+\beta_1 x_i,\ \sigma^2)$, independent
-% 	\item Without normality, the tests and intervals below are only approximate
-% 	\end{itemize}
-% \end{frame}
-
-
 \section{Sampling Distribution of the OLS Estimators}
 
 
@@ -97,8 +79,8 @@
 		\item Replace the unknown $\sigma^2$ by $MSE$ in the variance formulas
 	\end{itemize}
 	\begin{align*}
-		se(\hat\beta_1) &= \sqrt{\frac{MSE}{S_{xx}}}\\
-		se(\hat\beta_0) &= \sqrt{MSE\left(\frac1n+\frac{\bar x^2}{S_{xx}}\right)}
+		se(\hat\beta_1) &= \sqrt{\frac{\hat{\sigma}^2}{S_{xx}}} = \sqrt{\frac{MSE}{S_{xx}}}\\
+		se(\hat\beta_0) &= \sqrt{\hat{\sigma}^2 \left(\frac1n+\frac{\bar x^2}{S_{xx}}\right)} = \sqrt{MSE\left(\frac1n+\frac{\bar x^2}{S_{xx}}\right)}
 	\end{align*}
 	\begin{itemize}
 		\item Because $\sigma^2$ is estimated, the reference distribution moves from normal to $t_{n-2}$
@@ -187,25 +169,6 @@
 		% Answer: not really -- x=0 means zero advertising spend, which is outside
 		% or at the very edge of the observed range, so beta_0 is an extrapolated
 		% quantity here rather than a directly interpretable baseline.
-	\end{itemize}
-\end{frame}
-
-
-\section{Significance of Regression and Correlation}
-
-
-\begin{frame}{Connecting $\hat\beta_1$ to the Correlation Coefficient}
-	\begin{itemize}
-		\item Recall the sample correlation coefficient
-	\end{itemize}
-	
-	\[
-		r = \frac{S_{xy}}{\sqrt{S_{xx}S_{yy}}}, \qquad \hat\beta_1 = r\,\frac{s_y}{s_x}
-	\]
-	
-	\begin{itemize}
-		\item Testing $H_0:\beta_1=0$ is algebraically the same as testing $H_0:\rho=0$
-		\item The slope $t$-test is simultaneously a test of ``no linear association''
 	\end{itemize}
 \end{frame}
 
@@ -405,24 +368,6 @@
 	\begin{itemize}
 		\item $r=\sqrt{R^2}=\sqrt{0.90}=0.949$ (sign taken from $\hat\beta_1$)
 		\item This equivalence is special to SLR --- it does \emph{not} hold once there is more than one predictor
-	\end{itemize}
-\end{frame}
-
-
-\begin{frame}{Cautions About $R^2$}
-	\begin{itemize}
-		\item[] \textbf{Question:} does a high $R^2$ always mean the model is good?
-		% Answer: no -- R^2 says nothing about whether a linear form is the right
-		% choice, whether the assumptions hold, or whether the model extrapolates
-		% safely. A curved relationship, fit with a straight line, can still
-		% produce a large R^2.
-	\end{itemize}
-
-	\svspace{1em}
-
-	\begin{itemize}
-		\item $R^2$ never decreases when more predictors are added --- relevant once we reach multiple regression
-		\item Always pair $R^2$ with a residual plot, not just the number itself
 	\end{itemize}
 \end{frame}
 
