@@ -13,6 +13,40 @@
 \end{frame}
 
 
+\begin{frame}{Why Do We Need Inference?}
+	Recall the rocket propellant example from the previous lecture.
+	\begin{itemize}
+		\item $\hat\beta_0$ and $\hat\beta_1$ are computed from \emph{one} particular sample of 20 propellant batches
+		\item A different sample of 20 batches would give slightly different numbers --- the estimates are random variables
+		\item Point estimates alone cannot answer questions like:
+		\begin{itemize}
+			\item Is the apparent age effect on shear strength \emph{real}, or could it be sampling noise?
+			\item How precisely do we know $\beta_1$ --- within 1 psi/week, or within 50?
+			\item How much should we trust a prediction made from this line?
+		\end{itemize}
+	\end{itemize}
+	\svspace{0.5em}
+	Inference (hypothesis tests and confidence intervals) turns a single fitted line into statements accompanied with some level of uncertainty.
+\end{frame}
+
+
+\begin{frame}{Rocket Propellant Data: Is the Age Effect Real?}
+	\begin{itemize}
+		\item Last time we fit $\hat\beta_1 = -37.15$ psi/week for the rocket-propellant data
+		\item[] \textbf{Question:} if propellant age (in weeks) truly had \emph{no} effect on shear strength (meaning that $\beta_1=0$), could a sample of 20 batches of propellant still produce a slope this negative just by chance?
+		% Answer: in principle yes -- with only n=20 batches, sampling
+		% variability alone could produce a nonzero hat-beta_1 even if the true
+		% beta_1 is exactly zero. We need a formal way to decide whether -37.15
+		% is "large" relative to that sampling variability -- that is exactly
+		% what a hypothesis test does.
+	\end{itemize}
+	\svspace{1em}
+	\begin{itemize}
+		\item Answering this requires knowing how $\hat\beta_1$ varies from sample to sample, which is called its \textbf{sampling distribution}.
+	\end{itemize}
+\end{frame}
+
+
 \section{Sampling Distribution of the OLS Estimators}
 
 
@@ -115,11 +149,11 @@
 \end{frame}
 
 
-\begin{frame}{Running Example}
+\begin{frame}{Running Example: The Rocket-Propellant Data}
 	\begin{itemize}
-		\item Weekly advertising expenditure $x$ (\$100s) and weekly sales $y$ (\$1000s), $n=20$
+		\item Recall the rocket-propellant data from last lecture: age of propellant $x$ (weeks) and shear strength $y$ (psi), $n=20$
 	\end{itemize}
-	
+
 	\begin{table}
 		\small
 		\centering
@@ -127,30 +161,30 @@
 			\toprule
 			$\bar x$ & $\bar y$ & $S_{xx}$ & $S_{xy}$ & $SST$\\
 			\midrule
-			10 & 50 & 200 & 300 & 500\\
+			13.3625 & 2131.36 & 1106.56 & $-41{,}112.65$ & $1{,}693{,}737.60$\\
 			\bottomrule
 		\end{tabular}
 	\end{table}
 
 	\begin{align*}
-		\hat\beta_1 &= \frac{S_{xy}}{S_{xx}} = \frac{300}{200} = 1.5\\
-		\hat\beta_0 &= \bar y-\hat\beta_1\bar x = 50-1.5(10) = 35
+		\hat\beta_1 &= \frac{S_{xy}}{S_{xx}} = \frac{-41{,}112.65}{1106.56} = -37.1536\\
+		\hat\beta_0 &= \bar y-\hat\beta_1\bar x = 2131.36-(-37.1536)(13.3625) = 2627.82
 	\end{align*}
-	We carry these numbers through the rest of the lecture.
 \end{frame}
 
 
 \begin{frame}{Testing $H_0:\beta_1=0$ for the Example}
 	\begin{align*}
-		SSE &= SST-\hat\beta_1 S_{xy} = 500-1.5(300) = 50\\
-		MSE &= \frac{SSE}{n-2} = \frac{50}{18} = 2.778\\
-		se(\hat\beta_1) &= \sqrt{\frac{2.778}{200}} = 0.118\\
-		t_0 &= \frac{1.5-0}{0.118} = 12.72
+		SSR &= \hat\beta_1 S_{xy} = (-37.1536)(-41{,}112.65) = 1{,}527{,}482.95\\
+		SSE &= SST-SSR = 1{,}693{,}737.60-1{,}527{,}482.95 = 166{,}254.65\\
+		MSE &= \frac{SSE}{n-2} = \frac{166{,}254.65}{18} = 9236.37\\
+		se(\hat\beta_1) &= \sqrt{\frac{9236.37}{1106.56}} = 2.889\\
+		t_0 &= \frac{-37.1536-0}{2.889} = -12.86
 	\end{align*}
 
 	\begin{itemize}
-		\item $t_{0.025,18}=2.101$; since $|t_0|=12.72 \gg 2.101$, reject $H_0$
-		\item Strong evidence of a linear relationship between advertising and sales
+		\item $t_{0.025,18}=2.101$; since $|t_0|=12.86 \gg 2.101$, reject $H_0$
+		\item Strong evidence that the age of the propellant is associated with shear strength
 	\end{itemize}
 \end{frame}
 
@@ -164,11 +198,12 @@
 	\]
 	\begin{itemize}
 		\item Same mechanics as the slope test, different standard error
-		\item Testing $\beta_0=0$ is rarely of scientific interest unless $x=0$ is meaningful
-		\item[] \textbf{Question:} for the advertising example, is $\beta_0=0$ an interesting hypothesis?
-		% Answer: not really -- x=0 means zero advertising spend, which is outside
-		% or at the very edge of the observed range, so beta_0 is an extrapolated
-		% quantity here rather than a directly interpretable baseline.
+		\item[] \textbf{Question:} for the rocket-propellant data, is $\beta_0=0$ an interesting hypothesis?
+		% Answer: not quite the usual "uninteresting" case -- here x=0 means a
+		% brand-new, zero-week-old batch of propellant, which is a physically
+		% meaningful quantity (its shear strength right after production).
+		% But the youngest batch observed is x=2 weeks, so beta_0-hat is still
+		% a short extrapolation rather than an interpolated value.
 	\end{itemize}
 \end{frame}
 
@@ -191,16 +226,17 @@
 \begin{frame}{CI for $\beta_1$ --- Example}
 	\begin{align*}
 		\hat\beta_1 &\pm t_{0.025,18}\,se(\hat\beta_1)\\
-		1.5 &\pm 2.101(0.118)\\
-		1.5 &\pm 0.248
+		-37.15 &\pm 2.101(2.889)\\
+		-37.15 &\pm 6.07
 	\end{align*}
 
 	\[
-		95\%\text{ CI}: \quad (1.252,\ 1.748)
+		95\%\text{ CI}: \quad (-43.22,\ -31.08)
 	\]
 
 	\begin{itemize}
 		\item Zero is nowhere near this interval --- consistent with rejecting $H_0:\beta_1=0$
+		\item We are 95\% confident that, on average, shear strength drops somewhere between 31 and 43 psi per additional week of age
 	\end{itemize}
 \end{frame}
 
@@ -217,29 +253,22 @@
 \end{frame}
 
 
-\begin{frame}{Geometric Intuition: A Band of Plausible Lines}
-	\begin{columns}[T]
-		\begin{column}{0.45\textwidth}
-			\begin{itemize}
-				\item A CI for $\beta_1$ corresponds to a range of \emph{slopes} through $(\bar x,\bar y)$
-				\item Every line in the shaded wedge is compatible with the data at level $\alpha$
-				\item The fitted line is the single most plausible member of that family
-			\end{itemize}
-		\end{column}
-		\begin{column}{0.55\textwidth}
-			\begin{tikzpicture}[scale=0.85]
-				\draw[->] (0,0) -- (5.5,0) node[right] {$x$};
-				\draw[->] (0,0) -- (0,4.5) node[above] {$y$};
-				\coordinate (P) at (2.75,2.2);
-				\fill (P) circle (1.5pt) node[below right] {$(\bar x,\bar y)$};
-				\draw[thick] (0.3,0.8) -- (5.2,3.6) node[right] {$\hat\beta_1$};
-				\draw[dashed,gray] (0.3,1.5) -- (5.2,2.9);
-				\draw[dashed,gray] (0.3,0.1) -- (5.2,4.3);
-				\fill[gray,opacity=0.15] (0.3,0.1) -- (5.2,4.3) -- (5.2,2.9) -- (0.3,1.5) -- cycle;
-			\end{tikzpicture}
-		\end{column}
-	\end{columns}
-\end{frame}
+% \begin{frame}{Geometric Intuition: A Band of Plausible Lines}
+% 	\begin{columns}[T]
+% 		\begin{column}{0.45\textwidth}
+% 			\begin{itemize}
+% 				\item A CI for $\beta_1$ corresponds to a range of \emph{slopes} through $(\bar x,\bar y)$
+% 				\item Every line in the shaded wedge is compatible with the data at level $\alpha$
+% 				\item The fitted line is the single most plausible member of that family
+% 			\end{itemize}
+% 		\end{column}
+% 		\begin{column}{0.55\textwidth}
+% 			\centering
+% 			\mode<presentation>{\includegraphics[width=0.95\linewidth]{fig-plausible-lines.pdf}}
+% 			\mode<article>{\includegraphics[width=0.6\linewidth]{fig-plausible-lines.pdf}}
+% 		\end{column}
+% 	\end{columns}
+% \end{frame}
 
 
 \section{Partitioning Variability: The ANOVA Identity}
@@ -299,16 +328,16 @@
 		\toprule
 		Source & df & SS & MS & $F_0$\\
 		\midrule
-		Regression & $1$ & $450$ & $450.0$ & $162.0$\\
-		Residual & $18$ & $50$ & $2.778$ & \\
+		Regression & $1$ & $1{,}527{,}482.95$ & $1{,}527{,}482.95$ & $165.38$\\
+		Residual & $18$ & $166{,}254.65$ & $9236.37$ & \\
 		\midrule
-		Total & $19$ & $500$ & & \\
+		Total & $19$ & $1{,}693{,}737.60$ & & \\
 		\bottomrule
 		\end{tabular}
 	\end{table}
 	\begin{itemize}
-		\item $SSR=\hat\beta_1 S_{xy}=1.5(300)=450$
-		\item $F_0 = 450/2.778 = 162.0$
+		\item $SSR=\hat\beta_1 S_{xy}=(-37.1536)(-41{,}112.65)=1{,}527{,}482.95$
+		\item $F_0 = 1{,}527{,}482.95/9236.37 = 165.38$
 	\end{itemize}
 \end{frame}
 
@@ -322,12 +351,12 @@
 	\]
 	\begin{itemize}
 	\item Reject $H_0$ if $F_0 > F_{\alpha,\,1,\,n-2}$
-	\item For the example: $F_{0.05,1,18}=4.41$; since $F_0=162.0 \gg 4.41$, reject $H_0$
+	\item For the example: $F_{0.05,1,18}=4.41$; since $F_0=165.38 \gg 4.41$, reject $H_0$
 	\end{itemize}
 \end{frame}
 
 
-\begin{frame}{$F$-Test vs.\ $t$-Test: Same Question, Two Routes}
+\begin{frame}{$F$-Test vs.\ $t$-Test}
 	\begin{itemize}
 	\item[] \textbf{Question:} in simple linear regression, how do the $t$-test and $F$-test for $H_0:\beta_1=0$ relate?
 	% Answer: they are algebraically equivalent. F_0 = t_0^2, and the critical
@@ -338,8 +367,7 @@
 	\svspace{1em}
 
 	\begin{itemize}
-		\item Check against the numbers above: $t_0^2=12.72^2=161.8\approx F_0=162.0$ (rounding)
-		\item In \emph{multiple} regression the $F$-test generalizes to several predictors at once; the simple $t$-test does not
+		\item Check against the numbers above: $t_0^2=(-12.86)^2=165.38=F_0$
 	\end{itemize}
 \end{frame}
 
@@ -353,7 +381,7 @@
 	\]
 	\begin{itemize}
 		\item Proportion of the total variability in $y$ explained by the regression on $x$
-		\item For the example: $R^2=450/500=0.90$ --- 90\% of the variability in sales is explained by advertising expenditure
+		\item For the example: $R^2=1{,}527{,}482.95/1{,}693{,}737.60=0.902$ --- about 90\% of the variability in shear strength is explained by the age of the propellant
 	\end{itemize}
 \end{frame}
 
@@ -366,8 +394,8 @@
 		R^2 = r^2
 	\]
 	\begin{itemize}
-		\item $r=\sqrt{R^2}=\sqrt{0.90}=0.949$ (sign taken from $\hat\beta_1$)
-		\item This equivalence is special to SLR --- it does \emph{not} hold once there is more than one predictor
+		\item $r= \operatorname{sign}(\hat{\beta}_1) \sqrt{R^2} = - \sqrt{0.902}= - 0.950$
+		\item This equivalence holds only for SLR --- it does \emph{not} hold once there is more than one predictor
 	\end{itemize}
 \end{frame}
 
@@ -388,42 +416,70 @@
 \end{frame}
 
 
-\begin{frame}{Confidence Interval for the Mean Response}
-	\[
-		\Var(\hat y_0) = \sigma^2\left(\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)
-	\]
-	\[
-		\hat y_0 \pm t_{\alpha/2,\,n-2}\sqrt{MSE\left(\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)}
-	\]
+\begin{frame}{Mean Response vs.\ New Observation: An Example}
+	Suppose $x_0=10$ weeks.
 	\begin{itemize}
-		\item Narrowest at $x_0=\bar x$, widening as $x_0$ moves away from $\bar x$
+		\item \textbf{Mean response:} the \emph{average} shear strength we would see if we could test an unlimited number of 10-week-old batches --- a single fixed (if unknown) number, $\beta_0+\beta_1(10)$
+		\item \textbf{New observation:} the shear strength of \emph{one specific} 10-week-old batch about to be tested --- it carries its own error term $\varepsilon_0$ on top of everything else
+	\end{itemize}
+	\svspace{0.5em}
+	\begin{itemize}
+		\item[] \textbf{Question:} which should be wider --- an interval for the average of many batches, or an interval for one particular batch?
+		% Answer: the interval for one particular batch (the prediction
+		% interval) must be wider. Estimating the mean only has to deal with
+		% the uncertainty in the fitted line; predicting one new batch also has
+		% to account for that batch's own random deviation epsilon_0, which
+		% never averages away no matter how much data we have.
 	\end{itemize}
 \end{frame}
 
 
-\begin{frame}{Prediction Interval for a New Observation}
-	\[
-		\Var(Y_0-\hat y_0) = \sigma^2\left(1+\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)
-	\]
-	\[
-		\hat y_0 \pm t_{\alpha/2,\,n-2}\sqrt{MSE\left(1+\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)}
-	\]
-	\begin{itemize}
-		\item The extra ``$1$'' accounts for the variability of $\varepsilon_0$ itself, on top of the uncertainty in estimating the line
-		\item Always wider than the CI for the mean response
-	\end{itemize}
-\end{frame}
-
-
-\begin{frame}{CI and PI at $x_0=12$: The Example}
+\begin{frame}{Why the Prediction Interval Is Wider: The Theory}
+	The prediction error is $Y_0-\hat y_0$, and $Y_0$ is independent of the data used to fit $\hat y_0$:
 	\begin{align*}
-		\hat y_0 &= 35+1.5(12) = 53\\
-		se(\text{mean}) &= \sqrt{2.778\left(\tfrac{1}{20}+\tfrac{4}{200}\right)} = 0.441\\
-		se(\text{pred}) &= \sqrt{2.778\left(1+\tfrac{1}{20}+\tfrac{4}{200}\right)} = 1.724
+		\Var(Y_0-\hat y_0) &= \Var(Y_0) + \Var(\hat y_0)\\
+		&= \sigma^2 \;+\; \sigma^2\left(\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)\\
+		&= \sigma^2\left(1+\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)
 	\end{align*}
 	\begin{itemize}
-		\item 95\% CI for the mean response: $53\pm 2.101(0.441)=(52.1,\ 53.9)$
-		\item 95\% PI for a new observation: $53\pm 2.101(1.724)=(49.4,\ 56.6)$
+		\item The mean-response error is just $\hat y_0 - E[Y\mid x_0]$, with variance $\sigma^2\!\left(\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)$ --- no extra ``$1$''
+		\item That extra $\sigma^2$ is $\varepsilon_0$'s own variance, and it cannot be estimated away, no matter how large $n$ is
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{The Two Interval Formulas, Side by Side}
+	\begin{columns}[T]
+		\begin{column}{0.46\textwidth}
+			\centering \small \textbf{Mean response}
+			\[
+				\boxed{\hat y_0 \pm t_{\alpha/2,\,n-2}\sqrt{MSE\left(\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)}}
+			\]
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\centering \small \textbf{New observation}
+			\[
+				\boxed{\hat y_0 \pm t_{\alpha/2,\,n-2}\sqrt{MSE\left(1+\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)}}
+			\]
+		\end{column}
+	\end{columns}
+	\svspace{1em}
+	\begin{itemize}
+		\item Same centre, same critical value --- only the ``$+1$'' inside the square root differs
+		\item Both are narrowest at $x_0=\bar x$ and widen as $x_0$ moves away from $\bar x$
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{CI and PI at $x_0=10$ Weeks: The Example}
+	\begin{align*}
+		\hat y_0 &= 2627.82+(-37.1536)(10) = 2256.29\\
+		se(\text{mean}) &= \sqrt{9236.37\left(\tfrac{1}{20}+\tfrac{(10-13.3625)^2}{1106.56}\right)} = 23.58\\
+		se(\text{pred}) &= \sqrt{9236.37\left(1+\tfrac{1}{20}+\tfrac{(10-13.3625)^2}{1106.56}\right)} = 98.96
+	\end{align*}
+	\begin{itemize}
+		\item 95\% CI for the mean response: $2256.29\pm 2.101(23.58)=(2206.74,\ 2305.84)$
+		\item 95\% PI for a new observation: $2256.29\pm 2.101(98.96)=(2048.38,\ 2464.20)$
 	\end{itemize}
 \end{frame}
 
@@ -438,17 +494,9 @@
 			\end{itemize}
 		\end{column}
 		\begin{column}{0.55\textwidth}
-			\begin{tikzpicture}[scale=0.85]
-				\draw[->] (0,0) -- (5.5,0) node[right] {$x$};
-				\draw[->] (0,0) -- (0,4.5) node[above] {$y$};
-				\draw[thick] (0.4,0.8) -- (5.1,3.8);
-				\draw[gray] (0.4,1.1) -- (2.75,1.9) -- (5.1,3.4);
-				\draw[gray] (0.4,0.5) -- (2.75,1.6) -- (5.1,4.2);
-				\draw[gray,dashed] (0.4,1.8) -- (2.75,2.15) -- (5.1,2.9);
-				\draw[gray,dashed] (0.4,-0.2) -- (2.75,1.35) -- (5.1,4.7);
-				\node[gray,right] at (5.1,3.4) {CI};
-				\node[gray,right] at (5.1,4.7) {PI};
-			\end{tikzpicture}
+			\centering
+			\mode<presentation>{\includegraphics[width=0.95\linewidth]{figures/fig-ci-pi-band.pdf}}
+			\mode<article>{\includegraphics[width=0.6\linewidth]{figures/fig-ci-pi-band.pdf}}
 		\end{column}
 	\end{columns}
 \end{frame}
@@ -458,28 +506,11 @@
 	\begin{itemize}
 		\item Both intervals are derived under the model fit \emph{within} the observed range of $x$
 		\item Predicting far outside that range assumes the linear relationship continues to hold --- often unjustified
-		\item[] \textbf{Question:} in the advertising example ($x$ ranging roughly 5--15), how much would you trust a prediction at $x_0=40$?
-		% Answer: very little -- x0=40 is far outside the observed range, so the
-		% formula still produces a number but the linear-model assumption backing
-		% it has never been checked out there. Treat it as extrapolation, not
-	% interpolation.
-	\end{itemize}
-\end{frame}
-
-
-\section{Summary}
-
-
-\begin{frame}{Putting It Together}
-	\begin{itemize}
-		\item $\hat\beta_0,\hat\beta_1$ are normal; standardized by their standard errors they become $t_{n-2}$
-		\item $t$-tests and CIs for $\beta_0,\beta_1$ follow the same template throughout
-		\item ANOVA partitions $SST=SSR+SSE$; the $F$-test for $\beta_1=0$ is equivalent to the $t$-test in SLR
-		\item $R^2=SSR/SST=r^2$ measures explained variability, not model correctness
-		\item Mean-response CIs are narrower than new-observation PIs --- know which one you need
-	\end{itemize}
-	\svspace{0.5em}
-	\begin{itemize}
-		\item[] \textbf{Next time:} multiple linear regression
+		\item[] The rocket-propellant data covers ages $x$ from 2 to 25 weeks. How much would you trust a prediction at $x_0=100$ weeks?
+		% Answer: very little -- shear strength cannot keep dropping linearly
+		% forever (it is physically bounded below), and x0=100 weeks is far
+		% beyond anything observed. The formula still returns a number, but
+		% nothing in the data supports the straight-line assumption that far
+		% outside the range that was actually tested.
 	\end{itemize}
 \end{frame}
