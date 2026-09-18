@@ -46,14 +46,14 @@ bands <- data.frame(x = xs, fit = ci[, "fit"],
                                            pi_lo = pi[, "lwr"], pi_hi = pi[, "upr"])
 
 ggplot() +
-      geom_ribbon(data = bands, aes(x, ymin = pi_lo, ymax = pi_hi, fill = "95PI"),
+      geom_ribbon(data = bands, aes(x, ymin = pi_lo, ymax = pi_hi, fill = "PI"),
               alpha = 0.20) +
-  geom_ribbon(data = bands, aes(x, ymin = ci_lo, ymax = ci_hi, fill = "95CI"),
+  geom_ribbon(data = bands, aes(x, ymin = ci_lo, ymax = ci_hi, fill = "CI"),
               alpha = 0.35) +
   geom_line(data = bands, aes(x, y = fit), linewidth = 1) +
   geom_point(data = rocket, aes(x, y), size = 2) +
   scale_fill_manual(name = NULL,
-                     values = c("95CI" = "#3B6FA0", "95PI" = "#B23A48")) +
+                     values = c("CI" = "#3B6FA0", "PI" = "#B23A48")) +
   labs(x = "Age of propellant, x (weeks)", y = "Shear strength, y (psi)") +
       theme_minimal(base_size = 12) +
     theme(
