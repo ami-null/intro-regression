@@ -676,6 +676,25 @@
 
 \section*{Appendix}
 
+
+\begin{frame}{Properties of the Weights $c_i$}
+	Recall $c_i = \dfrac{x_i - \bar x}{S_{xx}}$. Each property follows directly.
+	\pause
+	\[
+		\sum_i c_i = \frac{1}{S_{xx}}\sum_i(x_i - \bar x) = \frac{1}{S_{xx}}\left(\sum_i x_i - n\bar x\right) = 0
+	\]
+	since $\sum_i x_i = n\bar x$ by definition of $\bar x$.
+	\pause
+	\[
+		\sum_i c_i x_i = \sum_i c_i(x_i - \bar x) + \bar x\sum_i c_i = \frac{1}{S_{xx}}\sum_i(x_i-\bar x)^2 + \bar x\cdot 0 = \frac{S_{xx}}{S_{xx}} = 1
+	\]
+	\pause
+	\[
+		\sum_i c_i^2 = \sum_i\frac{(x_i-\bar x)^2}{S_{xx}^2} = \frac{1}{S_{xx}^2}\sum_i(x_i-\bar x)^2 = \frac{S_{xx}}{S_{xx}^2} = \frac{1}{S_{xx}}
+	\]
+\end{frame}
+
+
 \section*{Finding the Expected Value of \texorpdfstring{\(SS_E\)}{SSE}}
 
 
