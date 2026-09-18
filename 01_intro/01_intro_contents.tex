@@ -531,13 +531,10 @@
 
 \begin{frame}{Variance of $\hat\beta_0$}
 	Using $\hat\beta_0 = \bar y - \hat\beta_1\bar x$:
-	\[
-		\operatorname{Var}(\hat\beta_0) = \operatorname{Var}(\bar y) + \bar x^2\operatorname{Var}(\hat\beta_1) - 2\operatorname{Cov}(\bar y, \hat\beta_1)\bar x
-	\]
-	\pause
 	\begin{align*}
-		&= \frac{\sigma^2}{n} + \bar x^2\cdot\frac{\sigma^2}{S_{xx}} - 2\bar x\operatorname{Cov}\left(\bar y, \sum_i c_i y_i\right) \\
-		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\sum_i c_i\operatorname{Cov}(\bar y, y_i)
+		\operatorname{Var}(\hat\beta_0) &= \operatorname{Var}(\bar y) + \bar x^2\operatorname{Var}(\hat\beta_1) - 2\operatorname{Cov}(\bar y, \hat\beta_1 \bar x) \\
+		&= \frac{\sigma^2}{n} + \bar x^2\cdot\frac{\sigma^2}{S_{xx}} - 2\bar x\operatorname{Cov}\left(\bar y, \sum_{i=1}^n c_i y_i\right) \\
+		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\sum_{i=1}^n c_i\operatorname{Cov}(\bar y, y_i)
 	\end{align*}
 	
 \end{frame}
@@ -545,8 +542,8 @@
 
 \begin{frame}
 	\begin{align*}
-		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\sum_i c_i\operatorname{Cov}\left(\frac{1}{n}\sum_j y_j,\ y_i\right) \\
-		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\sum_i c_i\cdot\frac{\sigma^2}{n} \\
+		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\sum_{i=1}^n c_i\operatorname{Cov}\left(\frac{1}{n}\sum_{j=1}^n y_j,\ y_i\right) \\
+		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\sum_{i=1}^n c_i\cdot\frac{\sigma^2}{n} \\
 		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\cdot 0\cdot\sigma^2
 	\end{align*}
 
@@ -652,24 +649,34 @@
 		SS_E = \sum_{i=1}^n \hat\varepsilon_i^2 = \sum_{i=1}^n (y_i - \hat y_i)^2
 	\]
 	\pause
-	It can be shown that $E[SS_E] = (n-2)\sigma^2$. The divisor $n-2$ reflects that two degrees of freedom were used up in estimating $\beta_0$ and $\beta_1$ before we could compute residuals.
+	It can be shown that $E[SS_E] = (n-2)\sigma^2$.
 \end{frame}
 
 
 \begin{frame}{An Unbiased Estimator of $\sigma^2$}
+	Since $E[SS_E] = (n-2)\sigma^2$, we can write:
 	\[
 		\boxed{\hat\sigma^2 = MS_E = \frac{SS_E}{n-2}}
 	\]
+	The divisor $n-2$ reflects that two degrees of freedom were used up in estimating $\beta_0$ and $\beta_1$ before we could compute residuals.
+	
+	\svspace{0.5em}
+
 	\pause
-	Since $E[SS_E] = (n-2)\sigma^2$, it follows immediately that
+
+	Since $E[SS_E] = (n-2)\sigma^2$, it follows that
 	\[
-		E[\hat\sigma^2] = \sigma^2
+		E[\hat\sigma^2] = \frac{E(SS_E)}{n-2} = \frac{(n-2) \sigma^2}{n-2} = \sigma^2
 	\]
-	so $MS_E$ is an unbiased estimator of the error variance. This quantity underlies standard errors, confidence intervals, and hypothesis tests for $\beta_0$ and $\beta_1$ --- topics for the next lecture.
+	so $MS_E$ is an unbiased estimator of the error variance. This quantity is required for confidence intervals, and hypothesis tests for $\beta_0$ and $\beta_1$.
 \end{frame}
 
 
-\section{Finding the Expected Value of \texorpdfstring{\(SS_E\)}{SSE}}
+\appendix
+
+\section*{Appendix}
+
+\section*{Finding the Expected Value of \texorpdfstring{\(SS_E\)}{SSE}}
 
 
 \begin{frame}{Why $E[SS_E] = (n-2)\sigma^2$: Rewriting the Residual}
