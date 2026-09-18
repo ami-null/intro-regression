@@ -8,7 +8,28 @@
 
 
 \begin{document}
-    \input{../slides-frontmatter.tex}
+    % \input{../slides-frontmatter.tex}
+	{
+        \setbeamertemplate{footline}{}
+        \addtocounter{framenumber}{-2}
+
+        \begin{frame}
+            \titlepage
+        \end{frame}
+
+        \begin{frame}{Outline}
+            \frametitle<1>{Table of Contents}
+            \frametitle<2>{Table of Contents (cont.)}
+            \vfill
+            % \tableofcontents[subsectionstyle=hide]
+            \only<1>{
+                \tableofcontents[sections={1-5},hideallsubsections]
+                Table of contents continued in the next page\dots
+            }
+            \only<2>{\tableofcontents[sections={6-10},hideallsubsections]}
+            \vfill
+        \end{frame}
+    }
 	\input{02_slr-inference_contents.tex}
 	\mode<presentation>{\section*{Questions?}}
 \end{document}
