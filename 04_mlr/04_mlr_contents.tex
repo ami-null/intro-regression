@@ -8,7 +8,7 @@
     \]
     OLS estimators, written through the sample covariance, the variances and the correlation coefficient $r$:
     \begin{align}
-        \hat\beta_1 &= \frac{S_{xy}}{S_{xx}} = \frac{\widehat{\mathrm{Cov}}(x,y)}{s_x^2} = r\,\frac{s_y}{s_x}, \label{eq:slr-b1}\\
+        \hat\beta_1 &= \frac{S_{xy}}{S_{xx}} \label{eq:slr-b1}\\
         \hat\beta_0 &= \bar y - \hat\beta_1 \bar x, \notag\\
         \hat\sigma^2 &= \frac{\mathrm{SSE}}{n-2}. \label{eq:slr-s2}
     \end{align}
@@ -233,10 +233,9 @@
         &= \mathbf y'\mathbf y - 2\symbfit{\beta}'\mathbf X'\mathbf y + \symbfit{\beta}'\mathbf X'\mathbf X\symbfit{\beta}. \label{eq:ls-expanded}
     \end{align}
     The second line combines the two middle terms.
-\end{frame}
 
+    \svspace{1em}
 
-\begin{frame}{Question: combining the middle terms}
     Why is $\mathbf y'\mathbf X\symbfit{\beta} = \symbfit{\beta}'\mathbf X'\mathbf y$?
 
     % Answer:
@@ -294,16 +293,15 @@
 \end{frame}
 
 
-\begin{frame}{Check: the SLR case, ingredients}
+\begin{frame}[allowframebreaks]{SLR as a special Case of MLR}
     For SLR, $\mathbf X = [\mathbf 1\;\; \mathbf x]$ and
     \begin{align*}
         \mathbf X'\mathbf X &= \begin{pmatrix} n & \sum x_i \\ \sum x_i & \sum x_i^2 \end{pmatrix}, &
         \mathbf X'\mathbf y &= \begin{pmatrix} \sum y_i \\ \sum x_i y_i \end{pmatrix}.
     \end{align*}
-\end{frame}
 
+    \framebreak
 
-\begin{frame}{Check: the SLR case, solution}
     Since $n\sum x_i^2 - (\sum x_i)^2 = nS_{xx}$,
     \[
     (\mathbf X'\mathbf X)^{-1} = \frac{1}{nS_{xx}}\begin{pmatrix} \sum x_i^2 & -\sum x_i \\ -\sum x_i & n \end{pmatrix}.
@@ -321,8 +319,9 @@
 
 \begin{frame}{Fitted values and residuals}
     \begin{align}
+        \hat{\symbfit{\beta}} &= (\mathbf X'\mathbf X)^{-1}\mathbf X' \mathbf y \notag\\ 
+        \hat{\mathbf y} &= \mathbf X\hat{\symbfit{\beta}} = \mathbf X (\mathbf X'\mathbf X)^{-1}\mathbf X' \mathbf y = \mathbf H\mathbf y, \notag\\
         \mathbf H &= \mathbf X(\mathbf X'\mathbf X)^{-1}\mathbf X', \label{eq:H-def}\\
-        \hat{\mathbf y} &= \mathbf X\hat{\symbfit{\beta}} = \mathbf H\mathbf y, \notag\\
         \mathbf e &= \mathbf y - \hat{\mathbf y} = (\mathbf I-\mathbf H)\mathbf y. \label{eq:resid}
     \end{align}
     $\mathbf H$ is the $n\times n$ hat matrix: it puts the hat on $\mathbf y$.
