@@ -335,10 +335,9 @@
         \mathbf H\mathbf X &= \mathbf X. \label{eq:HX}
     \end{align}
     That is, $\mathbf H$ is symmetric and idempotent.
-\end{frame}
 
+    \svspace{1em}
 
-\begin{frame}{Question: idempotency of $\mathbf H$}
     Prove \eqref{eq:H-idem} from the definition \eqref{eq:H-def}.
 
     % Answer:
@@ -473,6 +472,7 @@ coef(lm(time ~ cases + distance,
 \begin{frame}{Decomposing $\hat{\symbfit{\beta}}$}
     Substitute the model \eqref{eq:mlr-matrix} into \eqref{eq:ols}:
     \begin{align}
+        \hat{\symbfit{\beta}} &= (\mathbf X'\mathbf X)^{-1}\mathbf X' \mathbf y \notag\\
         \hat{\symbfit{\beta}} &= (\mathbf X'\mathbf X)^{-1}\mathbf X'(\mathbf X\symbfit{\beta} + \symbfit{\varepsilon}) \notag\\
         &= \symbfit{\beta} + (\mathbf X'\mathbf X)^{-1}\mathbf X'\symbfit{\varepsilon}. \label{eq:decomp}
     \end{align}
@@ -525,7 +525,7 @@ coef(lm(time ~ cases + distance,
 \end{frame}
 
 
-\begin{frame}{Check: the SLR case}
+\begin{frame}{SLR variance from the MLR covariance matrix}
     Using the inverse computed for SLR, with $\sum x_i^2 = S_{xx} + n\bar x^2$:
     \begin{align*}
         \mathrm{Var}(\hat\beta_1) &= \sigma^2\,\frac{n}{nS_{xx}} = \frac{\sigma^2}{S_{xx}}, \\
@@ -715,16 +715,15 @@ coef(lm(time ~ cases + distance,
 \end{frame}
 
 
-\begin{frame}{Question: adding a regressor}
+\begin{frame}{Adding an irrelevant regressor}
     What happens to $R^2$ when a regressor is added to the model? Does it depend on whether the regressor is relevant?
 
     % Answer:
     % - R^2 never decreases, even for a regressor that is pure noise.
     % - Adding a column enlarges col(X), and the projection of y onto a larger subspace cannot be farther from y, so SSE cannot increase while SST is unchanged.
-\end{frame}
 
+    \svspace{1em}
 
-\begin{frame}{Adding an irrelevant regressor}
     Add $z$, 25 independent $N(0,1)$ draws unrelated to the delivery time.
     \begin{center}
         \small
@@ -784,10 +783,10 @@ coef(lm(time ~ cases + distance,
         \item It can decrease when a regressor is added.
         \item It can be negative: $R^2_{\mathrm{adj}}<0$ whenever $R^2 < (p-1)/(n-1)$.
     \end{itemize}
-\end{frame}
 
-
-\begin{frame}{Caveats}
+    \svspace{1em}
+    
+    However,
     \begin{itemize}
         \item A high $R^2$ or $R^2_{\mathrm{adj}}$ does not mean the model is adequate: the assumptions must be checked with residual analysis.
         \item $R^2_{\mathrm{adj}}$ is a descriptive measure, not a hypothesis test.
