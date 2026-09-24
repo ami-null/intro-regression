@@ -40,15 +40,15 @@
 \end{frame}
 
 
-\begin{frame}{Question}
-    What goes wrong with the exact $t$ and $F$ results if the errors are not normal?
-    % \begin{itemize}
-    %     \item Unbiasedness of $\hat{\bbeta}$ and the Gauss--Markov (BLUE) property do not need normality
-    %     \item The exact $t$ and $F$ distributions do need it
-    %     \item For large $n$ the tests are approximately valid by the central limit theorem; for small $n$ with heavy tails or skewness they are not reliable
-    %     \item Prediction intervals are the most sensitive, since they depend on the distribution of a single $\varepsilon_0$, not an average
-    % \end{itemize}
-\end{frame}
+% \begin{frame}{Question}
+%     What goes wrong with the exact $t$ and $F$ results if the errors are not normal?
+%     % \begin{itemize}
+%     %     \item Unbiasedness of $\hat{\bbeta}$ and the Gauss--Markov (BLUE) property do not need normality
+%     %     \item The exact $t$ and $F$ distributions do need it
+%     %     \item For large $n$ the tests are approximately valid by the central limit theorem; for small $n$ with heavy tails or skewness they are not reliable
+%     %     \item Prediction intervals are the most sensitive, since they depend on the distribution of a single $\varepsilon_0$, not an average
+%     % \end{itemize}
+% \end{frame}
 
 
 \begin{frame}{Running example: delivery time data (MPV Example 3.1)}
@@ -260,7 +260,7 @@ F-statistic: 261.2 on 2 and 22 DF,  p-value: 4.687e-16
 
 
 \begin{frame}{Question}
-    In the simple regression of $y$ on $x_1$ alone, the slope estimate is $2.176$. In the multiple regression on $x_1$ and $x_2$, it is $1.616$. Why do they differ?
+    In the simple regression of $y$ on $x_1$ alone, the \(\hat{beta}_1\) is $2.176$. In the multiple regression on $x_1$ and $x_2$, it is $1.616$ ($\hat{\beta}_2$ is $0.014$). Why do they differ?
     % \begin{itemize}
     %     \item In the MLR, $\beta_1$ is the change in mean $y$ per unit of $x_1$ \emph{holding $x_2$ fixed}
     %     \item Cases and distance are correlated ($r = 0.82$), so the SLR slope also absorbs part of the effect of distance
@@ -355,26 +355,26 @@ F-statistic: 261.2 on 2 and 22 DF,  p-value: 4.687e-16
 \end{frame}
 
 
-\begin{frame}{Question}
-    Can the overall $F$ test be significant while every individual $t$ test is insignificant?
-    % \begin{itemize}
-    %     \item Yes. Each $t$ test is conditional on the other regressors, so if $x_1$ and $x_2$ carry nearly the same information, each looks unnecessary given the other
-    %     \item This is a symptom of collinearity, covered later. Here $r(x_1,x_2) = 0.82$ and both are still significant, but $\operatorname{corr}(\hat\beta_1,\hat\beta_2) = -0.82$
-    %     \item Conversely, testing many coefficients at level $\alpha$ each inflates the chance of at least one false rejection
-    % \end{itemize}
-\end{frame}
+% \begin{frame}{Question}
+%     Can the overall $F$ test be significant while every individual $t$ test is insignificant?
+%     % \begin{itemize}
+%     %     \item Yes. Each $t$ test is conditional on the other regressors, so if $x_1$ and $x_2$ carry nearly the same information, each looks unnecessary given the other
+%     %     \item This is a symptom of collinearity, covered later. Here $r(x_1,x_2) = 0.82$ and both are still significant, but $\operatorname{corr}(\hat\beta_1,\hat\beta_2) = -0.82$
+%     %     \item Conversely, testing many coefficients at level $\alpha$ each inflates the chance of at least one false rejection
+%     % \end{itemize}
+% \end{frame}
 
 
-\begin{frame}{Preview: $t_0^2$ is a partial $F$ statistic}
-    \[
-        t_0^2 = \frac{\SSR(\beta_j \mid \text{other terms})}{\MSRes}
-    \]
-    Delivery time data, $j=2$: $\SSRes$ is $402.13$ without $x_2$ and $233.73$ with it, so the extra sum of squares is $168.40$.
-    \[
-        t_0^2 = \frac{168.40}{10.6242} = 15.85 = (3.981)^2
-    \]
-    This is the reduced-versus-full model $F$ test with one restriction, developed in the general linear hypothesis section.
-\end{frame}
+% \begin{frame}{Preview: $t_0^2$ is a partial $F$ statistic}
+%     \[
+%         t_0^2 = \frac{\SSR(\beta_j \mid \text{other terms})}{\MSRes}
+%     \]
+%     Delivery time data, $j=2$: $\SSRes$ is $402.13$ without $x_2$ and $233.73$ with it, so the extra sum of squares is $168.40$.
+%     \[
+%         t_0^2 = \frac{168.40}{10.6242} = 15.85 = (3.981)^2
+%     \]
+%     This is the reduced-versus-full model $F$ test with one restriction, developed in the general linear hypothesis section.
+% \end{frame}
 
 
 
@@ -421,54 +421,54 @@ F-statistic: 261.2 on 2 and 22 DF,  p-value: 4.687e-16
 \end{frame}
 
 
-\begin{frame}{Duality with the $t$ test}
-    \begin{itemize}
-        \item $H_0: \beta_j = \beta_{j0}$ is rejected at level $\alpha$ if and only if $\beta_{j0}$ lies outside the $100(1-\alpha)\%$ interval
-        \item None of the three 95\% intervals contains $0$, matching the three $p$-values below $0.05$
-        \item The intercept interval barely excludes $0$, matching $p = 0.044$
-        \item The interval carries more information: it shows the range of plausible values, not only whether $0$ is one of them
-    \end{itemize}
-\end{frame}
+% \begin{frame}{Duality with the $t$ test}
+%     \begin{itemize}
+%         \item $H_0: \beta_j = \beta_{j0}$ is rejected at level $\alpha$ if and only if $\beta_{j0}$ lies outside the $100(1-\alpha)\%$ interval
+%         \item None of the three 95\% intervals contains $0$, matching the three $p$-values below $0.05$
+%         \item The intercept interval barely excludes $0$, matching $p = 0.044$
+%         \item The interval carries more information: it shows the range of plausible values, not only whether $0$ is one of them
+%     \end{itemize}
+% \end{frame}
 
 
-\begin{frame}{Question}
-    Each of the two slope intervals has 95\% coverage. Do the two intervals \emph{together} have 95\% joint coverage?
-    % \begin{itemize}
-    %     \item No. The probability that both cover simultaneously is at most 95\%, and is generally lower
-    %     \item Bonferroni fix: for $m$ intervals use $t_{\alpha/(2m),\,n-p}$ so that joint coverage is at least $100(1-\alpha)\%$
-    %     \item For the two slopes: $t_{0.0125,\,22} = 2.405$, giving cases $(1.205,\,2.027)$ and distance $(0.00569,\,0.02308)$
-    % \end{itemize}
-\end{frame}
+% \begin{frame}{Question}
+%     Each of the two slope intervals has 95\% coverage. Do the two intervals \emph{together} have 95\% joint coverage?
+%     % \begin{itemize}
+%     %     \item No. The probability that both cover simultaneously is at most 95\%, and is generally lower
+%     %     \item Bonferroni fix: for $m$ intervals use $t_{\alpha/(2m),\,n-p}$ so that joint coverage is at least $100(1-\alpha)\%$
+%     %     \item For the two slopes: $t_{0.0125,\,22} = 2.405$, giving cases $(1.205,\,2.027)$ and distance $(0.00569,\,0.02308)$
+%     % \end{itemize}
+% \end{frame}
 
 
-\begin{frame}{Joint confidence region for $(\beta_1, \beta_2)$}
-    \begin{columns}[T]
-        \column{0.36\textwidth}
-        \begin{itemize}
-            \item Solid ellipse: exact joint 95\% region
-            \item Dashed box: two separate 95\% intervals
-            \item Dotted box: Bonferroni intervals
-            \item The ellipse is tilted because $\operatorname{corr}(\hat\beta_1,\hat\beta_2) = -0.82$
-        \end{itemize}
-        \column{0.64\textwidth}
-        \begin{tikzpicture}
-            \begin{axis}[
-                width=\linewidth, height=0.72\linewidth,
-                xlabel={$\beta_1$ (cases)}, ylabel={$\beta_2$ (distance)},
-                xmin=1.1, xmax=2.15, ymin=0.003, ymax=0.026,
-                scaled y ticks=false,
-                yticklabel style={/pgf/number format/fixed, /pgf/number format/precision=3},
-                tick label style={font=\small}, label style={font=\small},
-            ]
-                \addplot[thick, domain=0:360, samples=100, smooth]
-                    ({1.615907 + 0.448045*cos(x)}, {0.01438483 - 0.00781494*cos(x) + 0.00536926*sin(x)});
-                \draw[dashed] (axis cs:1.2618,0.006892) rectangle (axis cs:1.9700,0.021878);
-                \draw[dotted, thick] (axis cs:1.2052,0.005694) rectangle (axis cs:2.0266,0.023076);
-                \addplot[only marks, mark=*, mark size=1.8pt] coordinates {(1.615907, 0.01438483)};
-            \end{axis}
-        \end{tikzpicture}
-    \end{columns}
-\end{frame}
+% \begin{frame}{Joint confidence region for $(\beta_1, \beta_2)$}
+%     \begin{columns}[T]
+%         \column{0.36\textwidth}
+%         \begin{itemize}
+%             \item Solid ellipse: exact joint 95\% region
+%             \item Dashed box: two separate 95\% intervals
+%             \item Dotted box: Bonferroni intervals
+%             \item The ellipse is tilted because $\operatorname{corr}(\hat\beta_1,\hat\beta_2) = -0.82$
+%         \end{itemize}
+%         \column{0.64\textwidth}
+%         \begin{tikzpicture}
+%             \begin{axis}[
+%                 width=\linewidth, height=0.72\linewidth,
+%                 xlabel={$\beta_1$ (cases)}, ylabel={$\beta_2$ (distance)},
+%                 xmin=1.1, xmax=2.15, ymin=0.003, ymax=0.026,
+%                 scaled y ticks=false,
+%                 yticklabel style={/pgf/number format/fixed, /pgf/number format/precision=3},
+%                 tick label style={font=\small}, label style={font=\small},
+%             ]
+%                 \addplot[thick, domain=0:360, samples=100, smooth]
+%                     ({1.615907 + 0.448045*cos(x)}, {0.01438483 - 0.00781494*cos(x) + 0.00536926*sin(x)});
+%                 \draw[dashed] (axis cs:1.2618,0.006892) rectangle (axis cs:1.9700,0.021878);
+%                 \draw[dotted, thick] (axis cs:1.2052,0.005694) rectangle (axis cs:2.0266,0.023076);
+%                 \addplot[only marks, mark=*, mark size=1.8pt] coordinates {(1.615907, 0.01438483)};
+%             \end{axis}
+%         \end{tikzpicture}
+%     \end{columns}
+% \end{frame}
 
 
 
