@@ -1,0 +1,38 @@
+\documentclass[12pt, aspectratio=169]{beamer}
+
+\input{../header-common.tex}
+\input{../header-slides}
+\input{../header_math-commads.tex}
+
+\usepackage{pgfplots}
+
+% \input{../author.tex}
+\input{05_mlr-inference_meta.tex}
+
+
+\begin{document}
+    % \input{../slides-frontmatter.tex}
+	{
+        \setbeamertemplate{footline}{}
+        \addtocounter{framenumber}{-2}
+
+        \begin{frame}
+            \titlepage
+        \end{frame}
+
+        \begin{frame}{Outline}
+            \frametitle<1>{Table of Contents}
+            \frametitle<2>{Table of Contents (cont.)}
+            \vfill
+            % \tableofcontents[subsectionstyle=hide]
+            \only<1>{
+                \tableofcontents[sections={1-5},hideallsubsections]
+                Table of contents continued in the next page\dots
+            }
+            \only<2>{\tableofcontents[sections={6-9},hideallsubsections]}
+            \vfill
+        \end{frame}
+    }
+	\input{05_mlr-inference_contents.tex}
+	\mode<presentation>{\section*{Questions?}}
+\end{document}
