@@ -7,8 +7,6 @@ plugins:
 minima:
   skin: dark
 
-header_pages:
-  - _unused
 
 kramdown:
   input: GFM
