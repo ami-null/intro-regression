@@ -11,7 +11,7 @@
     \[
         \by = \bX\bbeta + \boldsymbol{\varepsilon}, \qquad \boldsymbol{\varepsilon} \sim N(\mathbf{0}, \sigma^2 \mathbf{I})
     \]
-    
+
     \begin{itemize}
         \item $\by$ is $n\times 1$, $\bX$ is $n\times p$, $\bbeta$ is $p\times 1$
         \item The normality assumption is what makes exact $t$ and $F$ inference possible
@@ -55,8 +55,8 @@
 
 \begin{frame}{Running example: delivery time data (MPV Example 3.1)}
     A route driver restocks vending machines. Model the delivery time $y$ (minutes) using $x_1$ = number of cases stocked and $x_2$ = distance walked (feet), $n=25$.
-    \begin{table}
-        \centering
+
+    \begin{center}
         \small
         \begin{tabular}{rrrr}
             \toprule
@@ -71,7 +71,7 @@
             25 & 10.75 & 4 & 150 \\
             \bottomrule
         \end{tabular}
-    \end{table}
+    \end{center}
 \end{frame}
 
 
@@ -700,9 +700,8 @@ predict(fit, new, interval = "prediction")
 
 
 \begin{frame}{Summary of procedures}
-    \begin{table}
-        \centering
-        \small
+    \begin{center}
+        \mode<presentation>{\small}
         \begin{tabular}{llll}
             \toprule
             Procedure & Target & Statistic or interval & Reference \\
@@ -714,6 +713,6 @@ predict(fit, new, interval = "prediction")
             PI & $y_0$ & $\hat y_0 \pm t_{\alpha/2,n-p}\sqrt{\MSRes(1 + h_{00})}$ & $t_{n-p}$ \\
             \bottomrule
         \end{tabular}
-    \end{table}
+    \end{center}
     with $h_{00} = \bx_0'(\bX'\bX)^{-1}\bx_0$.
 \end{frame}
