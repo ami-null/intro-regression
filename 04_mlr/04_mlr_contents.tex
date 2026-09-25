@@ -37,7 +37,7 @@
         \item $x_2$: distance walked by the driver (feet)
     \end{itemize}
     \begin{center}
-        \small
+        \mode<presentation>{\small}
         \begin{tabular}{cccc}
             \toprule
             Obs. & Time $y$ & Cases $x_1$ & Distance $x_2$ \\
@@ -65,7 +65,9 @@
         \end{column}
         \begin{column}{0.48\textwidth}
             \begin{center}
-                \resizebox{\linewidth}{!}{%
+                \mode<presentation>{\def\tikzrbw{\linewidth}}
+                \mode<article>{\def\tikzrbw{0.5\linewidth}}
+                \resizebox{\tikzrbw}{!}{%
                 \begin{tikzpicture}[scale=0.85]
                     \fill[gray!25] (-1.0,0.6) -- (2.6,0.2) -- (4.0,1.6) -- (0.4,2.0) -- cycle;
                     \draw[gray] (-1.0,0.6) -- (2.6,0.2) -- (4.0,1.6) -- (0.4,2.0) -- cycle;
@@ -368,8 +370,10 @@
         \end{column}
         \begin{column}{0.48\textwidth}
             \begin{center}
-                \resizebox{\linewidth}{!}{%
-                \begin{tikzpicture}[scale=0.9]
+                \mode<presentation>{\def\tikzscale{0.9}\def\tikzrbw{\linewidth}}
+                \mode<article>{\def\tikzscale{0.95}\def\tikzrbw{0.5\linewidth}}
+                \resizebox{\tikzrbw}{!}{%
+                \begin{tikzpicture}[scale=\tikzscale]
                     \fill[gray!25] (0,0) -- (4.4,0) -- (5.6,1.5) -- (1.2,1.5) -- cycle;
                     \draw[gray] (0,0) -- (4.4,0) -- (5.6,1.5) -- (1.2,1.5) -- cycle;
                     \node[gray] at (2.9,0.15) {$\mathrm{col}(\mathbf X)$};
@@ -677,7 +681,7 @@ coef(lm(time ~ cases + distance,
 \begin{frame}{Delivery time data: standard errors}
     Using \eqref{eq:se}:
     \begin{center}
-        \small
+        \mode<presentation>{\small}
         \begin{tabular}{lcc}
             \toprule
             Coefficient & Estimate & Standard error \\
@@ -762,7 +766,7 @@ coef(lm(time ~ cases + distance,
 
 \begin{frame}{Adjusted $R^2$ in the example}
     \begin{center}
-        \small
+        \mode<presentation>{\small}
         \begin{tabular}{lccc}
             \toprule
             Model & $p$ & $R^2$ & $R^2_{\mathrm{adj}}$ \\
