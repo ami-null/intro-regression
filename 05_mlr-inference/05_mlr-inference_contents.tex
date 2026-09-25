@@ -245,14 +245,14 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 \end{frame}
 
 
-\begin{frame}{Question}
-    Delivery time data: $F_0$ is highly significant and $R^2 = 0.96$. Is the model adequate?
-    % \begin{itemize}
-    %     \item Not necessarily. A significant $F$ only rejects the intercept-only model
-    %     \item The relationship may be curved, the variance may be non-constant, or a few points may be driving the fit (observation 9 has $x_1=30$, $x_2=1460$)
-    %     \item Residual analysis is needed before trusting any of the inference in this lecture
-    % \end{itemize}
-\end{frame}
+% \begin{frame}{Question}
+%     Delivery time data: $F_0$ is highly significant and $R^2 = 0.96$. Is the model adequate?
+%     % \begin{itemize}
+%     %     \item Not necessarily. A significant $F$ only rejects the intercept-only model
+%     %     \item The relationship may be curved, the variance may be non-constant, or a few points may be driving the fit (observation 9 has $x_1=30$, $x_2=1460$)
+%     %     \item Residual analysis is needed before trusting any of the inference in this lecture
+%     % \end{itemize}
+% \end{frame}
 
 
 
@@ -570,7 +570,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 
     \begin{itemize}
         \item $\bx_0'(\bX'\bX)^{-1}\bx_0 \to 0$, so the CI shrinks to a point: we learn the mean exactly
-        \item The PI does not shrink to zero: it tends to $\pm z_{\alpha/2}\,\sigma$, because a new observation still carries its own noise $\varepsilon_0$
+        \item The PI does not shrink to a point: it tends to $\hat y_0 \pm z_{\alpha/2}\sigma$, because a new observation still carries its own noise $\varepsilon_0$
     \end{itemize}
 \end{frame}
 
