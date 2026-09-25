@@ -1,3 +1,6 @@
+---
+exclude_from_nav: true
+---
 # Regression Analysis
 
 A course on regression modeling, covering simple and multiple linear regression, OLS estimation, model assumptions and diagnostics, model selection, and applied extensions such as transformations, polynomial regression, and robust regression. The primary reference is Montgomery, Peck & Vining, *Introduction to Linear Regression Analysis*.
