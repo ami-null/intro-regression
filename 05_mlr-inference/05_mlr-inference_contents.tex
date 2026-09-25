@@ -6,10 +6,12 @@
     \[
         y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_k x_{ik} + \varepsilon_i
     \]
+
     In matrix form, with $p = k+1$ parameters,
     \[
         \by = \bX\bbeta + \boldsymbol{\varepsilon}, \qquad \boldsymbol{\varepsilon} \sim N(\mathbf{0}, \sigma^2 \mathbf{I})
     \]
+    
     \begin{itemize}
         \item $\by$ is $n\times 1$, $\bX$ is $n\times p$, $\bbeta$ is $p\times 1$
         \item The normality assumption is what makes exact $t$ and $F$ inference possible
@@ -35,7 +37,7 @@
     \end{align*}
     \begin{itemize}
         \item $\MSRes$ is independent of $\hat{\bbeta}$
-        \item Normal divided by an independent $\sqrt{\chi^2/\text{df}}$ gives a $t$ distribution: this is the source of every $t$ and $F$ result today
+        \item Normal divided by an independent $\sqrt{\chi^2/\text{df}}$ gives a $t$ distribution
     \end{itemize}
 \end{frame}
 
@@ -73,20 +75,20 @@
 \end{frame}
 
 
-\begin{frame}[fragile]{Goal for today: explain every number in this output}
+\begin{frame}[fragile]{Explain this computer output}
     \begin{align*}
         \hat y = 2.3412 + 1.6159\,x_1 + 0.01438\,x_2
     \end{align*}
     \begin{verbatim}
 Coefficients:
-             Estimate Std. Error t value Pr(>|t|)
-(Intercept)  2.341231   1.096730   2.135 0.044170
-cases        1.615907   0.170735   9.464 3.25e-09
-distance     0.014385   0.003613   3.981 0.000631
+               Estimate   Std. Error   t value Pr(>|t|)
+(Intercept)    2.341231     1.096730     2.135 0.044170
+cases          1.615907     0.170735     9.464 3.25e-09
+distance       0.014385     0.003613     3.981 0.000631
 
-Residual standard error: 3.259 on 22 degrees of freedom
+Residual standard error:   3.259 on 22 degrees of freedom
 Multiple R-squared:  0.9596,  Adjusted R-squared:  0.9559
-F-statistic: 261.2 on 2 and 22 DF,  p-value: 4.687e-16
+F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
     \end{verbatim}
 \end{frame}
 
@@ -96,7 +98,7 @@ F-statistic: 261.2 on 2 and 22 DF,  p-value: 4.687e-16
 
 
 \begin{frame}{Question}
-    We have fitted a model with regressors $x_1,\dots,x_k$. How do we decide whether \emph{any} of them is related to $y$?
+    We have fitted a model with regressors $x_1,\dots,x_k$. How do we decide whether \emph{any} of them is related to $y$ \emph{in the population}?
     % \begin{itemize}
     %     \item Compare the fitted model with the intercept-only model $y = \beta_0 + \varepsilon$
     %     \item Ask whether the variability explained by the regressors is large relative to the unexplained variability
@@ -498,10 +500,13 @@ F-statistic: 261.2 on 2 and 22 DF,  p-value: 4.687e-16
 
 
 \begin{frame}{Variance of $\hat y_0$ and its distribution}
-    \begin{align*}
-        \Var(\hat y_0) &= \sigma^2\, \bx_0'(\bX'\bX)^{-1}\bx_0 \\
-        \frac{\hat y_0 - E(y \mid \bx_0)}{\sqrt{\MSRes\, \bx_0'(\bX'\bX)^{-1}\bx_0}} &\sim t_{n-p}
-    \end{align*}
+    \[
+        \Var(\hat y_0) = \sigma^2\, \bx_0'(\bX'\bX)^{-1}\bx_0
+    \]
+
+    \[
+        \frac{\hat y_0 - E(y \mid \bx_0)}{\sqrt{\MSRes\, \bx_0'(\bX'\bX)^{-1}\bx_0}} \sim t_{n-p}
+    \]
 \end{frame}
 
 
@@ -551,7 +556,7 @@ F-statistic: 261.2 on 2 and 22 DF,  p-value: 4.687e-16
     \begin{table}
         \centering
         \small
-        \begin{tabular}{llll}
+        \begin{tabular}{lllr}
             \toprule
              & Target & Variance term inside $\sqrt{\cdot}$ & Delivery data at $\bx_0$ \\
             \midrule
@@ -565,10 +570,13 @@ F-statistic: 261.2 on 2 and 22 DF,  p-value: 4.687e-16
 
 \begin{frame}{Question}
     As $n \to \infty$, what happens to the width of the CI on the mean response, and to the width of the PI?
-    % \begin{itemize}
-    %     \item $\bx_0'(\bX'\bX)^{-1}\bx_0 \to 0$, so the CI shrinks to a point: we learn the mean exactly
-    %     \item The PI does not shrink to zero: it tends to $\pm z_{\alpha/2}\,\sigma$, because a new observation still carries its own noise $\varepsilon_0$
-    % \end{itemize}
+
+    \pause
+
+    \begin{itemize}
+        \item $\bx_0'(\bX'\bX)^{-1}\bx_0 \to 0$, so the CI shrinks to a point: we learn the mean exactly
+        \item The PI does not shrink to zero: it tends to $\pm z_{\alpha/2}\,\sigma$, because a new observation still carries its own noise $\varepsilon_0$
+    \end{itemize}
 \end{frame}
 
 
@@ -612,8 +620,8 @@ predict(fit, new, interval = "confidence")
 predict(fit, new, interval = "prediction")
 
        fit      lwr      upr
-1 19.22432 17.65390 20.79474
-1 19.22432 12.28456 26.16407
+  19.22432 17.65390 20.79474
+  19.22432 12.28456 26.16407
     \end{verbatim}
     The first output is the CI on the mean response, the second is the PI.
 \end{frame}
@@ -625,10 +633,13 @@ predict(fit, new, interval = "prediction")
 
 \begin{frame}{Question}
     Delivery time data: cases range over $[2, 30]$ and distance over $[36, 1460]$. Is a route with $x_1 = 30$ cases and $x_2 = 200$ ft safe to predict for?
-    % \begin{itemize}
-    %     \item Each coordinate is inside its own observed range, but the \emph{combination} is not near any observed delivery
-    %     \item The large-case deliveries all have long distances; the model has no information about a 30-case, short-distance route
-    % \end{itemize}
+    
+    \pause
+
+    \begin{itemize}
+        \item Each coordinate is inside its own observed range, but the \emph{combination} is not near any observed delivery
+        \item The large-case deliveries all have long distances; the model has no information about a 30-case, short-distance route
+    \end{itemize}
 \end{frame}
 
 
@@ -705,13 +716,4 @@ predict(fit, new, interval = "prediction")
         \end{tabular}
     \end{table}
     with $h_{00} = \bx_0'(\bX'\bX)^{-1}\bx_0$.
-\end{frame}
-
-
-\begin{frame}{Looking ahead}
-    \begin{itemize}
-        \item All of these procedures rest on the model assumptions (linearity, constant variance, independence, normality), which we check with residual analysis
-        \item $t_0^2$ being a partial $F$ leads to extra sums of squares and $F$ tests for general linear hypotheses
-        \item Correlated regressors inflate $\operatorname{se}(\hat\beta_j)$: collinearity
-    \end{itemize}
 \end{frame}
