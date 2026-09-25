@@ -1,10 +1,14 @@
-# _config.yml
 title: Regression Analysis
-description: >-
-  An introductory course on regression.
 
-theme: minima
+remote_theme: jekyll/minima
+plugins:
+  - jekyll-remote-theme
+
 minima:
   skin: dark
 
-show_downloads: false
+kramdown:
+  input: GFM
+
+jekyll-titles-from-headings:
+  remove_originals: true
