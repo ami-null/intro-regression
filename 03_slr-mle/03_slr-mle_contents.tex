@@ -10,10 +10,20 @@
 
 
 \begin{frame}{The Likelihood Function}
-	Since $Y_i \sim N(\beta_0+\beta_1 x_i,\ \sigma^2)$, and due to the observations being independent:
+	The likelihood function is the joint density of the observed data, viewed as a function of the parameters rather than the data.
+
+	\svspace{0.5em}
+
+	Since $Y_i \sim N(\beta_0+\beta_1 x_i,\ \sigma^2)$, and due to the observations being independent, the likelihood function is:
 	\begin{align}
-		L(\beta_0,\beta_1,\sigma^2) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\exp\!\left(-\frac{(y_i-\beta_0-\beta_1 x_i)^2}{2\sigma^2}\right) \notag\\
-		\ell(\beta_0,\beta_1,\sigma^2) &= -\frac n2\ln(2\pi) - \frac n2\ln(\sigma^2) - \frac{1}{2\sigma^2}\sum_i(y_i-\beta_0-\beta_1 x_i)^2 \label{eq:loglik}
+		L(\beta_0,\beta_1,\sigma^2;\ \by,\bx) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\exp\!\left(-\frac{(y_i-\beta_0-\beta_1 x_i)^2}{2\sigma^2}\right) \notag
+	\end{align}
+
+	\pause
+	
+	Since $\log$ is monotonically increasing, maximizing $L$ is equivalent to maximizing the log-likelihood:
+	\begin{align}
+		\ell(\beta_0,\beta_1,\sigma^2;\ \by,\bx) &= -\frac n2\ln(2\pi) - \frac n2\ln(\sigma^2) - \frac{1}{2\sigma^2}\sum_i(y_i-\beta_0-\beta_1 x_i)^2 \label{eq:loglik}
 	\end{align}
 \end{frame}
 
