@@ -3,15 +3,14 @@
 
 \begin{frame}{Introduction}
 	\begin{itemize}
-		\item OLS: choose $\beta_0,\beta_1$ to minimize $\sum_i(y_i-\beta_0-\beta_1 x_i)^2$ --- a purely geometric criterion
-		\item MLE: given a full distributional assumption on the errors, choose parameters that make the observed data most probable
-		\item Under the normal-error model already assumed for inference, how do the two compare?
+		\item OLS: choose $\beta_0,\beta_1$ to minimize $\sum_i(y_i-\beta_0-\beta_1 x_i)^2$
+		\item MLE: given a full distributional assumption on the errors, choose parameter values that make the observed data most probable
 	\end{itemize}
 \end{frame}
 
 
 \begin{frame}{The Likelihood Function}
-	Since $Y_i \sim N(\beta_0+\beta_1 x_i,\ \sigma^2)$, independent:
+	Since $Y_i \sim N(\beta_0+\beta_1 x_i,\ \sigma^2)$, and due to the observations being independent:
 	\begin{align}
 		L(\beta_0,\beta_1,\sigma^2) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\exp\!\left(-\frac{(y_i-\beta_0-\beta_1 x_i)^2}{2\sigma^2}\right) \notag\\
 		\ell(\beta_0,\beta_1,\sigma^2) &= -\frac n2\ln(2\pi) - \frac n2\ln(\sigma^2) - \frac{1}{2\sigma^2}\sum_i(y_i-\beta_0-\beta_1 x_i)^2 \label{eq:loglik}
@@ -22,7 +21,7 @@
 \begin{frame}{Maximizing Over $\beta_0$ and $\beta_1$}
 	\begin{itemize}
 		\item For fixed $\sigma^2$, only the last term of $\ell$ in Equation~\eqref{eq:loglik} depends on $\beta_0,\beta_1$
-		\item Maximizing $\ell$ over $\beta_0,\beta_1$ $\iff$ minimizing $\sum_i(y_i-\beta_0-\beta_1 x_i)^2$ --- exactly the OLS criterion
+		\item Maximizing $\ell$ over $\beta_0,\beta_1$ $\iff$ minimizing $\sum_i(y_i-\beta_0-\beta_1 x_i)^2$, which is the same as the OLS criterion
 	\end{itemize}
 	\svspace{1em}
 	\begin{itemize}
@@ -30,8 +29,7 @@
 	\end{itemize}
 	\svspace{1em}
 	\begin{itemize}
-		\item They are identical --- under the normal-error model, the MLEs of the mean parameters coincide exactly with the least-squares estimates
-		\item Normality is what makes ``most likely'' and ``smallest squared error'' the same criterion
+		\item They are identical --- under the normal-error model, the the maximum likelihood estimates of \(\beta_0\) and \(\beta_1\) coincide exactly with the least-squares estimates
 	\end{itemize}
 \end{frame}
 
@@ -48,7 +46,7 @@
 	\begin{itemize}
 		\item Compare to the OLS/unbiased estimator: $MSE = SSE/(n-2)$
 		\item $\hat\sigma^2_{MLE}$ divides by $n$, not $n-2$ --- it is \emph{biased}: $E[\hat\sigma^2_{MLE}] = \frac{n-2}{n}\sigma^2$
-		\item $MSE$ is exactly the bias-corrected version of $\hat\sigma^2_{MLE}$
+		\item $MSE$ is the bias-corrected version of $\hat\sigma^2_{MLE}$
 	\end{itemize}
 \end{frame}
 
@@ -75,10 +73,10 @@
 			& OLS & MLE\\
 			\midrule
 			Needs a distribution? & No (mean, variance only) & Yes (full distribution)\\
-			$\beta_0,\beta_1$ estimates & least squares & identical, under normality\\
-			$\sigma^2$ estimate & unbiased, $SSE/(n-2)$ & biased, $SSE/n$\\
-			Framework & geometric & probabilistic\\
-			Optimality & Gauss--Markov (BLUE) & asymptotic efficiency\\
+			$\beta_0,\beta_1$ estimates & Least squares & Identical, under normality\\
+			$\sigma^2$ estimate & Unbiased, $SSE/(n-2)$ & Biased, $SSE/n$\\
+			Framework & Geometric & Probabilistic\\
+			Optimality & Gauss--Markov (BLUE) & Asymptotic efficiency\\
 			\bottomrule
 		\end{tabular}
 	\end{table}
@@ -91,8 +89,8 @@
 \begin{frame}{Statistical Advantages of MLE}
 	\begin{itemize}
 		\item Asymptotically efficient: attains the Cram\'er--Rao lower bound as $n\to\infty$, under correct specification
-		\item Comes with a general toolbox: standard errors from the Fisher information, likelihood-ratio/Wald/score tests, AIC/BIC for model comparison
-		\item Generalizes directly to models for which OLS has no natural analogue --- logistic regression, Poisson regression, GLMs generally
+		\item Provides a general toolbox: standard errors from the Fisher information, likelihood-ratio/Wald/score tests, AIC/BIC for model comparison
+		\item Generalizes to models for which OLS has no natural analogue, for example: logistic regression, Poisson regression, and other generalized linear models (GLM)
 		\item Consistent and asymptotically normal under mild regularity conditions
 	\end{itemize}
 \end{frame}
@@ -100,20 +98,8 @@
 
 \begin{frame}{Where OLS Still Wins}
 	\begin{itemize}
-		\item Gauss--Markov: OLS is BLUE using only zero-mean, constant-variance, uncorrelated errors --- \emph{no} distributional assumption at all
-		\item MLE's efficiency and consistency guarantees rely on the assumed distribution being (at least approximately) correct; misspecify it and those guarantees can fail
-		\item Here, $\hat\beta_0,\hat\beta_1$ are unbiased either way, but $\hat\sigma^2_{MLE}$ is biased while $MSE$ is not
-	\end{itemize}
-\end{frame}
-
-
-\begin{frame}{So Why Bother with MLE Here?}
-	\begin{itemize}
-		\item[] \textbf{Question:} if MLE and OLS give the same $\hat\beta_0,\hat\beta_1$ under normality, what's the actual payoff of the likelihood framework for this course?
-	\end{itemize}
-	\svspace{1em}
-	\begin{itemize}
-		\item Extends smoothly once we leave the plain linear-normal setting --- logistic/Poisson regression, mixed models, non-normal errors
-		\item Supplies a unified way to get standard errors, hypothesis tests, and model-comparison criteria (AIC/BIC), all independent of any least-squares geometry
+		\item Gauss--Markov: OLS is BLUE assuming only zero-mean, constant-variance, uncorrelated errors --- \emph{no} distributional assumption required
+		\item MLE's efficiency and consistency rely on the assumed distribution being (at least approximately) correct
+		\item Here, $\hat\beta_0,\hat\beta_1$ are unbiased in both approaches, but $\hat\sigma^2_{MLE}$ is biased while $\hat\sigma^2_{OLS} = MSE$ is not
 	\end{itemize}
 \end{frame}
