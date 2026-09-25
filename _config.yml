@@ -1,0 +1,10 @@
+# _config.yml
+title: Regression Analysis
+description: >-
+  An introductory course on regression.
+
+theme: minima
+minima:
+  skin: dark
+
+show_downloads: false
