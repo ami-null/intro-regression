@@ -177,9 +177,8 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 
 
 \begin{frame}{The ANOVA table}
-    \begin{table}
-        \centering
-        \small
+    \begin{center}
+        \mode<presentation>{\small}
         \begin{tabular}{lllll}
             \toprule
             Source & Sum of squares & df & Mean square & $F_0$ \\
@@ -189,14 +188,13 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
             Total & $\SST$ & $n-1$ & & \\
             \bottomrule
         \end{tabular}
-    \end{table}
+    \end{center}
 \end{frame}
 
 
 \begin{frame}{ANOVA table: delivery time data}
-    \begin{table}
-        \centering
-        \small
+    \begin{center}
+        \mode<presentation>{\small}
         \begin{tabular}{lrrrrr}
             \toprule
             Source & Sum of squares & df & Mean square & $F_0$ & $p$-value \\
@@ -206,7 +204,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
             Total & 5784.54 & 24 & & & \\
             \bottomrule
         \end{tabular}
-    \end{table}
+    \end{center}
 \end{frame}
 
 
@@ -322,9 +320,8 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 
 
 \begin{frame}{Delivery time data: all coefficients}
-    \begin{table}
-        \centering
-        \small
+    \begin{center}
+        \mode<presentation>{\small}
         \begin{tabular}{lrrrr}
             \toprule
             Term & Estimate & Std.\ error & $t_0$ & $p$-value \\
@@ -334,7 +331,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
             Distance ($x_2$) & 0.014385 & 0.003613 & 3.981 & 0.00063 \\
             \bottomrule
         \end{tabular}
-    \end{table}
+    \end{center}
     At $\alpha = 0.05$ each term is significant given the other regressors.
 \end{frame}
 
@@ -407,9 +404,8 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 
 \begin{frame}{Delivery time data: 95\% intervals}
     Example for cases: $1.6159 \pm 2.074 \times 0.1707 = (1.262,\, 1.970)$
-    \begin{table}
-        \centering
-        \small
+    \begin{center}
+        \mode<presentation>{\small}
         \begin{tabular}{lrr}
             \toprule
             Term & Lower & Upper \\
@@ -419,7 +415,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
             Distance ($x_2$) & 0.00689 & 0.02188 \\
             \bottomrule
         \end{tabular}
-    \end{table}
+    \end{center}
 \end{frame}
 
 
@@ -553,9 +549,8 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 
 
 \begin{frame}{Confidence interval versus prediction interval}
-    \begin{table}
-        \centering
-        \small
+    \begin{center}
+        \mode<presentation>{\small}
         \begin{tabular}{lllr}
             \toprule
              & Target & Variance term inside $\sqrt{\cdot}$ & Delivery data at $\bx_0$ \\
@@ -564,7 +559,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
             PI & $y_0$ & $1 + \bx_0'(\bX'\bX)^{-1}\bx_0$ & $(12.28,\, 26.16)$ \\
             \bottomrule
         \end{tabular}
-    \end{table}
+    \end{center}
 \end{frame}
 
 
@@ -590,13 +585,16 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
             \item Both bands are narrowest near the center of the data and widen away from it
         \end{itemize}
         \column{0.66\textwidth}
-        \begin{tikzpicture}
-            \begin{axis}[
-                width=\linewidth, height=0.68\linewidth,
-                xlabel={$x_1$ (cases)}, ylabel={Delivery time (min)},
-                xmin=2, xmax=30,
-                tick label style={font=\small}, label style={font=\small},
-            ]
+        \begin{center}
+            \mode<presentation>{\def\tikzw{\linewidth}\def\tikzh{0.68\linewidth}}
+            \mode<article>{\def\tikzw{0.85\linewidth}\def\tikzh{0.55\linewidth}}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    width=\tikzw, height=\tikzh,
+                    xlabel={$x_1$ (cases)}, ylabel={Delivery time (min)},
+                    xmin=2, xmax=30,
+                    tick label style={font=\small}, label style={font=\small},
+                ]
                 \addplot[thick, domain=2:30, samples=60]
                     {6.29706 + 1.615907*x};
                 \addplot[dashed, domain=2:30, samples=60]
@@ -607,8 +605,9 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
                     {6.29706 + 1.615907*x + 6.75973*sqrt(1.16011909 - 0.03521858*x + 0.00274378*x^2)};
                 \addplot[dotted, thick, domain=2:30, samples=60]
                     {6.29706 + 1.615907*x - 6.75973*sqrt(1.16011909 - 0.03521858*x + 0.00274378*x^2)};
-            \end{axis}
-        \end{tikzpicture}
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
     \end{columns}
 \end{frame}
 
@@ -653,13 +652,16 @@ predict(fit, new, interval = "prediction")
             \item Dashed polygon: convex hull of the observed $(x_1, x_2)$ pairs
         \end{itemize}
         \column{0.6\textwidth}
-        \begin{tikzpicture}
-            \begin{axis}[
-                width=\linewidth, height=0.72\linewidth,
-                xlabel={$x_1$ (cases)}, ylabel={$x_2$ (ft)},
-                xmin=0, xmax=32, ymin=0, ymax=1600,
-                tick label style={font=\small}, label style={font=\small},
-            ]
+        \begin{center}
+            \mode<presentation>{\def\tikzw{\linewidth}\def\tikzh{0.72\linewidth}}
+            \mode<article>{\def\tikzw{0.85\linewidth}\def\tikzh{0.5\linewidth}}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    width=\tikzw, height=\tikzh,
+                    xlabel={$x_1$ (cases)}, ylabel={$x_2$ (ft)},
+                    xmin=0, xmax=32, ymin=0, ymax=1600,
+                    tick label style={font=\small}, label style={font=\small},
+                ]
                 \addplot[only marks, mark=*, mark size=1.5pt] coordinates {
                     (7,560) (3,220) (3,340) (4,80) (6,150) (7,330) (2,110) (7,210) (30,1460)
                     (5,605) (16,688) (10,215) (4,255) (6,462) (9,448) (10,776) (6,200) (7,132)
@@ -671,17 +673,17 @@ predict(fit, new, interval = "prediction")
                 \draw[->, thin] (lab.west) -- (axis cs:8.6,285);
                 \addplot[only marks, mark=triangle*, mark size=3pt] coordinates {(30,200)};
                 \node[anchor=east, font=\small] at (axis cs:29,200) {$(30, 200)$};
-            \end{axis}
-        \end{tikzpicture}
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
     \end{columns}
 \end{frame}
 
 
 \begin{frame}{Checking the two candidate routes}
     Delivery time data: $h_{\max} = 0.498$ (observation 9).
-    \begin{table}
-        \centering
-        \small
+    \begin{center}
+        \mode<presentation>{\small}
         \begin{tabular}{lrrl}
             \toprule
             $(x_{01}, x_{02})$ & $h_{00}$ & $h_{\max}$ & Conclusion \\
@@ -690,7 +692,7 @@ predict(fit, new, interval = "prediction")
             $(30, 200)$ & 1.757 & 0.498 & hidden extrapolation \\
             \bottomrule
         \end{tabular}
-    \end{table}
+    \end{center}
     For the second route, the CI and PI formulas still compute a number, but the model gives no evidence the fit holds there.
 \end{frame}
 
