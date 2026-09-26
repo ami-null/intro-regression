@@ -8,9 +8,9 @@ A course on regression modeling, covering simple and multiple linear regression,
 
 | Week | Topic |
 |---|---|
-| 1 | Introduction to regression and its uses. Simple linear regression (SLR), regression equation, assumptions. Ordinary Least Squares (OLS) estimation of model parameters, properties of the estimators (unbiasedness, BLUE). Estimating the variance parameter, σ^2. |
-| 2 | Inference regarding the SLR parameters, t-tests and confidence intervals, F-test, ANOVA, coefficient of determination, R^2. Prediction, prediction interval. |
-| 3 | Introduction to multiple linear regression (MLR). MLR equation and OLS estimation using matrix algebra. Properties of the MLR estimators, estimating the variance parameter, σ^2. Adjusted R^2. |
+| 1 | Introduction to regression and its uses. Simple linear regression (SLR), regression equation, assumptions. Ordinary Least Squares (OLS) estimation of model parameters, properties of the estimators (unbiasedness, BLUE). Estimating the variance parameter, $\sigma^2. |
+| 2 | Inference regarding the SLR parameters, t-tests and confidence intervals, F-test, ANOVA, coefficient of determination, $R^2$. Prediction, prediction interval. |
+| 3 | Introduction to multiple linear regression (MLR). MLR equation and OLS estimation using matrix algebra. Properties of the MLR estimators, estimating the variance parameter, $\sigma^2. Adjusted $R^2$. |
 | 4 | MLR hypothesis tests (individual t-tests and confidence intervals), overall F test. Prediction intervals. |
 | 5 | Residual analysis. Raw, standardized, studentized residuals. Residual plots for checking violation of model assumptions. Tests for checking normality, heteroscedasticity, autocorrelation. |
 | 6 | Variance-stabilizing transformations (log, sqrt, arcsin); Box-Cox procedure. Dummy variables. Interaction terms. |
