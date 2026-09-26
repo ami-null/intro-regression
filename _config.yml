@@ -1,18 +1,54 @@
 title: Regression Analysis
+description: ""
+show_title: false
+show_description: false
+theme_toggle: true
 
-remote_theme: jekyll/minima
+remote_theme: ami-null/simple-ghp-theme
 plugins:
   - jekyll-remote-theme
+  
+header:
+  floating: false   # false = plain full-width bar
+  sticky: true      # false = scrolls away instead of staying pinned
 
-minima:
-  skin: dark
+#favicon:
 
-readme_index:
-  with_frontmatter: true
+#font:
+#  name:
 
-kramdown:
-  input: GFM
+#nav_links:
+#  - text: Course GitHub Repo
+#    url: https://github.com/ami-null/intro-regression
 
-titles_from_headings:
+toc:
+  enabled: false
+  position: right
+
+math:
   enabled: true
-  strip_title: true
+  engine: katex
+  macros:
+    '\bX': '\mathbf{X}'
+    '\bx': '\mathbf{x}'
+    '\by': '\mathbf{y}'
+    '\bbeta': '\boldsymbol{\beta}'
+    '\Var': '\operatorname{Var}'
+    '\Cov': '\operatorname{Cov}'
+    '\SSR': '\mathit{SS}_{R}'
+    '\SSRes': '\mathit{SS}_{\mathrm{Res}}'
+    '\SST': '\mathit{SS}_{T}'
+    '\MSR': '\mathit{MS}_{R}'
+    '\MSRes': '\mathit{MS}_{\mathrm{Res}}'
+
+footer_links:
+  - title: Course
+    links:
+      - text: GitHub repo
+        url: https://github.com/ami-null/intro-regression
+  - title: Connect
+    links:
+      - text: My GitHub Profile
+        url: https://github.com/ami-null/
+
+copyright: '&copy; 2026 Shazid. Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.'
