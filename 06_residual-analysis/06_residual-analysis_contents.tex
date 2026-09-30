@@ -668,17 +668,17 @@
 
 
 \begin{frame}{Diagnostics at a Glance}
-    \small
+    \mode<presentation>{\footnotesize}
     \begin{center}
         \begin{tabular}{lll}
             \toprule
             Tool & Checks & Typical remedy \\
             \midrule
-            Normal plot, Shapiro--Wilk & normal errors & transform $y$ \\
-            Plot vs $\hat y_i$, Breusch--Pagan, White & constant variance & transform $y$, WLS \\
-            Plot vs $\hat y_i$ and vs $x_j$ & mean function & add terms, transform \\
-            Plot vs time, Durbin--Watson & uncorrelated errors & add regressor \\
-            $r_i$, $t_i$, $e_{(i)}$ & unusual observations & investigate \\
+            Normal plot, Shapiro--Wilk & Normal errors & Transform $y$ \\
+            Plot vs $\hat y_i$, Breusch--Pagan, White & Constant variance & Transform $y$, WLS \\
+            Plot vs $\hat y_i$ and vs $x_j$ & Mean function & Add terms, transform \\
+            Plot vs time, Durbin--Watson & Uncorrelated errors & Add regressor \\
+            $r_i$, $t_i$, $e_{(i)}$ & Unusual observations & Investigate \\
             \bottomrule
         \end{tabular}
     \end{center}
