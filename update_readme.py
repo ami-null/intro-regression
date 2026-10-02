@@ -95,7 +95,7 @@ def build_table(lectures) -> str:
         f"| {lec['number_str']} | {lec['title']} | [Download]({lec['slides_url']}) | [Download]({lec['article_url']}) |"
         for lec in lectures
     ]
-    return "\n".join([header, *rows])
+    return "\n".join([header, *rows, "\n"])
 
 
 def update_readme(table_markdown: str):
