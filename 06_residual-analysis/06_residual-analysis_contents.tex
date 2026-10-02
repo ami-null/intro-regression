@@ -2,13 +2,13 @@
 
 
 \begin{frame}{Assumptions Behind the Fitted Model}
-    The linear model $\mathbf y=\mathbf X\boldsymbol\beta+\boldsymbol\varepsilon$ is fitted under five assumptions:
+    The linear model $\mathbf y=\mathbf X\symbf\beta+\symbf\varepsilon$ is fitted under the following assumptions:
     \begin{itemize}
         \item The relationship between $y$ and the regressors is (approximately) linear
         \item $\mathrm{E}[\varepsilon_i]=0$
         \item $\mathrm{Var}(\varepsilon_i)=\sigma^2$ for all $i$ (constant variance)
-        \item The errors are uncorrelated
-        \item The errors are normally distributed (needed for the $t$ and $F$ procedures)
+        \item The errors are uncorrelated (independence)
+        \item The errors are normally distributed (needed for the inference)
     \end{itemize}
     Least squares returns estimates whether or not these assumptions hold.
 \end{frame}
@@ -27,8 +27,9 @@
 \begin{frame}{Raw Residuals}
     The $i$th residual is $e_i=y_i-\hat y_i$. In matrix form
     \begin{align*}
-        \mathbf e &= \mathbf y-\hat{\mathbf y} = (\mathbf I-\mathbf H)\mathbf y \\
-        &= (\mathbf I-\mathbf H)\boldsymbol\varepsilon ,
+        \mathbf e = \mathbf y-\hat{\mathbf y} = \mathbf y - \mathbf H \mathbf y &= (\mathbf I-\mathbf H)\mathbf y \\
+        &= (\mathbf I-\mathbf H)(\mathbf X \symbf{\beta} + \symbf\varepsilon) \\
+        &= (\mathbf I-\mathbf H)\symbf\varepsilon ,
     \end{align*}
     where the last step uses $(\mathbf I-\mathbf H)\mathbf X=\mathbf 0$.
 \end{frame}
@@ -40,8 +41,9 @@
         h_{ii}=\mathbf x_i^\top(\mathbf X^\top\mathbf X)^{-1}\mathbf x_i .
     \]
     \begin{itemize}
-        \item Intuitively, $h_{ii}$ measures how far $\mathbf x_i$ is from the center of the regressor data: points with unusual $x$-values have more "leverage" to pull the fitted surface toward their own $y_i$
-        \item $h_{ii}$ is large when $\mathbf x_i$ is far from the centroid of the regressor values
+        \item Intuitively, $h_{ii}$ measures how far $\mathbf x_i$ is from the centroid of the regressor values
+        \item $h_{ii}$ is large when $\mathbf{x}_i$ is far from the centroid of the regressor values
+        \item Points with unusual $\mathbf{x}_i$-values have more ``leverage" to pull the fitted surface toward their own $y_i$
         \item $0\le h_{ii}\le 1$ and $\sum_{i=1}^n h_{ii}=p$, where $p$ is the number of model parameters
         \item $\hat y_i=\sum_j h_{ij}y_j$, so $h_{ii}$ is the weight of $y_i$ in its own fitted value
     \end{itemize}
@@ -49,7 +51,7 @@
 
 
 \begin{frame}{Flagging High-Leverage Points}
-    Rule of thumb (MPV): observation $i$ has high leverage if
+    Rule of thumb: observation $i$ has high leverage if
     \[
         h_{ii} > \frac{2p}{n} .
     \]
@@ -92,11 +94,15 @@
 \begin{frame}{Are the Residuals iid?}
     The errors are assumed iid $N(0,\sigma^2)$. Are the residuals $e_1,\dots,e_n$ iid?
 
-    % No. $\mathrm{Var}(e_i)=\sigma^2(1-h_{ii})$ differs across $i$ whenever the $h_{ii}$ differ, $\mathrm{Cov}(e_i,e_j)=-\sigma^2h_{ij}\neq 0$, and the residuals satisfy the $p$ linear constraints $\mathbf X^\top\mathbf e=\mathbf 0$ (in particular $\sum_i e_i=0$ when the model has an intercept).
+    \pause
+
+    \svspace{1em}
+
+    No. $\mathrm{Var}(e_i)=\sigma^2(1-h_{ii})$ differs across $i$ whenever the $h_{ii}$ differ, $\mathrm{Cov}(e_i,e_j)=-\sigma^2h_{ij}\neq 0$, and the residuals satisfy the $p$ linear constraints $\mathbf X^\top\mathbf e=\mathbf 0$ (in particular $\sum_i e_i=0$ when the model has an intercept).
 \end{frame}
 
 
-\section{Standardized Residuals}
+\section{Different Type of Residuals}
 
 
 \begin{frame}{Standardized Residuals}
@@ -111,9 +117,6 @@
 \end{frame}
 
 
-\section{Studentized Residuals}
-
-
 \begin{frame}{Studentized Residuals}
     \begin{align}
         r_i = \frac{e_i}{\sqrt{\text{MSE}\,(1-h_{ii})}} = \frac{d_i}{\sqrt{1-h_{ii}}} \label{eq:r}
@@ -126,17 +129,7 @@
 \end{frame}
 
 
-\begin{frame}{Leverage and Residual Size}
-    Points with large leverage tend to have small raw residuals. Why?
-
-    % A large $h_{ii}$ pulls the fitted surface toward $y_i$, since $\hat y_i=\sum_j h_{ij}y_j$ contains $h_{ii}y_i$. Formally $\mathrm{Var}(e_i)=\sigma^2(1-h_{ii})\to 0$ as $h_{ii}\to 1$, so $e_i$ understates how far $y_i$ is from where the rest of the data would put it.
-\end{frame}
-
-
-\section{PRESS Residuals}
-
-
-\begin{frame}{Leave-One-Out Prediction Error}
+\begin{frame}{PRESS Residual: Leave-One-Out Prediction Error}
     The PRESS residual is the error when $y_i$ is predicted from the model fitted to the other $n-1$ observations
     \[
         e_{(i)} = y_i-\hat y_{(i)} = \frac{e_i}{1-h_{ii}} .
@@ -163,9 +156,6 @@
 \end{frame}
 
 
-\section{R-Student Residuals}
-
-
 \begin{frame}{Removing Observation $i$ From the Variance Estimate}
     MSE uses all $n$ observations, including observation $i$: a large $e_i$ inflates MSE and shrinks $r_i$. Instead use the variance estimate from the fit without observation $i$
     \begin{align}
@@ -175,7 +165,7 @@
 \end{frame}
 
 
-\begin{frame}{R-Student Residuals}
+\begin{frame}{R-Student Residuals (cont.)}
     \[
         t_i = \frac{e_i}{\sqrt{S_{(i)}^2\,(1-h_{ii})}}
     \]
@@ -206,6 +196,17 @@
 \end{frame}
 
 
+\begin{frame}{Leverage and Residual Size}
+    Points with large leverage tend to have small raw residuals. Why?
+
+    \pause
+
+    \svspace{1em}
+
+    A large $h_{ii}$ pulls the fitted surface toward $y_i$, since $\hat y_i=\sum_j h_{ij}y_j$ contains $h_{ii}y_i$. Formally $\mathrm{Var}(e_i)=\sigma^2(1-h_{ii})\to 0$ as $h_{ii}\to 1$, so $e_i$ understates how far $y_i$ is from where the rest of the data would put it.
+\end{frame}
+
+
 \section{Example: Delivery Time Data}
 
 
@@ -224,7 +225,7 @@
 
 
 \begin{frame}{Delivery Time Data: Residuals}
-    \small
+    \mode<presentation>{\small}
     \begin{center}
         \begin{tabular}{rrrrrrr}
             \toprule
@@ -246,7 +247,11 @@
 \begin{frame}{Observation 9}
     Observation 9 (30 cases, 1460 ft) has the largest leverage, $h_{99}=0.498$. Its residuals are $d_9=2.276$, $r_9=3.214$, $t_9=4.311$. Why does the residual keep growing from $d_9$ to $r_9$ to $t_9$?
 
-    % $r_9=d_9/\sqrt{1-h_{99}}=d_9/0.708$: high leverage shrinks $\mathrm{Var}(e_9)$, so the raw residual understates how unusual the point is. $t_9$ replaces $\text{MSE}=10.624$ by $S_{(9)}^2=5.905$, the variance estimate without observation 9 itself: the outlier no longer inflates the denominator.
+    \pause
+
+    \svspace{1em}
+
+    $r_9=d_9/\sqrt{1-h_{99}}=d_9/0.708$: high leverage shrinks $\mathrm{Var}(e_9)$, so the raw residual understates how unusual the point is. $t_9$ replaces $\text{MSE}=10.624$ by $S_{(9)}^2=5.905$, the variance estimate without observation 9 itself: the outlier no longer inflates the denominator.
 \end{frame}
 
 
@@ -343,7 +348,7 @@
         \item If the model is adequate, the points form a horizontal band around zero with no structure
         \item Any systematic pattern points to a violated assumption
     \end{itemize}
-    Why $\hat y_i$ and not $y_i$?
+    % Why $\hat y_i$ and not $y_i$?
 
     % $\mathrm{Cov}(\mathbf e,\hat{\mathbf y})=\mathbf 0$, but $\mathrm{Cov}(\mathbf e,\mathbf y)=\sigma^2(\mathbf I-\mathbf H)\neq\mathbf 0$. Plotting against $y_i$ builds in a spurious positive relation between residual and abscissa.
 \end{frame}
@@ -411,6 +416,7 @@
 
 \begin{frame}{Name the Violation}
     Which assumption does each plot call into question?
+
     \begin{columns}[T]
         \column{0.5\textwidth}
         \centering
@@ -512,6 +518,7 @@
 
 \begin{frame}{Name the Violation}
     Which assumption does each plot call into question?
+
     \begin{columns}[T]
         \column{0.5\textwidth}
         \centering
@@ -619,11 +626,11 @@
 \end{frame}
 
 
-\begin{frame}{Why $d\approx 2(1-r_1)$?}
-    Start from the numerator of \eqref{eq:dw}, $\sum_{t=2}^n (e_t-e_{t-1})^2$. Where does $2(1-r_1)$ come from?
+% \begin{frame}{Why $d\approx 2(1-r_1)$?}
+%     Start from the numerator of \eqref{eq:dw}, $\sum_{t=2}^n (e_t-e_{t-1})^2$. Where does $2(1-r_1)$ come from?
 
-    % Expand $(e_t-e_{t-1})^2=e_t^2+e_{t-1}^2-2e_te_{t-1}$. Sums of $e_t^2$ and $e_{t-1}^2$ over $t=2,\dots,n$ each differ from $\sum_{t=1}^n e_t^2$ by a single end term, so the numerator is approximately $2\sum e_t^2-2\sum e_te_{t-1}$. Dividing by $\sum e_t^2$ gives $2-2r_1$.
-\end{frame}
+%     % Expand $(e_t-e_{t-1})^2=e_t^2+e_{t-1}^2-2e_te_{t-1}$. Sums of $e_t^2$ and $e_{t-1}^2$ over $t=2,\dots,n$ each differ from $\sum_{t=1}^n e_t^2$ by a single end term, so the numerator is approximately $2\sum e_t^2-2\sum e_te_{t-1}$. Dividing by $\sum e_t^2$ gives $2-2r_1$.
+% \end{frame}
 
 
 \begin{frame}{Decision Rule}
@@ -695,6 +702,5 @@
     \begin{itemize}
         \item Residuals are not the errors: they have unequal variances and are correlated
         \item Plots first, tests second; tests depend heavily on $n$
-        \item A single observation can drive a rejection
     \end{itemize}
 \end{frame}
