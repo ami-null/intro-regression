@@ -28,7 +28,6 @@ A course on regression modeling, covering simple and multiple linear regression,
 Download link for each lecture is given below (work in progress).
 
 <!-- LECTURES:START -->
-
 | # | Title | Slides | Article |
 |---|---|---|---|
 | 01 | Introduction to Regression | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/01_intro/01_intro_presentation.pdf) | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/01_intro/01_intro_article.pdf) |
@@ -36,5 +35,7 @@ Download link for each lecture is given below (work in progress).
 | 03 | Maximum Likelihood Estimation (MLE) of the SLR Parameters | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/03_slr-mle/03_slr-mle_presentation.pdf) | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/03_slr-mle/03_slr-mle_article.pdf) |
 | 04 | Multiple Linear Regression | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/04_mlr/04_mlr_presentation.pdf) | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/04_mlr/04_mlr_article.pdf) |
 | 05 | Inference for Multiple Linear Regression | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/05_mlr-inference/05_mlr-inference_presentation.pdf) | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/05_mlr-inference/05_mlr-inference_article.pdf) |
+| 06 | Residual Analysis | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/06_residual-analysis/06_residual-analysis_presentation.pdf) | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/06_residual-analysis/06_residual-analysis_article.pdf) |
+
 
 <!-- LECTURES:END -->
