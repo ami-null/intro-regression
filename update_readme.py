@@ -95,7 +95,7 @@ def build_table(lectures) -> str:
         f"| {lec['number_str']} | {lec['title']} | [Download]({lec['slides_url']}) | [Download]({lec['article_url']}) |"
         for lec in lectures
     ]
-    return "\n".join([header, *rows, "\n"])
+    return "\n".join([header, *rows])
 
 
 def update_readme(table_markdown: str):
@@ -113,7 +113,7 @@ def update_readme(table_markdown: str):
         re.escape(TABLE_START_MARKER) + r".*?" + re.escape(TABLE_END_MARKER),
         re.DOTALL,
     )
-    replacement = f"{TABLE_START_MARKER}\n{table_markdown}\n{TABLE_END_MARKER}"
+    replacement = f"{TABLE_START_MARKER}\n\n{table_markdown}\n\n{TABLE_END_MARKER}"
     new_readme_text = pattern.sub(replacement, readme_text)
 
     README_PATH.write_text(new_readme_text, encoding="utf-8")
