@@ -27,7 +27,7 @@ toc:
 
 math:
   enabled: true
-  engine: mathjax
+  engine: katex
   macros:
     '\bX': '\mathbf{X}'
     '\bx': '\mathbf{x}'
