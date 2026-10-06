@@ -6,7 +6,7 @@
     \item Least-squares inference assumes a linear relationship, constant error variance, and normally distributed errors
     \item Residual plots reveal when these assumptions fail
     \item One standard remedy is to transform the data; weighting is a separate topic
-    \item Today: transforming $y$ to stabilize the variance, transforming $y$ or $x$ to linearize the model, and two analytical methods for choosing the power (Box--Cox for $y$, Box--Tidwell for $x$)
+    \item In this lecture: transforming $y$ to stabilize the variance, transforming $y$ or $x$ to linearize the model, and two analytical methods for choosing the power (Box--Cox for $y$, Box--Tidwell for $x$)
 \end{itemize}
 \end{frame}
 
@@ -16,7 +16,7 @@
     \item Plot R-student against the fitted values $\hat{y}_i$
     \item Outward-opening funnel: the spread grows with $E(y_i)$, common when $y$ is a count or an amount
     \item Double bow: the spread is largest in the middle and small at the extremes, typical when $y$ is a proportion
-    \item With nonconstant variance the OLS estimators remain unbiased but are no longer minimum-variance, and the usual $t$ and $F$ inferences are unreliable
+    \item With nonconstant variance the OLS estimators remain unbiased but are no longer minimum-variance, and the usual $t$ and $F$ tests are unreliable
 \end{itemize}
 \end{frame}
 
@@ -196,70 +196,70 @@ $R^2$ dropped from $0.7046$ for $y$ to $0.6485$ for $\sqrt{y}$. Does this mean t
 
 
 
-\section{Arcsine Transformation: Simulated Proportions}
+% \section{Arcsine Transformation: Simulated Proportions}
 
 
-\begin{frame}{Simulating Proportions}
-\begin{itemize}
-    \item $y_i = X_i/m$ with $X_i \sim \text{Binomial}(m, p_i)$ and $m = 20$
-    \item $p_i = 0.05 + 0.90\,x_i$, with $x_i$ at 10 equally spaced points in $[0, 1]$ and 30 replicates at each ($n = 300$)
-\end{itemize}
-\begin{align*}
-    E(y_i) = p_i, \qquad \Var(y_i) = \frac{p_i(1 - p_i)}{m}
-\end{align*}
-\begin{itemize}
-    \item So $\sigma^2 \propto E(y)[1 - E(y)]$, and the table suggests $y^* = \sin^{-1}\!\big(\sqrt{y}\,\big)$
-\end{itemize}
-\end{frame}
+% \begin{frame}{Simulating Proportions}
+% \begin{itemize}
+%     \item $y_i = X_i/m$ with $X_i \sim \text{Binomial}(m, p_i)$ and $m = 20$
+%     \item $p_i = 0.05 + 0.90\,x_i$, with $x_i$ at 10 equally spaced points in $[0, 1]$ and 30 replicates at each ($n = 300$)
+% \end{itemize}
+% \begin{align*}
+%     E(y_i) = p_i, \qquad \Var(y_i) = \frac{p_i(1 - p_i)}{m}
+% \end{align*}
+% \begin{itemize}
+%     \item So $\sigma^2 \propto E(y)[1 - E(y)]$, and the table suggests $y^* = \sin^{-1}\!\big(\sqrt{y}\,\big)$
+% \end{itemize}
+% \end{frame}
 
 
-\begin{frame}{Variance Before and After the Transformation}
-\begin{columns}[T]
-\begin{column}{0.5\textwidth}
-\centering
-Original $y$
+% \begin{frame}{Variance Before and After the Transformation}
+% \begin{columns}[T]
+% \begin{column}{0.5\textwidth}
+% \centering
+% Original $y$
 
-\mode<presentation>{\includegraphics[width=0.8\linewidth]{figures/as_variance_original.pdf}}
-\mode<article>{\includegraphics[width=0.9\linewidth]{figures/as_variance_original.pdf}}
-\end{column}
-\begin{column}{0.5\textwidth}
-\centering
-$y^* = \sin^{-1}\!\big(\sqrt{y}\,\big)$
+% \mode<presentation>{\includegraphics[width=0.8\linewidth]{figures/as_variance_original.pdf}}
+% \mode<article>{\includegraphics[width=0.9\linewidth]{figures/as_variance_original.pdf}}
+% \end{column}
+% \begin{column}{0.5\textwidth}
+% \centering
+% $y^* = \sin^{-1}\!\big(\sqrt{y}\,\big)$
 
-\mode<presentation>{\includegraphics[width=0.8\linewidth]{figures/as_variance_transformed.pdf}}
-\mode<article>{\includegraphics[width=0.9\linewidth]{figures/as_variance_transformed.pdf}}
-\end{column}
-\end{columns}
-\begin{itemize}
-    \item Each point: sample variance at one design point against the group mean
-    \item Left: the variance rises and then falls (dashed: $p(1-p)/m$)
-    \item Right: the variance is roughly constant (dashed: approximately $1/(4m)$)
-\end{itemize}
-\end{frame}
+% \mode<presentation>{\includegraphics[width=0.8\linewidth]{figures/as_variance_transformed.pdf}}
+% \mode<article>{\includegraphics[width=0.9\linewidth]{figures/as_variance_transformed.pdf}}
+% \end{column}
+% \end{columns}
+% \begin{itemize}
+%     \item Each point: sample variance at one design point against the group mean
+%     \item Left: the variance rises and then falls (dashed: $p(1-p)/m$)
+%     \item Right: the variance is roughly constant (dashed: approximately $1/(4m)$)
+% \end{itemize}
+% \end{frame}
 
 
-\begin{frame}{Residuals Before and After the Transformation}
-\begin{columns}[T]
-\begin{column}{0.5\textwidth}
-\centering
-Original $y$
+% \begin{frame}{Residuals Before and After the Transformation}
+% \begin{columns}[T]
+% \begin{column}{0.5\textwidth}
+% \centering
+% Original $y$
 
-\mode<presentation>{\includegraphics[width=\linewidth]{figures/as_rstudent_original.pdf}}
-\mode<article>{\includegraphics[width=0.9\linewidth]{figures/as_rstudent_original.pdf}}
-\end{column}
-\begin{column}{0.5\textwidth}
-\centering
-$y^* = \sin^{-1}\!\big(\sqrt{y}\,\big)$
+% \mode<presentation>{\includegraphics[width=\linewidth]{figures/as_rstudent_original.pdf}}
+% \mode<article>{\includegraphics[width=0.9\linewidth]{figures/as_rstudent_original.pdf}}
+% \end{column}
+% \begin{column}{0.5\textwidth}
+% \centering
+% $y^* = \sin^{-1}\!\big(\sqrt{y}\,\big)$
 
-\mode<presentation>{\includegraphics[width=\linewidth]{figures/as_rstudent_transformed.pdf}}
-\mode<article>{\includegraphics[width=0.9\linewidth]{figures/as_rstudent_transformed.pdf}}
-\end{column}
-\end{columns}
-\begin{itemize}
-    \item Original: the spread narrows at the extremes of $\hat{y}$ (double bow)
-    \item Transformed: the spread is more even across the fitted values
-\end{itemize}
-\end{frame}
+% \mode<presentation>{\includegraphics[width=\linewidth]{figures/as_rstudent_transformed.pdf}}
+% \mode<article>{\includegraphics[width=0.9\linewidth]{figures/as_rstudent_transformed.pdf}}
+% \end{column}
+% \end{columns}
+% \begin{itemize}
+%     \item Original: the spread narrows at the extremes of $\hat{y}$ (double bow)
+%     \item Transformed: the spread is more even across the fitted values
+% \end{itemize}
+% \end{frame}
 
 
 
@@ -577,7 +577,7 @@ The estimate is $\hat{\lambda} = 0.55$ with 95\% interval $(0.31, 0.78)$. Which 
 \end{align*}
 \begin{itemize}
     \item Box and Tidwell (1962) estimate $\alpha$ iteratively
-    \item Special cases: $\alpha = -1$ reciprocal, $\alpha = 1/2$ square root, $\alpha = 0$ logarithm
+    \item Special case: $\alpha = 0$: logarithm
 \end{itemize}
 \end{frame}
 
