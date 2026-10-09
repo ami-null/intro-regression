@@ -512,11 +512,28 @@ coef(lm(time ~ cases + distance,
 \begin{frame}{Question: what makes $\mathrm{Var}(\hat\beta_j)$ large?}
     Using \eqref{eq:var-bj}, which features of the data and the design make the variance of $\hat\beta_j$ large?
 
-    % Answer:
-    % - Large error variance sigma^2.
-    % - Small sample size n.
-    % - Little spread in regressor x_j (as in SLR, Var(beta_1) = sigma^2 / S_xx).
-    % - Strong linear relationship between x_j and the other regressors: C_jj becomes large. This is the collinearity problem.
+    \svspace{1em}
+
+    \pause
+
+    \begin{itemize}
+        \item Large error variance $\sigma^2$.
+        \item Small sample size $n$.
+        \item Little spread in regressor $\mathbf{x}_j$ (as in SLR, $\Var(\hat{\beta}_1) = \sigma^2 / S_{xx}$).
+        \item Strong linear relationship between $\mathbf{x}_j$ and the other regressors: $C_{jj}$ becomes large. This is the collinearity problem.
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Distribution of the estimates under normal errors}
+
+
+\begin{frame}{Distribution of $\hat{\symbfit{\beta}}$}
+    Add the assumption $\symbfit{\varepsilon}\sim N_n(\mathbf 0,\sigma^2\mathbf I_n)$. By \eqref{eq:decomp}, $\hat{\symbfit{\beta}}$ is a linear function of a normal vector, hence normal:
+    \begin{align}
+        \hat{\symbfit{\beta}} \sim N_p\big(\symbfit{\beta},\ \sigma^2(\mathbf X'\mathbf X)^{-1}\big). \label{eq:beta-dist}
+    \end{align}
+    The mean and covariance matrix are the ones derived above. This result drives the inference procedures in the coming weeks.
 \end{frame}
 
 
@@ -530,18 +547,6 @@ coef(lm(time ~ cases + distance,
         \item Unbiased: $E[\hat{\symbfit{\beta}}]=\symbfit{\beta}$.
         \item Best: among all linear unbiased estimators, each $\hat\beta_j$, and more generally each $\mathbf c'\hat{\symbfit{\beta}}$, has the smallest variance.
     \end{itemize}
-\end{frame}
-
-
-\section{Distribution under normal errors}
-
-
-\begin{frame}{Distribution of $\hat{\symbfit{\beta}}$}
-    Add the assumption $\symbfit{\varepsilon}\sim N_n(\mathbf 0,\sigma^2\mathbf I_n)$. By \eqref{eq:decomp}, $\hat{\symbfit{\beta}}$ is a linear function of a normal vector, hence normal:
-    \begin{align}
-        \hat{\symbfit{\beta}} \sim N_p\big(\symbfit{\beta},\ \sigma^2(\mathbf X'\mathbf X)^{-1}\big). \label{eq:beta-dist}
-    \end{align}
-    The mean and covariance matrix are the ones derived above. This result drives the inference procedures in the coming weeks.
 \end{frame}
 
 
@@ -638,6 +643,8 @@ coef(lm(time ~ cases + distance,
 \begin{frame}{Question: why divide by $n-p$?}
     The $n$ residuals are $e_i=y_i-\hat y_i$. Looking at \eqref{eq:E-sse}, why is the divisor of SSE $n-p$ and not $n$?
     What is the bias of $\hat\sigma^2_{\mathrm{ML}}$ in \eqref{eq:mle-s2}?
+
+    \svspace{1em}
 
     \pause
 
