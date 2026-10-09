@@ -260,8 +260,8 @@
 \begin{frame}{The normal equations}
     \begin{align}
         \frac{\partial S}{\partial\symbfit{\beta}} &= -2\mathbf X'\mathbf y + 2\mathbf X'\mathbf X\symbfit{\beta}, \notag\\
-        \left.\frac{\partial S}{\partial\symbfit{\beta}}\right|_{\hat{\symbfit{\beta}}} &= \mathbf 0, \notag\\
-        \mathbf X'\mathbf X\hat{\symbfit{\beta}} &= \mathbf X'\mathbf y. \label{eq:normal}
+        \left.\frac{\partial S}{\partial\symbfit{\beta}}\right|_{\symbfit{\beta} = \hat{\symbfit{\beta}}} &= -2\mathbf X'\mathbf y + 2\mathbf X'\mathbf X\hat{\symbfit{\beta}} =  \mathbf 0, \notag\\
+        \Rightarrow \mathbf X'\mathbf X\hat{\symbfit{\beta}} &= \mathbf X'\mathbf y. \label{eq:normal}
     \end{align}
     This is a system of $p$ linear equations in the $p$ unknowns $\hat\beta_0,\dots,\hat\beta_k$.
 \end{frame}
@@ -292,27 +292,6 @@
         \item For any $\mathbf a\neq\mathbf 0$: $\mathbf a'\mathbf X'\mathbf X\mathbf a = (\mathbf X\mathbf a)'(\mathbf X\mathbf a) = \|\mathbf X\mathbf a\|^2 > 0$, because full column rank gives $\mathbf X\mathbf a\neq\mathbf 0$.
         \item So $\mathbf X'\mathbf X$ is positive definite and $\hat{\symbfit{\beta}}$ is the unique minimiser of \eqref{eq:ls-crit}.
     \end{itemize}
-\end{frame}
-
-
-\begin{frame}[allowframebreaks]{SLR as a special Case of MLR}
-    For SLR, $\mathbf X = [\mathbf 1\;\; \mathbf x]$ and
-    \begin{align*}
-        \mathbf X'\mathbf X &= \begin{pmatrix} n & \sum x_i \\ \sum x_i & \sum x_i^2 \end{pmatrix}, &
-        \mathbf X'\mathbf y &= \begin{pmatrix} \sum y_i \\ \sum x_i y_i \end{pmatrix}.
-    \end{align*}
-
-    \framebreak
-
-    Since $n\sum x_i^2 - (\sum x_i)^2 = nS_{xx}$,
-    \[
-    (\mathbf X'\mathbf X)^{-1} = \frac{1}{nS_{xx}}\begin{pmatrix} \sum x_i^2 & -\sum x_i \\ -\sum x_i & n \end{pmatrix}.
-    \]
-    The second entry of $(\mathbf X'\mathbf X)^{-1}\mathbf X'\mathbf y$ is
-    \[
-    \hat\beta_1 = \frac{n\sum x_i y_i - \sum x_i\sum y_i}{nS_{xx}} = \frac{nS_{xy}}{nS_{xx}} = \frac{S_{xy}}{S_{xx}},
-    \]
-    which is \eqref{eq:slr-b1}.
 \end{frame}
 
 
@@ -530,17 +509,6 @@ coef(lm(time ~ cases + distance,
 \end{frame}
 
 
-\begin{frame}{SLR variance from the MLR covariance matrix}
-    Using the inverse computed for SLR, with $\sum x_i^2 = S_{xx} + n\bar x^2$:
-    \begin{align*}
-        \mathrm{Var}(\hat\beta_1) &= \sigma^2\,\frac{n}{nS_{xx}} = \frac{\sigma^2}{S_{xx}}, \\
-        \mathrm{Var}(\hat\beta_0) &= \sigma^2\,\frac{\sum x_i^2}{nS_{xx}} = \sigma^2\left(\frac1n + \frac{\bar x^2}{S_{xx}}\right), \\
-        \mathrm{Cov}(\hat\beta_0,\hat\beta_1) &= -\sigma^2\,\frac{\sum x_i}{nS_{xx}} = -\sigma^2\,\frac{\bar x}{S_{xx}}.
-    \end{align*}
-    These are the familiar SLR results.
-\end{frame}
-
-
 \begin{frame}{Question: what makes $\mathrm{Var}(\hat\beta_j)$ large?}
     Using \eqref{eq:var-bj}, which features of the data and the design make the variance of $\hat\beta_j$ large?
 
@@ -577,7 +545,16 @@ coef(lm(time ~ cases + distance,
 \end{frame}
 
 
+\section{Maximum Likelihood Estimation of MLR Parameters}
+
+
 \begin{frame}{Maximum likelihood under normal errors}
+    The likelihood function is given by:
+    \begin{align*}
+        L(\symbfit{\beta},\sigma^2) &= \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}} \exp\!\left(-\frac{(y_i-\mathbf x_i'\symbfit{\beta})^2}{2\sigma^2}\right) \\
+        &= (2\pi\sigma^2)^{-n/2} \exp\!\left(-\frac{1}{2\sigma^2}(\mathbf y-\mathbf X\symbfit{\beta})'(\mathbf y-\mathbf X\symbfit{\beta})\right).
+    \end{align*}
+
     The log-likelihood of $(\symbfit{\beta},\sigma^2)$ is
     \begin{align}
         \ell(\symbfit{\beta},\sigma^2) = -\frac n2\ln(2\pi\sigma^2) - \frac{1}{2\sigma^2}(\mathbf y-\mathbf X\symbfit{\beta})'(\mathbf y-\mathbf X\symbfit{\beta}). \label{eq:loglik}
@@ -599,11 +576,13 @@ coef(lm(time ~ cases + distance,
 
 
 \begin{frame}{Residual sum of squares in matrix form}
+    The sum square error is given by:
     \begin{align}
-        \mathrm{SSE} &= \mathbf e'\mathbf e = \mathbf y'(\mathbf I-\mathbf H)'(\mathbf I-\mathbf H)\mathbf y \notag\\
+        \mathrm{SSE} = \sum_{i=1}^{n} e_i^2 &= \mathbf e'\mathbf e \notag \\
+        &= \mathbf y'(\mathbf I-\mathbf H)'(\mathbf I-\mathbf H)\mathbf y \notag\\
         &= \mathbf y'(\mathbf I-\mathbf H)\mathbf y. \label{eq:sse}
     \end{align}
-    The first line uses \eqref{eq:resid}; the second uses \eqref{eq:IH-sym} and \eqref{eq:IH-idem}.
+    We saw in equation \eqref{eq:resid} that \(\mathbf e = \mathbf y - \hat{\mathbf y} = (\mathbf I-\mathbf H)\mathbf y\); and in equations \eqref{eq:IH-sym} and \eqref{eq:IH-idem}, we saw that \((\mathbf I-\mathbf H)\) is symmetric and idempotent.
 \end{frame}
 
 
@@ -797,6 +776,45 @@ coef(lm(time ~ cases + distance,
         \item $R^2_{\mathrm{adj}}$ is a descriptive measure, not a hypothesis test.
         \item Formal comparison of models is done later with F-tests and information criteria.
     \end{itemize}
+\end{frame}
+
+
+\section{SLR as a Special Case of MLE}
+
+
+\begin{frame}[allowframebreaks]{SLR as a special Case of MLR}
+    For SLR, $\mathbf X = [\mathbf 1\;\; \mathbf x]$ and
+    \begin{align*}
+        \mathbf X'\mathbf X &= \begin{pmatrix} n & \sum x_i \\ \sum x_i & \sum x_i^2 \end{pmatrix}, &
+        \mathbf X'\mathbf y &= \begin{pmatrix} \sum y_i \\ \sum x_i y_i \end{pmatrix}.
+    \end{align*}
+
+    \framebreak
+
+    Since $n\sum x_i^2 - (\sum x_i)^2 = nS_{xx}$,
+    \[
+    (\mathbf X'\mathbf X)^{-1} = \frac{1}{nS_{xx}}\begin{pmatrix} \sum x_i^2 & -\sum x_i \\ -\sum x_i & n \end{pmatrix}.
+    \]
+    The second entry of $(\mathbf X'\mathbf X)^{-1}\mathbf X'\mathbf y$ is
+    \[
+    \hat\beta_1 = \frac{n\sum x_i y_i - \sum x_i\sum y_i}{nS_{xx}} = \frac{nS_{xy}}{nS_{xx}} = \frac{S_{xy}}{S_{xx}},
+    \]
+    which is \eqref{eq:slr-b1}.
+\end{frame}
+
+
+\begin{frame}{SLR variance from the MLR covariance matrix}
+    In equation (\ref{eq:cov-beta}) we found that \(\mathrm{Var}(\hat{\symbfit{\beta}}) = \sigma^2(\mathbf X'\mathbf X)^{-1}\).
+
+    \svspace{0.5em}
+
+    Using the inverse computed for SLR, with $\sum x_i^2 = S_{xx} + n\bar x^2$:
+    \begin{align*}
+        \mathrm{Var}(\hat\beta_1) &= \sigma^2\,\frac{n}{nS_{xx}} = \frac{\sigma^2}{S_{xx}}, \\
+        \mathrm{Var}(\hat\beta_0) &= \sigma^2\,\frac{\sum x_i^2}{nS_{xx}} = \sigma^2\left(\frac1n + \frac{\bar x^2}{S_{xx}}\right), \\
+        \mathrm{Cov}(\hat\beta_0,\hat\beta_1) &= -\sigma^2\,\frac{\sum x_i}{nS_{xx}} = -\sigma^2\,\frac{\bar x}{S_{xx}}.
+    \end{align*}
+    These are the familiar SLR results.
 \end{frame}
 
 
