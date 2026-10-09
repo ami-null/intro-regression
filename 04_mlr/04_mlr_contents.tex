@@ -177,8 +177,8 @@
 
 \begin{frame}{Model assumptions}
     \begin{align}
-        E[\symbfit{\varepsilon}] &= \mathbf 0, \label{eq:assump-mean}\\
-        \mathrm{Var}(\symbfit{\varepsilon}) &= \sigma^2\mathbf I_n. \label{eq:assump-var}
+        \E[\symbfit{\varepsilon}] &= \mathbf 0, \label{eq:assump-mean}\\
+        \Var(\symbfit{\varepsilon}) &= \sigma^2\mathbf I_n. \label{eq:assump-var}
     \end{align}
     \begin{itemize}
         \item $\mathbf X$ is fixed (non-random) and has full column rank, i.e.\ $\mathrm{rank}(\mathbf X)=p\le n$.
@@ -575,37 +575,43 @@ coef(lm(time ~ cases + distance,
 \section{Estimating the variance parameter \texorpdfstring{$\sigma^2$}{sigma squared}}
 
 
-\begin{frame}{Residual sum of squares in matrix form}
-    The sum square error is given by:
-    \begin{align}
-        \mathrm{SSE} = \sum_{i=1}^{n} e_i^2 &= \mathbf e'\mathbf e \notag \\
-        &= \mathbf y'(\mathbf I-\mathbf H)'(\mathbf I-\mathbf H)\mathbf y \notag\\
-        &= \mathbf y'(\mathbf I-\mathbf H)\mathbf y. \label{eq:sse}
-    \end{align}
-    We saw in equation \eqref{eq:resid} that \(\mathbf e = \mathbf y - \hat{\mathbf y} = (\mathbf I-\mathbf H)\mathbf y\); and in equations \eqref{eq:IH-sym} and \eqref{eq:IH-idem}, we saw that \((\mathbf I-\mathbf H)\) is symmetric and idempotent.
-\end{frame}
+% \begin{frame}{Residual sum of squares in matrix form}
+%     The sum square error is given by:
+%     \begin{align}
+%         \mathrm{SSE} = \sum_{i=1}^{n} e_i^2 &= \mathbf e'\mathbf e \notag \\
+%         &= \mathbf y'(\mathbf I-\mathbf H)'(\mathbf I-\mathbf H)\mathbf y \notag\\
+%         &= \mathbf y'(\mathbf I-\mathbf H)\mathbf y. \label{eq:sse}
+%     \end{align}
+%     We saw in equation \eqref{eq:resid} that \(\mathbf e = \mathbf y - \hat{\mathbf y} = (\mathbf I-\mathbf H)\mathbf y\); and in equations \eqref{eq:IH-sym} and \eqref{eq:IH-idem}, we saw that \((\mathbf I-\mathbf H)\) is symmetric and idempotent.
+% \end{frame}
 
 
 \begin{frame}{Residuals as a function of the errors}
+    The residual vector can also be written as:
     \begin{align}
-        \mathbf e &= (\mathbf I-\mathbf H)(\mathbf X\symbfit{\beta}+\symbfit{\varepsilon}) \notag\\
-        &= (\mathbf I-\mathbf H)\symbfit{\varepsilon}, \label{eq:e-eps}\\
-        \mathrm{SSE} &= \symbfit{\varepsilon}'(\mathbf I-\mathbf H)\symbfit{\varepsilon}. \label{eq:sse-eps}
+        \mathbf{e} = \mathbf{y} - \mathbf{\hat{y}} = \mathbf{y} - \mathbf{H} \mathbf{y} &= (\mathbf I-\mathbf H)\mathbf{y} \notag \\
+        &= (\mathbf I-\mathbf H)(\mathbf X\symbfit{\beta}+\symbfit{\varepsilon}) = (\mathbf I-\mathbf H)\symbfit{\varepsilon}, \label{eq:e-eps}.
     \end{align}
-    The first line uses \eqref{eq:IHX}; \eqref{eq:sse-eps} follows as in \eqref{eq:sse}, now with \eqref{eq:e-eps}.
+    Equation \eqref{eq:e-eps} holds because \((\mathbf I-\mathbf H) \mathbf{X} = 0\) as per \eqref{eq:IHX}.
+    Then the residual sum of squares:
+    \begin{align}
+        \mathrm{SSE} = \sum_{i=1}^{n} e_i^2 &= \mathbf e'\mathbf e \notag \notag \\
+        &= \symbfit{\varepsilon}' (\mathbf I-\mathbf H)' (\mathbf I-\mathbf H) \symbfit{\varepsilon} = \symbfit{\varepsilon}' (\mathbf I-\mathbf H) \symbfit{\varepsilon}. \label{eq:sse-eps}
+    \end{align}
+    Equation \eqref{eq:sse-eps} because \((\mathbf I-\mathbf H)\) is symmetric and idempotent as per equations \eqref{eq:IH-sym} and \eqref{eq:IH-idem}.
 \end{frame}
 
 
 \begin{frame}{Expectation of a quadratic form}
     For a constant symmetric matrix $\mathbf B$:
     \begin{align}
-        E[\symbfit{\varepsilon}'\mathbf B\symbfit{\varepsilon}] &= E\big[\mathrm{tr}(\symbfit{\varepsilon}'\mathbf B\symbfit{\varepsilon})\big] = E\big[\mathrm{tr}(\mathbf B\symbfit{\varepsilon}\symbfit{\varepsilon}')\big] \notag\\
-        &= \mathrm{tr}\big(\mathbf B\,E[\symbfit{\varepsilon}\symbfit{\varepsilon}']\big) = \sigma^2\,\mathrm{tr}(\mathbf B). \label{eq:quad-form}
+        \E[\symbfit{\varepsilon}'\mathbf B\symbfit{\varepsilon}] &= \E\big[\mathrm{tr}(\symbfit{\varepsilon}'\mathbf B\symbfit{\varepsilon})\big] = \E\big[\mathrm{tr}(\mathbf B\symbfit{\varepsilon}\symbfit{\varepsilon}')\big] \notag\\
+        &= \mathrm{tr}\big(\mathbf B\,\E[\symbfit{\varepsilon}\symbfit{\varepsilon}']\big) = \sigma^2\,\mathrm{tr}(\mathbf B). \label{eq:quad-form}
     \end{align}
     \begin{itemize}
         \item A scalar equals its trace.
-        \item $\mathrm{tr}(\mathbf M\mathbf N)=\mathrm{tr}(\mathbf N\mathbf M)$, and $E$ commutes with $\mathrm{tr}$.
-        \item $E[\symbfit{\varepsilon}\symbfit{\varepsilon}']=\sigma^2\mathbf I_n$ by \eqref{eq:assump-mean} and \eqref{eq:assump-var}.
+        \item $\mathrm{tr}(\mathbf M\mathbf N)=\mathrm{tr}(\mathbf N\mathbf M)$, and expectation ($\E$) commutes with $\mathrm{tr}$.
+        \item $\E[\symbfit{\varepsilon}\symbfit{\varepsilon}']=\sigma^2\mathbf I_n$ becuase \(\E[\symbfit{\varepsilon}] = \mathbf 0\) as mentioned in \eqref{eq:assump-mean} and \(\Var(\symbfit{\varepsilon}) = \sigma^2\mathbf I_n\) as in \eqref{eq:assump-var}, therefore, \(\E[\symbfit{\varepsilon}\symbfit{\varepsilon}] = \E[(\symbfit{\varepsilon} - \mathbf{0}) (\symbfit{\varepsilon} - \mathbf{0})'] = \Var(\symbfit{\varepsilon}) = \sigma^2\mathbf{I}_n\).
     \end{itemize}
 \end{frame}
 
@@ -632,6 +638,14 @@ coef(lm(time ~ cases + distance,
 \begin{frame}{Question: why divide by $n-p$?}
     The $n$ residuals are $e_i=y_i-\hat y_i$. Looking at \eqref{eq:E-sse}, why is the divisor of SSE $n-p$ and not $n$?
     What is the bias of $\hat\sigma^2_{\mathrm{ML}}$ in \eqref{eq:mle-s2}?
+
+    \pause
+
+    \begin{itemize}
+        \item The residuals satisfy the $p$ linear constraints \(\mathbf{X'} \mathbf{e} = \mathbf{0}\) (as seen in euqation \ref{eq:orth}), so only $n-p$ of them are free, therefore, $n-p$ degrees of freedom
+        \item \(\E(\mathrm{SSE}/n) = \sigma^2 (n-p)/n\) which is smaller than \(\sigma^2\)
+        \item So the ML estimator of the variance term, \(\hat{\sigma}^2_{ml} = \mathrm{SSE}/n\) underestimates \(\sigma^2\)
+    \end{itemize}
 
     % Answer:
     % - The residuals satisfy the p linear constraints X'e = 0 in (eq:orth), so only n-p of them are free: n-p degrees of freedom.
