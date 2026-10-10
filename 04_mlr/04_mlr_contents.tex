@@ -682,6 +682,33 @@ coef(lm(time ~ cases + distance,
 \end{frame}
 
 
+\begin{frame}{Delivery time data: variance-covariance matrix of the estimates}
+    From \eqref{eq:cov-beta} with $\sigma^2$ replaced by $\hat\sigma^2=10.62$ and $(\mathbf X'\mathbf X)^{-1}$ from before:
+    \footnotesize
+    \setlength{\arraycolsep}{3pt}
+    \begin{align*}
+        \widehat{\mathrm{Var}}(\hat{\symbfit{\beta}}) = \hat\sigma^2(\mathbf X'\mathbf X)^{-1}
+        &= 10.62
+        \begin{pmatrix}
+            1.13\times10^{-1} & -4.45\times10^{-3} & -8.37\times10^{-5} \\
+            -4.45\times10^{-3} & 2.74\times10^{-3} & -4.79\times10^{-5} \\
+            -8.37\times10^{-5} & -4.79\times10^{-5} & 1.23\times10^{-6}
+        \end{pmatrix} \\
+        &\approx
+        \begin{pmatrix}
+            1.20 & -4.73\times10^{-2} & -8.89\times10^{-4} \\
+            -4.73\times10^{-2} & 2.91\times10^{-2} & -5.09\times10^{-4} \\
+            -8.89\times10^{-4} & -5.09\times10^{-4} & 1.31\times10^{-5}
+        \end{pmatrix}.
+    \end{align*}
+    \normalsize
+    \begin{itemize}
+        \item The diagonal entries are $\widehat{\mathrm{Var}}(\hat\beta_j)$; their square roots are the standard errors $1.097$, $0.171$ and $0.00362$ in \eqref{eq:se}.
+        \item The off-diagonal entries are estimated covariances; e.g.\ $\widehat{\mathrm{Cov}}(\hat\beta_1,\hat\beta_2)=-5.09\times10^{-4}<0$: the estimates of the cases and distance coefficients are negatively correlated, because the regressors are positively correlated ($r=0.82$).
+    \end{itemize}
+\end{frame}
+
+
 \begin{frame}{Delivery time data: standard errors}
     Using \eqref{eq:se}:
     \begin{center}
