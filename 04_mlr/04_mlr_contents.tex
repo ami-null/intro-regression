@@ -189,7 +189,7 @@
 
 \begin{frame}{What does $\mathrm{Var}(\symbfit{\varepsilon})=\sigma^2\mathbf I_n$ say?}
     \[
-    \mathrm{Var}(\symbfit{\varepsilon}) = E[\symbfit{\varepsilon}\symbfit{\varepsilon}'] =
+    \mathrm{Var}(\symbfit{\varepsilon}) = \E[\symbfit{\varepsilon}\symbfit{\varepsilon}'] = \E[(\symbfit{\varepsilon} - \mathbf{0}) (\symbfit{\varepsilon} - \mathbf{0})']
     \begin{pmatrix}
         \sigma^2 & 0 & \cdots & 0 \\
         0 & \sigma^2 & \cdots & 0 \\
@@ -474,10 +474,10 @@ coef(lm(time ~ cases + distance,
 
 
 \begin{frame}{The covariance matrix of a random vector}
-    \[
-    \mathrm{Var}(\hat{\symbfit{\beta}}) = E\big[(\hat{\symbfit{\beta}}-E[\hat{\symbfit{\beta}}])(\hat{\symbfit{\beta}}-E[\hat{\symbfit{\beta}}])'\big]
-    \]
-    is a $p\times p$ symmetric matrix:
+    % \[
+    % \mathrm{Var}(\hat{\symbfit{\beta}}) = E\big[(\hat{\symbfit{\beta}}-E[\hat{\symbfit{\beta}}])(\hat{\symbfit{\beta}}-E[\hat{\symbfit{\beta}}])'\big]
+    % \]
+    \(\hat{\symbfit{\beta}}\) is \(p\) dimensional random vector. Therefore, \(\mathrm{Var}(\hat{\symbfit{\beta}})\) is a $p\times p$ symmetric matrix:
     \begin{itemize}
         \item diagonal entries: $\mathrm{Var}(\hat\beta_j)$;
         \item off-diagonal entries: $\mathrm{Cov}(\hat\beta_i,\hat\beta_j)$.
@@ -491,7 +491,8 @@ coef(lm(time ~ cases + distance,
 
 \begin{frame}{Covariance matrix of $\hat{\symbfit{\beta}}$}
     \begin{align}
-        \mathrm{Var}(\hat{\symbfit{\beta}}) &= \mathrm{Var}\big((\mathbf X'\mathbf X)^{-1}\mathbf X'\symbfit{\varepsilon}\big) \notag\\
+        \mathrm{Var}(\hat{\symbfit{\beta}}) &= \mathrm{Var}\big(\symbfit{\beta} + (\mathbf X'\mathbf X)^{-1}\mathbf X'\symbfit{\varepsilon}\big) \notag\\
+         &= \mathrm{Var}\big((\mathbf X'\mathbf X)^{-1}\mathbf X'\symbfit{\varepsilon}\big) \notag\\
         &= (\mathbf X'\mathbf X)^{-1}\mathbf X'\,\mathrm{Var}(\symbfit{\varepsilon})\,\mathbf X(\mathbf X'\mathbf X)^{-1} \notag\\
         &= \sigma^2(\mathbf X'\mathbf X)^{-1}\mathbf X'\mathbf X(\mathbf X'\mathbf X)^{-1} \notag\\
         &= \sigma^2(\mathbf X'\mathbf X)^{-1}. \label{eq:cov-beta}
