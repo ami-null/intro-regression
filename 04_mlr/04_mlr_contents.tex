@@ -182,24 +182,27 @@
     \end{align}
     \begin{itemize}
         \item $\mathbf X$ is fixed (non-random) and has full column rank, i.e.\ $\mathrm{rank}(\mathbf X)=p\le n$.
-        \item No distributional assumption on $\symbfit{\varepsilon}$ is needed yet.
+        \item No distributional assumption on $\symbfit{\varepsilon}$ is needed yet for estimation (however noramility assumption is required later for inference)
     \end{itemize}
+    \svspace{0.5em}
+    \(\E[\symbfit{\varepsilon}]\) is a \(n\) dimensional vector of zeroes.
 \end{frame}
 
 
 \begin{frame}{What does $\mathrm{Var}(\symbfit{\varepsilon})=\sigma^2\mathbf I_n$ say?}
     \[
-    \mathrm{Var}(\symbfit{\varepsilon}) = \E[\symbfit{\varepsilon}\symbfit{\varepsilon}'] = \E[(\symbfit{\varepsilon} - \mathbf{0}) (\symbfit{\varepsilon} - \mathbf{0})']
+    \mathrm{Var}(\symbfit{\varepsilon}) = \E[\symbfit{\varepsilon}\symbfit{\varepsilon}'] = \E[(\symbfit{\varepsilon} - \mathbf{0}) (\symbfit{\varepsilon} - \mathbf{0})'] = 
     \begin{pmatrix}
         \sigma^2 & 0 & \cdots & 0 \\
         0 & \sigma^2 & \cdots & 0 \\
-        \vdots & & \ddots & \vdots \\
+        \vdots & \vdots & \ddots & \vdots \\
         0 & 0 & \cdots & \sigma^2
     \end{pmatrix}
     \]
     \begin{itemize}
-        \item Diagonal entries: every error has the same variance $\sigma^2$ (constant variance).
-        \item Off-diagonal entries: errors of different observations are uncorrelated.
+        \item \(\Var(\symbfit{\varepsilon})\) is \(n \times n\) dimensional variance-covariance matrix.
+        \item Diagonal entries: the $i$-th diagonal entry contains the variance of the $i$-th error term. In this model, every error has the same variance $\sigma^2$ (constant variance).
+        \item Off-diagonal entries: cell ($i$, $l$) contains the covariance between observations $i$ and $l$. In this model, errors of different observations are uncorrelated, hence covariances are zero.
     \end{itemize}
 \end{frame}
 
@@ -279,7 +282,7 @@
     \begin{itemize}
         \item $\mathbf X'\mathbf X$ ($p\times p$) is invertible if and only if $\mathbf X$ has full column rank.
         \item That requires $n\ge p$ and no column of $\mathbf X$ being a linear combination of the other columns.
-        \item If a regressor is (nearly) a linear combination of the others, $\mathbf X'\mathbf X$ is singular (nearly singular): this is the collinearity problem, treated in a later week.
+        \item If a regressor is (nearly) a linear combination of the others, $\mathbf X'\mathbf X$ is singular (nearly singular): this is the collinearity problem, discussed in a later lecture.
     \end{itemize}
 \end{frame}
 
@@ -319,7 +322,7 @@
 
     \svspace{1em}
 
-    Prove \eqref{eq:H-idem} from the definition \eqref{eq:H-def}.
+    Prove \eqref{eq:H-idem} and \eqref{eq:HX} from the definition \eqref{eq:H-def}.
 
     % Answer:
     % H^2 = X(X'X)^{-1}X' X(X'X)^{-1}X' = X(X'X)^{-1}[X'X(X'X)^{-1}]X' = X(X'X)^{-1}X' = H.
@@ -604,7 +607,7 @@ coef(lm(time ~ cases + distance,
         \mathrm{SSE} = \sum_{i=1}^{n} e_i^2 &= \mathbf e'\mathbf e \notag \notag \\
         &= \symbfit{\varepsilon}' (\mathbf I-\mathbf H)' (\mathbf I-\mathbf H) \symbfit{\varepsilon} = \symbfit{\varepsilon}' (\mathbf I-\mathbf H) \symbfit{\varepsilon}. \label{eq:sse-eps}
     \end{align}
-    Equation \eqref{eq:sse-eps} because \((\mathbf I-\mathbf H)\) is symmetric and idempotent as per equations \eqref{eq:IH-sym} and \eqref{eq:IH-idem}.
+    Equation \eqref{eq:sse-eps} holds because \((\mathbf I-\mathbf H)\) is symmetric and idempotent as per equations \eqref{eq:IH-sym} and \eqref{eq:IH-idem}.
 \end{frame}
 
 
