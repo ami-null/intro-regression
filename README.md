@@ -38,5 +38,6 @@ Download link for each lecture is given below (work in progress).
 | 05 | Inference for Multiple Linear Regression | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/05_mlr-inference/05_mlr-inference_presentation.pdf) | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/05_mlr-inference/05_mlr-inference_article.pdf) |
 | 06 | Residual Analysis | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/06_residual-analysis/06_residual-analysis_presentation.pdf) | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/06_residual-analysis/06_residual-analysis_article.pdf) |
 | 07 | Transformation of Variables | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/07_transformation-of-variables/07_transformation-of-variables_presentation.pdf) | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/07_transformation-of-variables/07_transformation-of-variables_article.pdf) |
+| 08 | Dummy Variables and Interaction | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/08_dummy-vars_interaction/08_dummy-vars_interaction_presentation.pdf) | [Download](https://raw.githubusercontent.com/ami-null/intro-regression/main/08_dummy-vars_interaction/08_dummy-vars_interaction_article.pdf) |
 
 <!-- LECTURES:END -->
