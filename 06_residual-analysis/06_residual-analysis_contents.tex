@@ -418,17 +418,21 @@
     Which assumption does each plot call into question?
 
     \begin{columns}[T]
-        \column{0.5\textwidth}
+        \column{0.32\textwidth}
         \centering
-        (a)\par
-        \mode<presentation>{\includegraphics[height=0.6\textheight]{figures/pat-funnel}}\mode<article>{\includegraphics[width=0.6\linewidth]{figures/pat-funnel}}
-        \column{0.5\textwidth}
+        (i)\par
+        \mode<presentation>{\includegraphics[width=\linewidth]{figures/pat-funnel}}\mode<article>{\includegraphics[width=0.9\linewidth]{figures/pat-funnel}}
+        \column{0.32\textwidth}
         \centering
-        (c)\par
-        \mode<presentation>{\includegraphics[height=0.6\textheight]{figures/pat-ok}}\mode<article>{\includegraphics[width=0.6\linewidth]{figures/pat-ok}}
+        (ii)\par
+        \mode<presentation>{\includegraphics[width=\linewidth]{figures/pat-bow}}\mode<article>{\includegraphics[width=0.9\linewidth]{figures/pat-bow}}
+        \column{0.32\textwidth}
+        \centering
+        (iii)\par
+        \mode<presentation>{\includegraphics[width=\linewidth]{figures/pat-ok}}\mode<article>{\includegraphics[width=0.9\linewidth]{figures/pat-ok}}
     \end{columns}
 
-    % (a) funnel: nonconstant variance increasing with the mean. (c) satisfactory: no evidence against constant variance.
+    % (i) funnel: nonconstant variance, the spread grows with the mean. (ii) double bow: nonconstant variance, the spread is largest in the middle. (iii) satisfactory: no evidence against constant variance.
 \end{frame}
 
 
@@ -672,6 +676,26 @@
 
 
 \section{Summary}
+
+
+\begin{frame}{Review: Which Assumption Is Violated?}
+    \begin{columns}[T]
+        \column{0.5\textwidth}
+        \centering
+        (i)\par
+        \mode<presentation>{\includegraphics[height=0.35\textheight]{figures/pat-bow}}\mode<article>{\includegraphics[width=0.6\linewidth]{figures/pat-bow}}\par
+        (iii)\par
+        \mode<presentation>{\includegraphics[height=0.35\textheight]{figures/pat-ok}}\mode<article>{\includegraphics[width=0.6\linewidth]{figures/pat-ok}}
+        \column{0.5\textwidth}
+        \centering
+        (ii)\par
+        \mode<presentation>{\includegraphics[height=0.35\textheight]{figures/pat-nonlinear}}\mode<article>{\includegraphics[width=0.6\linewidth]{figures/pat-nonlinear}}\par
+        (iv)\par
+        \mode<presentation>{\includegraphics[height=0.35\textheight]{figures/pat-funnel}}\mode<article>{\includegraphics[width=0.6\linewidth]{figures/pat-funnel}}
+    \end{columns}
+
+    % (i) double bow: nonconstant variance. (ii) curvature: the mean function is wrong. (iii) satisfactory: no violation. (iv) funnel: nonconstant variance.
+\end{frame}
 
 
 \begin{frame}{Diagnostics at a Glance}
