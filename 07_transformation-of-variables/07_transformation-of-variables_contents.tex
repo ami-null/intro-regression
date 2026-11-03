@@ -586,13 +586,77 @@ The estimate is $\hat{\lambda} = 0.55$ with 95\% interval $(0.31, 0.78)$. Which 
 \end{frame}
 
 
-\begin{frame}{Linearizing the Model in $\alpha$}
-Expand $E(y) = \beta_0 + \beta_1 x^\alpha$ in a first-order Taylor series in $\alpha$ about $\alpha_0 = 1$, using $\partial x^\alpha / \partial \alpha = x^\alpha \ln x$:
+\begin{frame}{Linearizing the Model in $\alpha$: Setup}
+\begin{itemize}
+    \item The model $E(y) = \beta_0 + \beta_1 x^\alpha$ is nonlinear in the unknown power $\alpha$
+    \item Idea: replace it by a first-order Taylor series in $\alpha$ about a starting value $\alpha_0$, treating $x$, $\beta_0$, $\beta_1$ as fixed
+\end{itemize}
 \begin{align*}
-    E(y) &\approx \beta_0 + \beta_1 x + (\alpha - 1)\,\beta_1\, x \ln x \\
-    &= \beta_0 + \beta_1 x + \gamma w, \qquad \gamma = (\alpha - 1)\beta_1, \quad w = x \ln x
+    f(\alpha) \approx f(\alpha_0) + (\alpha - \alpha_0)\, f'(\alpha_0), \qquad f(\alpha) = \beta_0 + \beta_1 x^\alpha
 \end{align*}
-The model is now linear in the regressors $x$ and $w$, and $\alpha = \gamma/\beta_1 + 1$.
+\begin{itemize}
+    \item Take $\alpha_0 = 1$: then $x^{\alpha_0} = x$, the untransformed straight-line model
+    \item We need $f'(\alpha)$, which requires $\partial x^\alpha / \partial \alpha$
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Step 1: Differentiate $x^\alpha$ with Respect to $\alpha$}
+\begin{itemize}
+    \item Here $x$ is a constant and $\alpha$ is the variable, so $x^\alpha$ is an exponential function of $\alpha$, not a power function of $x$
+    \item Rewrite it with base $e$ (this requires $x > 0$)
+\end{itemize}
+\begin{align*}
+    x^\alpha = e^{\alpha \ln x}
+\end{align*}
+\begin{itemize}
+    \item $\ln x$ is a constant with respect to $\alpha$, so the chain rule gives
+\end{itemize}
+\begin{align*}
+    \frac{\partial}{\partial \alpha}\, x^\alpha = \frac{\partial}{\partial \alpha}\, e^{\alpha \ln x} = (\ln x)\, e^{\alpha \ln x} = x^\alpha \ln x
+\end{align*}
+\begin{itemize}
+    \item Do not confuse this with $\partial x^\alpha / \partial x = \alpha x^{\alpha - 1}$, which differentiates with respect to $x$
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Step 2: Evaluate the Taylor Expansion at $\alpha_0 = 1$}
+$\beta_0$ and $\beta_1$ do not depend on $\alpha$, so differentiating $f(\alpha) = \beta_0 + \beta_1 x^\alpha$ gives
+\begin{align*}
+    f'(\alpha) = \beta_1 \frac{\partial x^\alpha}{\partial \alpha} = \beta_1\, x^\alpha \ln x
+\end{align*}
+Evaluate $f$ and $f'$ at $\alpha_0 = 1$:
+\begin{align*}
+    f(1) = \beta_0 + \beta_1 x, \qquad f'(1) = \beta_1\, x \ln x
+\end{align*}
+Substitute into $f(\alpha) \approx f(1) + (\alpha - 1)\, f'(1)$:
+\begin{align*}
+    E(y) \approx \beta_0 + \beta_1 x + (\alpha - 1)\,\beta_1\, x \ln x
+\end{align*}
+\end{frame}
+
+
+\begin{frame}{Step 3: Reparameterize to a Linear Model}
+\begin{itemize}
+    \item $(\alpha - 1)\beta_1$ is a single unknown constant, and $x \ln x$ can be computed from the data
+\end{itemize}
+\begin{align*}
+    \gamma = (\alpha - 1)\beta_1, \qquad w = x \ln x
+\end{align*}
+\begin{align*}
+    E(y) \approx \beta_0 + \beta_1 x + \gamma w
+\end{align*}
+\begin{itemize}
+    \item The model is linear in the regressors $x$ and $w$, so the coefficients can be estimated by OLS
+    \item Recover the power by solving $\gamma = (\alpha - 1)\beta_1$ for $\alpha$
+\end{itemize}
+\begin{align*}
+    \alpha = \frac{\gamma}{\beta_1} + 1
+\end{align*}
+\begin{itemize}
+    \item $\gamma = 0$ exactly when $\alpha = 1$, that is, when no transformation of $x$ is needed
+\end{itemize}
 \end{frame}
 
 
