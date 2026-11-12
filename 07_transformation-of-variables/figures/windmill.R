@@ -33,7 +33,7 @@ print(summary(fit_inv))
 
 plot_pdf("wm_scatter_inverse.pdf", {
     plot(wm$x_inv, wm$y, pch = 19,
-         xlab = "1 / wind velocity, x' = 1/x", ylab = "DC output, y")
+         xlab = "1 / wind velocity, x* = 1/x", ylab = "DC output, y")
     abline(fit_inv)
 })
 
@@ -90,6 +90,17 @@ fit_bt <- lm(y ~ x_bt, data = wm)
 print(summary(fit_bt))
 cat("R^2 (estimated alpha):", summary(fit_bt)$r.squared, "\n")
 cat("R^2 (alpha = -1):", summary(fit_inv)$r.squared, "\n")
+
+# Asymptotes (intercepts) of the two fits vs the observed range of x:
+# the upper limit lies outside the data, so it is an extrapolation
+cat("Range of x:", range(wm$x), "\n")
+cat("Asymptote (estimated alpha):", coef(fit_bt)[1],
+    " Asymptote (alpha = -1):", coef(fit_inv)[1], "\n")
+
+# Same estimate from the car package
+if (requireNamespace("car", quietly = TRUE)) {
+    print(car::boxTidwell(y ~ x, data = wm))
+}
 
 plot_pdf("wm_fit_boxtidwell.pdf", {
     plot(wm$x, wm$y, pch = 19,
