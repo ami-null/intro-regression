@@ -4,7 +4,7 @@
 	\begin{itemize}
 		\item Fitted the simple linear regression model $\hat y = \hat\beta_0+\hat\beta_1 x$ by least squares
 		\item Estimated $\hat\beta_1 = S_{xy}/S_{xx}$ and $\hat\beta_0 = \bar y-\hat\beta_1\bar x$
-		\item Estimated $\hat\sigma^2 = MS_E = \frac{SS_E}{n-2} = \frac{\sum_{i=1}^n \hat\varepsilon_i^2}{n-2} = \frac{\sum_{i=1}^n (y_i - \hat y_i)^2}{n-2}$
+		\item Estimated $\hat\sigma^2 = \MSRes = \frac{\SSRes}{n-2} = \frac{\sum_{i=1}^n \hat\varepsilon_i^2}{n-2} = \frac{\sum_{i=1}^n (y_i - \hat y_i)^2}{n-2}$
 	\end{itemize}
 
 	\svspace{1em}
@@ -63,7 +63,7 @@
 
 	Further,
 	\begin{align*}
-		E[\hat\beta_1] &= \beta_1 \qquad\text{(unbiased)}\\
+		\E[\hat\beta_1] &= \beta_1 \qquad\text{(unbiased)}\\
 		\Var(\hat\beta_1) &= \sigma^2\sum_i c_i^2 = \frac{\sigma^2}{S_{xx}}
 	\end{align*}
 
@@ -78,7 +78,7 @@
 \begin{frame}{Sampling Distribution $\hat\beta_0$}
 	Since \(\hat\beta_0 = \bar Y-\hat\beta_1\bar x\) and 
 	\begin{align*}
-		E[\hat\beta_0] &= \beta_0 \qquad\text{(unbiased)}\\
+		\E[\hat\beta_0] &= \beta_0 \qquad\text{(unbiased)}\\
 		\Var(\hat\beta_0) &= \sigma^2\left(\frac1n+\frac{\bar x^2}{S_{xx}}\right)
 	\end{align*}
 
@@ -95,26 +95,26 @@
 
 \begin{frame}{$\sigma^2$ Is Unknown --- Estimate It from the Residuals}
 	\[
-		\hat\sigma^2 = MSE = \frac{SSE}{n-2}, \qquad SSE=\sum_{i=1}^n(y_i-\hat y_i)^2
+		\hat\sigma^2 = \MSRes = \frac{\SSRes}{n-2}, \qquad \SSRes=\sum_{i=1}^n(y_i-\hat y_i)^2
 	\]
 	\begin{itemize}
 		\item Two degrees of freedom are used up estimating $\beta_0,\beta_1$
-		\item $MSE$ is unbiased: $E[MSE]=\sigma^2$
+		\item $\MSRes$ is unbiased: $\E[\MSRes]=\sigma^2$
 		\item Key distributional result:
 	\end{itemize}
 	\[
-		\frac{(n-2)MSE}{\sigma^2} \sim \chi^2_{n-2}
+		\frac{(n-2)\MSRes}{\sigma^2} \sim \chi^2_{n-2}
 	\]
 \end{frame}
 
 
 \begin{frame}{Standard Errors}
 	\begin{itemize}
-		\item Replace the unknown $\sigma^2$ by $MSE$ in the variance formulas
+		\item Replace the unknown $\sigma^2$ by $\MSRes$ in the variance formulas
 	\end{itemize}
 	\begin{align*}
-		se(\hat\beta_1) &= \sqrt{\frac{\hat{\sigma}^2}{S_{xx}}} = \sqrt{\frac{MSE}{S_{xx}}}\\
-		se(\hat\beta_0) &= \sqrt{\hat{\sigma}^2 \left(\frac1n+\frac{\bar x^2}{S_{xx}}\right)} = \sqrt{MSE\left(\frac1n+\frac{\bar x^2}{S_{xx}}\right)}
+		\se(\hat\beta_1) &= \sqrt{\frac{\hat{\sigma}^2}{S_{xx}}} = \sqrt{\frac{\MSRes}{S_{xx}}}\\
+		\se(\hat\beta_0) &= \sqrt{\hat{\sigma}^2 \left(\frac1n+\frac{\bar x^2}{S_{xx}}\right)} = \sqrt{\MSRes\left(\frac1n+\frac{\bar x^2}{S_{xx}}\right)}
 	\end{align*}
 	\begin{itemize}
 		\item Because $\sigma^2$ is estimated, the reference distribution moves from normal to $t_{n-2}$
@@ -127,7 +127,7 @@
 
 \begin{frame}{Test Statistic for $\beta_1$}
 	\[
-		T_0 = \frac{\hat\beta_1-\beta_{1,0}}{se(\hat\beta_1)} = \frac{\hat\beta_1-\beta_{1,0}}{\sqrt{MSE/S_{xx}}} \sim t_{n-2} \quad\text{under } H_0
+		T_0 = \frac{\hat\beta_1-\beta_{1,0}}{\se(\hat\beta_1)} = \frac{\hat\beta_1-\beta_{1,0}}{\sqrt{\MSRes/S_{xx}}} \sim t_{n-2} \quad\text{under } H_0
 	\]
 	\begin{itemize}
 		\item $H_0:\beta_1=\beta_{1,0}$ \quad vs.\quad $H_1:\beta_1\neq\beta_{1,0}$ (or one-sided)
@@ -159,7 +159,7 @@
 		\centering
 		\begin{tabular}{ccccc}
 			\toprule
-			$\bar x$ & $\bar y$ & $S_{xx}$ & $S_{xy}$ & $SST$\\
+			$\bar x$ & $\bar y$ & $S_{xx}$ & $S_{xy}$ & $\SST$\\
 			\midrule
 			13.3625 & 2131.36 & 1106.56 & $-41{,}112.65$ & $1{,}693{,}737.60$\\
 			\bottomrule
@@ -175,10 +175,10 @@
 
 \begin{frame}{Testing $H_0:\beta_1=0$ for the Example}
 	\begin{align*}
-		SSR &= \hat\beta_1 S_{xy} = (-37.1536)(-41{,}112.65) = 1{,}527{,}482.95\\
-		SSE &= SST-SSR = 1{,}693{,}737.60-1{,}527{,}482.95 = 166{,}254.65\\
-		MSE &= \frac{SSE}{n-2} = \frac{166{,}254.65}{18} = 9236.37\\
-		se(\hat\beta_1) &= \sqrt{\frac{9236.37}{1106.56}} = 2.889\\
+		\SSR &= \hat\beta_1 S_{xy} = (-37.1536)(-41{,}112.65) = 1{,}527{,}482.95\\
+		\SSRes &= \SST-\SSR = 1{,}693{,}737.60-1{,}527{,}482.95 = 166{,}254.65\\
+		\MSRes &= \frac{\SSRes}{n-2} = \frac{166{,}254.65}{18} = 9236.37\\
+		\se(\hat\beta_1) &= \sqrt{\frac{9236.37}{1106.56}} = 2.889\\
 		t_0 &= \frac{-37.1536-0}{2.889} = -12.86
 	\end{align*}
 
@@ -194,7 +194,7 @@
 
 \begin{frame}{Test Statistic for $\beta_0$}
 	\[
-		T_0 = \frac{\hat\beta_0-\beta_{0,0}}{se(\hat\beta_0)} \sim t_{n-2} \quad\text{under } H_0:\beta_0=\beta_{0,0}
+		T_0 = \frac{\hat\beta_0-\beta_{0,0}}{\se(\hat\beta_0)} \sim t_{n-2} \quad\text{under } H_0:\beta_0=\beta_{0,0}
 	\]
 	\begin{itemize}
 		\item Same mechanics as the slope test, different standard error
@@ -213,19 +213,19 @@
 
 \begin{frame}{CI for $\beta_1$}
 	\[
-		\hat\beta_1 \pm t_{\alpha/2,\,n-2}\; se(\hat\beta_1)
+		\hat\beta_1 \pm t_{\alpha/2,\,n-2}\; \se(\hat\beta_1)
 	\]
 	
 	\begin{itemize}
 		\item A $100(1-\alpha)\%$ CI: the range of slopes plausible given the data
-		\item Narrower when $S_{xx}$ is large or $MSE$ is small
+		\item Narrower when $S_{xx}$ is large or $\MSRes$ is small
 	\end{itemize}
 \end{frame}
 
 
 \begin{frame}{CI for $\beta_1$ --- Example}
 	\begin{align*}
-		\hat\beta_1 &\pm t_{0.025,18}\,se(\hat\beta_1)\\
+		\hat\beta_1 &\pm t_{0.025,18}\,\se(\hat\beta_1)\\
 		-37.15 &\pm 2.101(2.889)\\
 		-37.15 &\pm 6.07
 	\end{align*}
@@ -243,11 +243,11 @@
 
 \begin{frame}{CI for $\beta_0$}
 	\[
-		\hat\beta_0 \pm t_{\alpha/2,\,n-2}\; se(\hat\beta_0)
+		\hat\beta_0 \pm t_{\alpha/2,\,n-2}\; \se(\hat\beta_0)
 	\]
 
 	\begin{itemize}
-		\item Same construction, using $se(\hat\beta_0)=\sqrt{MSE(1/n+\bar x^2/S_{xx})}$
+		\item Same construction, using $\se(\hat\beta_0)=\sqrt{\MSRes(1/n+\bar x^2/S_{xx})}$
 		\item Interpretation only meaningful if $x=0$ falls in or near the range of the data
 	\end{itemize}
 \end{frame}
@@ -276,25 +276,25 @@
 
 \begin{frame}{Splitting Total Variation}
 	\[
-		\underbrace{\sum_i(y_i-\bar y)^2}_{SST} \;=\; \underbrace{\sum_i(\hat y_i-\bar y)^2}_{SSR} \;+\; \underbrace{\sum_i(y_i-\hat y_i)^2}_{SSE}
+		\underbrace{\sum_i(y_i-\bar y)^2}_{\SST} \;=\; \underbrace{\sum_i(\hat y_i-\bar y)^2}_{\SSR} \;+\; \underbrace{\sum_i(y_i-\hat y_i)^2}_{\SSRes}
 	\]
 
 	\begin{itemize}
-		\item $SST$: total variability in the response
-		\item $SSR$: variability \emph{explained} by the regression on $x$
-		\item $SSE$: variability left \emph{unexplained} (residual)
+		\item $\SST$: total variability in the response
+		\item $\SSR$: variability \emph{explained} by the regression on $x$
+		\item $\SSRes$: variability left \emph{unexplained} (residual)
 	\end{itemize}
 \end{frame}
 
 
 \begin{frame}{Degrees of Freedom Split the Same Way}
 	\[
-		\underbrace{n-1}_{SST} \;=\; \underbrace{1}_{SSR} \;+\; \underbrace{n-2}_{SSE}
+		\underbrace{n-1}_{\SST} \;=\; \underbrace{1}_{\SSR} \;+\; \underbrace{n-2}_{\SSRes}
 	\]
 
 	\begin{itemize}
 		\item One degree of freedom for the regression --- a single slope parameter
-		\item $n-2$ left for error, matching what was used for $MSE$
+		\item $n-2$ left for error, matching what was used for $\MSRes$
 	\end{itemize}
 \end{frame}
 
@@ -307,15 +307,15 @@
 			\toprule
 			Source & df & SS & MS & $F_0$\\
 			\midrule
-			Regression & $1$ & $SSR$ & $MSR=SSR/1$ & $MSR/MSE$\\
-			Residual (Error) & $n-2$ & $SSE$ & $MSE=SSE/(n-2)$ & \\
+			Regression & $1$ & $\SSR$ & $\MSR=\SSR/1$ & $\MSR/\MSRes$\\
+			Residual (Error) & $n-2$ & $\SSRes$ & $\MSRes=\SSRes/(n-2)$ & \\
 			\midrule
-			Total & $n-1$ & $SST$ & & \\
+			Total & $n-1$ & $\SST$ & & \\
 			\bottomrule
 		\end{tabular}
 	\end{table}
 	\begin{itemize}
-		\item Rows sum: the $df$'s add to $n-1$, the $SS$'s add to $SST$
+		\item Rows sum: the $\df$'s add to $n-1$, the $\mathrm{SS}$'s add to $\SST$
 	\end{itemize}
 \end{frame}
 
@@ -336,7 +336,7 @@
 		\end{tabular}
 	\end{table}
 	\begin{itemize}
-		\item $SSR=\hat\beta_1 S_{xy}=(-37.1536)(-41{,}112.65)=1{,}527{,}482.95$
+		\item $\SSR=\hat\beta_1 S_{xy}=(-37.1536)(-41{,}112.65)=1{,}527{,}482.95$
 		\item $F_0 = 1{,}527{,}482.95/9236.37 = 165.38$
 	\end{itemize}
 \end{frame}
@@ -347,7 +347,7 @@
 
 \begin{frame}{$F$-Test}
 	\[
-		F_0 = \frac{MSR}{MSE} \sim F_{1,\,n-2} \quad\text{under } H_0:\beta_1=0
+		F_0 = \frac{\MSR}{\MSRes} \sim F_{1,\,n-2} \quad\text{under } H_0:\beta_1=0
 	\]
 	\begin{itemize}
 	\item Reject $H_0$ if $F_0 > F_{\alpha,\,1,\,n-2}$
@@ -377,7 +377,7 @@
 
 \begin{frame}{$R^2$: How Much Variation Is Explained}
 	\[
-		R^2 = \frac{SSR}{SST} = 1-\frac{SSE}{SST}, \qquad 0\le R^2\le 1
+		R^2 = \frac{\SSR}{\SST} = 1-\frac{\SSRes}{\SST}, \qquad 0\le R^2\le 1
 	\]
 	\begin{itemize}
 		\item Proportion of the total variability in $y$ explained by the regression on $x$
@@ -394,7 +394,7 @@
 		R^2 = r^2
 	\]
 	\begin{itemize}
-		\item $r= \operatorname{sign}(\hat{\beta}_1) \sqrt{R^2} = - \sqrt{0.902}= - 0.950$
+		\item $r= \sign(\hat{\beta}_1) \sqrt{R^2} = - \sqrt{0.902}= - 0.950$
 		\item This equivalence holds only for SLR --- it does \emph{not} hold once there is more than one predictor
 	\end{itemize}
 \end{frame}
@@ -407,7 +407,7 @@
 	\begin{itemize}
 		\item Fix a value $x_0$. Two distinct targets:
 		\begin{itemize}
-			\item the \emph{mean} response $E[Y\mid x_0]=\beta_0+\beta_1 x_0$
+			\item the \emph{mean} response $\E[Y\mid x_0]=\beta_0+\beta_1 x_0$
 			\item a \emph{single new} observation $Y_0=\beta_0+\beta_1 x_0+\varepsilon_0$
 		\end{itemize}
 		\item Both are estimated by the same point, $\hat y_0=\hat\beta_0+\hat\beta_1 x_0$
@@ -442,7 +442,7 @@
 		&= \sigma^2\left(1+\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)
 	\end{align*}
 	\begin{itemize}
-		\item The mean-response error is just $\hat y_0 - E[Y\mid x_0]$, with variance $\sigma^2\!\left(\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)$ --- no extra ``$1$''
+		\item The mean-response error is just $\hat y_0 - \E[Y\mid x_0]$, with variance $\sigma^2\!\left(\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)$ --- no extra ``$1$''
 		\item That extra $\sigma^2$ is $\varepsilon_0$'s own variance, and it cannot be estimated away, no matter how large $n$ is
 	\end{itemize}
 \end{frame}
@@ -453,13 +453,13 @@
 		\begin{column}{0.46\textwidth}
 			\centering \small \textbf{Mean response}
 			\[
-				\boxed{\hat y_0 \pm t_{\alpha/2,\,n-2}\sqrt{MSE\left(\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)}}
+				\boxed{\hat y_0 \pm t_{\alpha/2,\,n-2}\sqrt{\MSRes\left(\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)}}
 			\]
 		\end{column}
 		\begin{column}{0.5\textwidth}
 			\centering \small \textbf{New observation}
 			\[
-				\boxed{\hat y_0 \pm t_{\alpha/2,\,n-2}\sqrt{MSE\left(1+\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)}}
+				\boxed{\hat y_0 \pm t_{\alpha/2,\,n-2}\sqrt{\MSRes\left(1+\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}\right)}}
 			\]
 		\end{column}
 	\end{columns}
@@ -474,8 +474,8 @@
 \begin{frame}{CI and PI at $x_0=10$ Weeks}
 	\begin{align*}
 		\hat y_0 &= 2627.82+(-37.1536)(10) = 2256.29\\
-		se(\text{mean}) &= \sqrt{9236.37\left(\tfrac{1}{20}+\tfrac{(10-13.3625)^2}{1106.56}\right)} = 23.58\\
-		se(\text{pred}) &= \sqrt{9236.37\left(1+\tfrac{1}{20}+\tfrac{(10-13.3625)^2}{1106.56}\right)} = 98.96
+		\se(\mathrm{mean}) &= \sqrt{9236.37\left(\tfrac{1}{20}+\tfrac{(10-13.3625)^2}{1106.56}\right)} = 23.58\\
+		\se(\mathrm{pred}) &= \sqrt{9236.37\left(1+\tfrac{1}{20}+\tfrac{(10-13.3625)^2}{1106.56}\right)} = 98.96
 	\end{align*}
 	\begin{itemize}
 		\item 95\% CI for the mean response: $2256.29\pm 2.101(23.58)=(2206.74,\ 2305.84)$
