@@ -131,8 +131,8 @@
         \item Setting $x_2 = 0$ and $x_2 = 1$ gives the mean response for each tool type:
     \end{itemize}
     \begin{align*}
-        \text{Type A } (x_2 = 0)\colon \quad \mathbb{E}(y \mid x_1) &= \beta_0 + \beta_1 x_1, \\
-        \text{Type B } (x_2 = 1)\colon \quad \mathbb{E}(y \mid x_1) &= (\beta_0 + \beta_2) + \beta_1 x_1.
+        \text{Type A } (x_2 = 0)\colon \quad \E[y \mid x_1] &= \beta_0 + \beta_1 x_1, \\
+        \text{Type B } (x_2 = 1)\colon \quad \E[y \mid x_1] &= (\beta_0 + \beta_2) + \beta_1 x_1.
     \end{align*}
     \begin{itemize}
         \item The lines have the same slope $\beta_1$ and intercepts that differ by $\beta_2$: the lines are \textbf{parallel}.
@@ -230,8 +230,8 @@
     \vspace{0.5em}
     Example: $H_0\colon \beta_2 = 0$ ($q = 1$).
     \begin{align*}
-        \text{FM}\colon\quad y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon, \\
-        \text{RM}\colon\quad y &= \beta_0 + \beta_1 x_1 + \varepsilon .
+        \FM\colon\quad y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon, \\
+        \RM\colon\quad y &= \beta_0 + \beta_1 x_1 + \varepsilon .
     \end{align*}
 \end{frame}
 
@@ -241,13 +241,13 @@
         \item Least squares searches over all coefficient values allowed by the model; the FM allows more, so
     \end{itemize}
     \[
-        \SSRes(\text{RM}) \ge \SSRes(\text{FM}).
+        \SSRes(\RM) \ge \SSRes(\FM).
     \]
     \begin{itemize}
         \item The difference is the \textbf{extra sum of squares}: the increase in the residual sum of squares caused by imposing $H_0$,
     \end{itemize}
     \[
-        \SSRes(\text{RM}) - \SSRes(\text{FM}) \ge 0 .
+        \SSRes(\RM) - \SSRes(\FM) \ge 0 .
     \]
     \begin{itemize}
         \item Small increase: the dropped terms add little, and $H_0$ is plausible. Large increase: the dropped terms matter.
@@ -262,10 +262,10 @@
         \item Under $H_0$, with $n$ observations, $p$ parameters in the FM and $q$ restrictions:
     \end{itemize}
     \[
-        F_0 = \frac{\left[\SSRes(\text{RM}) - \SSRes(\text{FM})\right] / q}{\SSRes(\text{FM}) / (n - p)} \sim F_{q,\, n-p}.
+        F_0 = \frac{\left[\SSRes(\RM) - \SSRes(\FM)\right] / q}{\SSRes(\FM) / (n - p)} \sim F_{q,\, n-p}.
     \]
     \begin{itemize}
-        \item Numerator: increase in $\SSRes$ per restriction. Denominator: $\mathit{MS}_{\mathrm{Res}}$ of the FM, an estimate of $\sigma^2$.
+        \item Numerator: increase in $\SSRes$ per restriction. Denominator: $\MSRes$ of the FM, an estimate of $\sigma^2$.
         \item Reject $H_0$ at level $\alpha$ if $F_0 > F_{\alpha,\, q,\, n-p}$.
         \item For $q = 1$ the test is equivalent to the two-sided $t$-test of the coefficient, with $F_0 = t_0^2$.
     \end{itemize}
@@ -278,7 +278,7 @@
         \item Equivalently, use the $F$-test with FM: $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon$ and RM: $y = \beta_0 + \beta_1 x_1 + \varepsilon$ (speed only); here $q = 1$, $n - p = 17$:
     \end{itemize}
     \begin{align*}
-        F_0 &= \frac{\left[\SSRes(\text{RM}) - \SSRes(\text{FM})\right] / 1}{\SSRes(\text{FM}) / 17}
+        F_0 &= \frac{\left[\SSRes(\RM) - \SSRes(\FM)\right] / 1}{\SSRes(\FM) / 17}
         = \frac{(1282.08 - 157.05)/1}{157.05/17} = 121.8, \\
         F_0 &= t_0^2 .
     \end{align*}
@@ -321,7 +321,7 @@
     \small
     \begin{tabular}{lrrl}
         \toprule
-        Type & $x_2$ & $x_3$ & $\mathbb{E}(y \mid x_1)$ \\
+        Type & $x_2$ & $x_3$ & $\E[y \mid x_1]$ \\
         \midrule
         A & 0 & 0 & $\beta_0 + \beta_1 x_1$ \\
         B & 1 & 0 & $(\beta_0 + \beta_2) + \beta_1 x_1$ \\
@@ -342,10 +342,10 @@
     \end{itemize}
     \begin{align*}
         \mathbf{1} &= \mathbf{d}_A + \mathbf{d}_B + \mathbf{d}_C, \\
-        \operatorname{rank}(\bX) &= 4 < 5 \text{ columns}.
+        \rank(\bX) &= 4 < 5 \text{ columns}.
     \end{align*}
     \begin{itemize}
-        \item $\bX^\top \bX$ is singular: the normal equations have no unique solution and $\bbeta$ is not identifiable.
+        \item $\bX' \bX$ is singular: the normal equations have no unique solution and $\bbeta$ is not identifiable.
         \item Remedy: drop one indicator (use $k-1$), or drop the intercept (then each coefficient is a level-specific intercept).
     \end{itemize}
 \end{frame}
@@ -382,7 +382,7 @@
         \item To test whether the factor matters at all, $H_0\colon \beta_2 = \beta_3 = 0$, use the partial $F$-test:
     \end{itemize}
     \[
-        F_0 = \frac{\left[\SSRes(\text{RM}) - \SSRes(\text{FM})\right]/(k-1)}{\SSRes(\text{FM})/(n - p)} \sim F_{k-1,\, n-p} \quad \text{under } H_0,
+        F_0 = \frac{\left[\SSRes(\RM) - \SSRes(\FM)\right]/(k-1)}{\SSRes(\FM)/(n - p)} \sim F_{k-1,\, n-p} \quad \text{under } H_0,
     \]
     \begin{itemize}
         \item where the reduced model omits all $k-1$ indicators and $p$ is the number of parameters of the full model.
@@ -393,7 +393,7 @@
 \begin{frame}{Indicator variables versus allocated codes}
     \begin{itemize}
         \item Tempting alternative: one regressor with codes A $= 1$, B $= 2$, C $= 3$ (allocated codes).
-        \item This forces $\mathbb{E}(y)$ to change by the same amount $\beta$ from A to B and from B to C, as if the levels were equally spaced on a numeric scale.
+        \item This forces $\E[y]$ to change by the same amount $\beta$ from A to B and from B to C, as if the levels were equally spaced on a numeric scale.
         \item For nominal categories that ordering and spacing is arbitrary; recoding to A $= 1$, C $= 2$, B $= 3$ would change the fit.
         \item Indicator variables impose no such structure: each level gets its own mean shift.
         \item Allocated codes are defensible only when the levels are genuinely ordered and roughly equally spaced.
@@ -428,8 +428,8 @@
 
 \begin{frame}{Group-specific lines}
     \begin{align*}
-        \text{Type A } (x_2 = 0)\colon \quad \mathbb{E}(y \mid x_1) &= \beta_0 + \beta_1 x_1, \\
-        \text{Type B } (x_2 = 1)\colon \quad \mathbb{E}(y \mid x_1) &= (\beta_0 + \beta_2) + (\beta_1 + \beta_3)\, x_1 .
+        \text{Type A } (x_2 = 0)\colon \quad \E[y \mid x_1] &= \beta_0 + \beta_1 x_1, \\
+        \text{Type B } (x_2 = 1)\colon \quad \E[y \mid x_1] &= (\beta_0 + \beta_2) + (\beta_1 + \beta_3)\, x_1 .
     \end{align*}
     \begin{itemize}
         \item $\beta_2$: difference in intercepts; $\beta_3$: difference in slopes.
@@ -512,15 +512,15 @@
         \item $H_0\colon \beta_3 = 0$ (parallel lines): is the interaction term needed beyond $x_1$ and $x_2$? Compare nested models, with $q = 1$ and $n - p = 16$:
     \end{itemize}
     \begin{align*}
-        \text{FM}\colon\quad y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2 + \varepsilon, \\
-        \text{RM}\colon\quad y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon .
+        \FM\colon\quad y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2 + \varepsilon, \\
+        \RM\colon\quad y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon .
     \end{align*}
 \end{frame}
 
 
 \begin{frame}{Testing the interaction: result}
     \begin{align*}
-        F_0 &= \frac{\left[\SSRes(\text{RM}) - \SSRes(\text{FM})\right] / 1}{\SSRes(\text{FM}) / 16}
+        F_0 &= \frac{\left[\SSRes(\RM) - \SSRes(\FM)\right] / 1}{\SSRes(\FM) / 16}
         = \frac{(157.05 - 140.98)/1}{140.98/16} = 1.82, \\
         t_0 &= -1.35 \quad (t_0^2 = F_0), \qquad p\text{-value} = 0.196 .
     \end{align*}
@@ -577,12 +577,12 @@
         y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_{12} x_1 x_2 + \varepsilon .
     \]
     \begin{itemize}
-        \item The effect on $\mathbb{E}(y)$ of a unit change in $x_1$ depends on the level of $x_2$:
+        \item The effect on $\E[y]$ of a unit change in $x_1$ depends on the level of $x_2$:
     \end{itemize}
     \[
-        \frac{\partial\, \mathbb{E}(y)}{\partial x_1} = \beta_1 + \beta_{12}\, x_2 ,
+        \frac{\partial\, \E[y]}{\partial x_1} = \beta_1 + \beta_{12}\, x_2 ,
         \qquad
-        \frac{\partial\, \mathbb{E}(y)}{\partial x_2} = \beta_2 + \beta_{12}\, x_1 .
+        \frac{\partial\, \E[y]}{\partial x_2} = \beta_2 + \beta_{12}\, x_1 .
     \]
     \begin{itemize}
         \item The mean response surface is no longer a plane; slices at fixed $x_2$ are lines with different slopes (this is the indicator case with $x_2 \in \{0, 1\}$).
@@ -619,7 +619,7 @@
     \begin{itemize}
         \item An indicator variable encodes a binary category as $0/1$; a factor with $k$ levels needs $k-1$ indicators plus an intercept.
         \item Indicators shift the intercept: they give parallel lines with common slope. Coefficients are differences from the reference level.
-        \item Including all $k$ indicators with an intercept makes $\bX^\top \bX$ singular (dummy variable trap).
+        \item Including all $k$ indicators with an intercept makes $\bX' \bX$ singular (dummy variable trap).
         \item The reference level changes coefficients, not the fit; test a whole factor with the partial $F$-test.
         \item Interaction terms $x_1 x_2$ let the slope depend on the category (or on another regressor); test them first with the extra-sum-of-squares $F$-test (RM versus FM).
         \item Tool life data: type matters ($F_0 = 121.8$); the slope difference is not significant ($p = 0.196$).
