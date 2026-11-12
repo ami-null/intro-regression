@@ -14,7 +14,7 @@
 \begin{frame}{Recognizing Nonconstant Variance}
 \begin{itemize}
     \item Plot R-student against the fitted values $\hat{y}_i$
-    \item Outward-opening funnel: the spread grows with $E(y_i)$, common when $y$ is a count or an amount
+    \item Outward-opening funnel: the spread grows with $\E[y_i]$, common when $y$ is a count or an amount
     \item Double bow: the spread is largest in the middle and small at the extremes, typical when $y$ is a proportion
     \item With nonconstant variance the OLS estimators remain unbiased but are no longer minimum-variance, and the usual $t$ and $F$ tests are unreliable
 \end{itemize}
@@ -23,15 +23,15 @@
 
 \begin{frame}{Idea of a Variance-Stabilizing Transformation}
 \begin{itemize}
-    \item Suppose $\Var(y_i)$ depends on the mean $E(y_i)$
+    \item Suppose $\Var(y_i)$ depends on the mean $\E[y_i]$
     \item Replace $y$ by $y^* = h(y)$, with $h$ chosen so that $\Var(y^*)$ is approximately constant
     \item Then fit the model on the transformed scale
 \end{itemize}
 \begin{align*}
-    y_i^* = \beta_0 + \beta_1 x_i + \epsilon_i, \qquad \Var(\epsilon_i) \approx \sigma^2
+    y_i^* = \beta_0 + \beta_1 x_i + \varepsilon_i, \qquad \Var(\varepsilon_i) \approx \sigma^2
 \end{align*}
 \begin{itemize}
-    \item The appropriate $h$ depends on how $\Var(y)$ is related to $E(y)$
+    \item The appropriate $h$ depends on how $\Var(y)$ is related to $\E[y]$
 \end{itemize}
 \end{frame}
 
@@ -46,14 +46,14 @@
 \small
 \begin{tabular}{ll}
 \toprule
-Relationship of $\sigma^2$ to $E(y)$ & Transformation \\
+Relationship of $\sigma^2$ to $\E[y]$ & Transformation \\
 \midrule
 $\sigma^2 \propto \text{constant}$ & $y^* = y$ (no transformation) \\
-$\sigma^2 \propto E(y)$ & $y^* = \sqrt{y}$ (Poisson data) \\
-$\sigma^2 \propto E(y)\,[1 - E(y)]$ & $y^* = \sin^{-1}\!\big(\sqrt{y}\,\big)$ (binomial proportions, $0 \le y_i \le 1$) \\
-$\sigma^2 \propto [E(y)]^2$ & $y^* = \ln y$ \\
-$\sigma^2 \propto [E(y)]^3$ & $y^* = y^{-1/2}$ \\
-$\sigma^2 \propto [E(y)]^4$ & $y^* = y^{-1}$ \\
+$\sigma^2 \propto \E[y]$ & $y^* = \sqrt{y}$ (Poisson data) \\
+$\sigma^2 \propto \E[y]\,(1 - \E[y])$ & $y^* = \sin^{-1}\!\big(\sqrt{y}\,\big)$ (binomial proportions, $0 \le y_i \le 1$) \\
+$\sigma^2 \propto (\E[y])^2$ & $y^* = \ln y$ \\
+$\sigma^2 \propto (\E[y])^3$ & $y^* = y^{-1/2}$ \\
+$\sigma^2 \propto (\E[y])^4$ & $y^* = y^{-1}$ \\
 \bottomrule
 \end{tabular}}
 \end{center}
@@ -62,10 +62,10 @@ $\sigma^2 \propto [E(y)]^4$ & $y^* = y^{-1}$ \\
 
 \begin{frame}{Reading the Table}
 \begin{itemize}
-    \item The stronger the dependence of $\sigma^2$ on $E(y)$, the stronger the transformation: $\sqrt{y}$, then $\ln y$, then $y^{-1/2}$, then $y^{-1}$
-    \item Poisson counts have $\Var(y) = E(y)$, so $\sigma^2 \propto E(y)$ and the square root applies
-    \item A proportion $y = X/m$ with $X \sim \text{Binomial}(m, p)$ has $\Var(y) = p(1-p)/m$, so $\sigma^2 \propto E(y)[1 - E(y)]$ and the arcsine square root applies
-    \item $\sigma^2 \propto [E(y)]^2$ means the standard deviation is proportional to the mean, which calls for the logarithm
+    \item The stronger the dependence of $\sigma^2$ on $\E[y]$, the stronger the transformation: $\sqrt{y}$, then $\ln y$, then $y^{-1/2}$, then $y^{-1}$
+    \item Poisson counts have $\Var(y) = \E[y]$, so $\sigma^2 \propto \E[y]$ and the square root applies
+    \item A proportion $y = X/m$ with $X \sim \text{Binomial}(m, p)$ has $\Var(y) = p(1-p)/m$, so $\sigma^2 \propto \E[y](1 - \E[y])$ and the arcsine square root applies
+    \item $\sigma^2 \propto (\E[y])^2$ means the standard deviation is proportional to the mean, which calls for the logarithm
 \end{itemize}
 \end{frame}
 
@@ -77,7 +77,7 @@ $\sigma^2 \propto [E(y)]^4$ & $y^* = y^{-1}$ \\
     \item Refit with $y^*$ and examine the residual plots again
     \item If the variance is still not constant, try a stronger or weaker transformation
 \end{enumerate}
-The exact relationship between $\sigma^2$ and $E(y)$ is rarely known, so the choice is often made by trial and error.
+The exact relationship between $\sigma^2$ and $\E[y]$ is rarely known, so the choice is often made by trial and error.
 \end{frame}
 
 
@@ -274,9 +274,9 @@ $R^2$ dropped from $0.7046$ for $y$ to $0.6485$ for $\sqrt{y}$. Does this mean t
 \toprule
 Function & Transformation & Linear form \\
 \midrule
-$y = \beta_0 x^{\beta_1}$ & $y' = \log y$, $x' = \log x$ & $y' = \log \beta_0 + \beta_1 x'$ \\
+$y = \beta_0 x^{\beta_1}$ & $y' = \ln y$, $x' = \ln x$ & $y' = \ln \beta_0 + \beta_1 x'$ \\
 $y = \beta_0 e^{\beta_1 x}$ & $y' = \ln y$ & $y' = \ln \beta_0 + \beta_1 x$ \\
-$y = \beta_0 + \beta_1 \log x$ & $x' = \log x$ & $y = \beta_0 + \beta_1 x'$ \\
+$y = \beta_0 + \beta_1 \ln x$ & $x' = \ln x$ & $y = \beta_0 + \beta_1 x'$ \\
 $y = \dfrac{x}{\beta_0 x - \beta_1}$ & $y' = \dfrac{1}{y}$, $x' = \dfrac{1}{x}$ & $y' = \beta_0 - \beta_1 x'$ \\
 \bottomrule
 \end{tabular}}
@@ -289,11 +289,11 @@ $y = \dfrac{x}{\beta_0 x - \beta_1}$ & $y' = \dfrac{1}{y}$, $x' = \dfrac{1}{x}$ 
     \item Linearizing the exponential function assumes the error is multiplicative
 \end{itemize}
 \begin{align*}
-    y = \beta_0 e^{\beta_1 x}\,\epsilon \quad\Longrightarrow\quad \ln y = \ln \beta_0 + \beta_1 x + \ln \epsilon
+    y = \beta_0 e^{\beta_1 x}\,\varepsilon \quad\Longrightarrow\quad \ln y = \ln \beta_0 + \beta_1 x + \ln \varepsilon
 \end{align*}
 \begin{itemize}
-    \item The linearized model is appropriate if $\ln \epsilon$ has mean zero, constant variance, and is normal
-    \item If instead the error is additive, $y = \beta_0 e^{\beta_1 x} + \epsilon$, taking logarithms does not give a linear model with additive error, and nonlinear regression is needed
+    \item The linearized model is appropriate if $\ln \varepsilon$ has mean zero, constant variance, and is normal
+    \item If instead the error is additive, $y = \beta_0 e^{\beta_1 x} + \varepsilon$, taking logarithms does not give a linear model with additive error, and nonlinear regression is needed
 \end{itemize}
 \end{frame}
 
@@ -405,7 +405,7 @@ DC output rises with wind velocity but levels off, and the spread around the tre
 
 \begin{frame}{Motivation for the Box--Cox Method}
 \begin{itemize}
-    \item The variance-stabilizing table requires knowing how $\sigma^2$ depends on $E(y)$, which is usually unknown
+    \item The variance-stabilizing table requires knowing how $\sigma^2$ depends on $\E[y]$, which is usually unknown
     \item Box and Cox (1964): estimate the power of the transformation from the data
     \item Considers the power family $y^\lambda$, with $\lambda$ estimated together with $\bbeta$ by maximum likelihood
     \item Aims to correct nonnormality and nonconstant variance, and requires $y_i > 0$
@@ -447,7 +447,7 @@ DC output rises with wind velocity but levels off, and the spread around the tre
 
 \begin{frame}{Model and Estimation}
 \begin{align*}
-    \by^{(\lambda)} = \bX\bbeta + \boldsymbol{\epsilon}, \qquad \boldsymbol{\epsilon} \sim N(\mathbf{0}, \sigma^2 \mathbf{I})
+    \by^{(\lambda)} = \bX\bbeta + \bvarepsilon, \qquad \bvarepsilon \sim N(\mathbf{0}, \sigma^2 \mathbf{I})
 \end{align*}
 \begin{itemize}
     \item For fixed $\lambda$, $\hat{\bbeta} = (\bX'\bX)^{-1}\bX'\by^{(\lambda)}$
@@ -475,11 +475,11 @@ Later inference treats $\lambda$ as known, so it is only approximate.
 
 \begin{frame}{Confidence Interval for $\lambda$}
 \begin{align*}
-    SS^* = \SSRes(\hat{\lambda})\left(1 + \frac{t_{\alpha/2,\,\nu}^2}{\nu}\right)
+    \mathrm{SS}^* = \SSRes(\hat{\lambda})\left(1 + \frac{t_{\alpha/2,\,\nu}^2}{\nu}\right)
 \end{align*}
 \begin{itemize}
     \item $\nu$ is the residual degrees of freedom
-    \item A $100(1-\alpha)\%$ confidence interval for $\lambda$ contains all $\lambda$ with $\SSRes(\lambda) \le SS^*$
+    \item A $100(1-\alpha)\%$ confidence interval for $\lambda$ contains all $\lambda$ with $\SSRes(\lambda) \le \mathrm{SS}^*$
     \item If the interval contains $1$, no transformation is needed
     \item Otherwise choose a convenient value inside the interval, such as $-1$, $0$, $1/2$
 \end{itemize}
@@ -495,7 +495,7 @@ Later inference treats $\lambda$ as known, so it is only approximate.
 \end{align*}
 \begin{itemize}
     \item The likelihood-based interval keeps all $\lambda$ with $L(\hat{\lambda}) - L(\lambda) \le \tfrac{1}{2}\chi^2_{\alpha,\,1}$
-    \item Equivalently, $\SSRes(\lambda) \le \SSRes(\hat{\lambda})\exp\!\big(\chi^2_{\alpha,\,1}/n\big)$, which agrees closely with $SS^*$ unless $n$ is small
+    \item Equivalently, $\SSRes(\lambda) \le \SSRes(\hat{\lambda})\exp\!\big(\chi^2_{\alpha,\,1}/n\big)$, which agrees closely with $\mathrm{SS}^*$ unless $n$ is small
     \item \texttt{MASS::boxcox} plots $L(\lambda)$ with this 95\% interval
 \end{itemize}
 \end{frame}
@@ -572,7 +572,7 @@ The estimate is $\hat{\lambda} = 0.55$ with 95\% interval $(0.31, 0.78)$. Which 
     \item Model, with unknown power $\alpha$:
 \end{itemize}
 \begin{align*}
-    y = \beta_0 + \beta_1 \xi + \epsilon, \qquad
+    y = \beta_0 + \beta_1 \xi + \varepsilon, \qquad
     \xi =
     \begin{cases}
         x^\alpha, & \alpha \neq 0 \\
@@ -588,7 +588,7 @@ The estimate is $\hat{\lambda} = 0.55$ with 95\% interval $(0.31, 0.78)$. Which 
 
 \begin{frame}{Linearizing the Model in $\alpha$: Setup}
 \begin{itemize}
-    \item The model $E(y) = \beta_0 + \beta_1 x^\alpha$ is nonlinear in the unknown power $\alpha$
+    \item The model $\E[y] = \beta_0 + \beta_1 x^\alpha$ is nonlinear in the unknown power $\alpha$
     \item Idea: replace it by a first-order Taylor series in $\alpha$ about a starting value $\alpha_0$, treating $x$, $\beta_0$, $\beta_1$ as fixed
 \end{itemize}
 \begin{align*}
@@ -632,7 +632,7 @@ Evaluate $f$ and $f'$ at $\alpha_0 = 1$:
 \end{align*}
 Substitute into $f(\alpha) \approx f(1) + (\alpha - 1)\, f'(1)$:
 \begin{align*}
-    E(y) \approx \beta_0 + \beta_1 x + (\alpha - 1)\,\beta_1\, x \ln x
+    \E[y] \approx \beta_0 + \beta_1 x + (\alpha - 1)\,\beta_1\, x \ln x
 \end{align*}
 \end{frame}
 
@@ -645,7 +645,7 @@ Substitute into $f(\alpha) \approx f(1) + (\alpha - 1)\, f'(1)$:
     \gamma = (\alpha - 1)\beta_1, \qquad w = x \ln x
 \end{align*}
 \begin{align*}
-    E(y) \approx \beta_0 + \beta_1 x + \gamma w
+    \E[y] \approx \beta_0 + \beta_1 x + \gamma w
 \end{align*}
 \begin{itemize}
     \item The model is linear in the regressors $x$ and $w$, so the coefficients can be estimated by OLS
@@ -662,8 +662,8 @@ Substitute into $f(\alpha) \approx f(1) + (\alpha - 1)\, f'(1)$:
 
 \begin{frame}{One Iteration of the Procedure}
 \begin{enumerate}
-    \item Fit $y = \beta_0 + \beta_1 x + \epsilon$ and record $\hat{\beta}_1$
-    \item Fit $y = \beta_0^* + \beta_1^* x + \gamma w + \epsilon$ with $w = x \ln x$ and record $\hat{\gamma}$
+    \item Fit $y = \beta_0 + \beta_1 x + \varepsilon$ and record $\hat{\beta}_1$
+    \item Fit $y = \beta_0^* + \beta_1^* x + \gamma w + \varepsilon$ with $w = x \ln x$ and record $\hat{\gamma}$
     \item Compute the first estimate of the power
 \end{enumerate}
 \begin{align*}
