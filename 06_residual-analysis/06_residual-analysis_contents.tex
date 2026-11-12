@@ -144,7 +144,7 @@
 \begin{frame}{Variance of PRESS Residuals and the PRESS Statistic}
     \begin{align*}
         \Var(e_{(i)}) &= \frac{\sigma^2}{1-h_{ii}} \\
-        \mathrm{PRESS} &= \sum_{i=1}^n e_{(i)}^2
+        \PRESS &= \sum_{i=1}^n e_{(i)}^2
     \end{align*}
     \begin{itemize}
         \item PRESS measures predictive ability: smaller is better
@@ -240,7 +240,7 @@
             \bottomrule
         \end{tabular}
     \end{center}
-    Six of the 25 observations. $d_i$ standardized, $r_i$ studentized, $e_{(i)}$ PRESS, $t_i$ R-student. $\mathrm{PRESS}=459.04$.
+    Six of the 25 observations. $d_i$ standardized, $r_i$ studentized, $e_{(i)}$ PRESS, $t_i$ R-student. $\PRESS=459.04$.
 \end{frame}
 
 
@@ -452,8 +452,8 @@
 \begin{frame}{Breusch--Pagan Test}
     \begin{enumerate}
         \item Fit the model and obtain the residuals $e_i$
-        \item Regress $e_i^2$ on the $k$ regressors and record $R^2_{\mathrm{aux}}$
-        \item Compute $\LM=n\,R^2_{\mathrm{aux}}$
+        \item Regress $e_i^2$ on the $k$ regressors and record $\Raux$
+        \item Compute $\LM=n\,\Raux$
         \item Under $H_0$, $\LM\sim\chi^2_k$ approximately for large $n$; reject for large $\LM$
     \end{enumerate}
     This is the studentized form, the default in \texttt{bptest} in R.
