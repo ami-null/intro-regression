@@ -177,7 +177,7 @@
     with $q$ degrees of freedom.
     \svspace{0.5em}
 
-    Note: here $\SSR=\SST-\SSRes$ is corrected for the mean. MPV uses the uncorrected version, with one more df; the extra sum of squares is the same either way.
+    % Note: here $\SSR=\SST-\SSRes$ is corrected for the mean. MPV uses the uncorrected version, with one more df; the extra sum of squares is the same either way.
 \end{frame}
 
 
@@ -311,7 +311,7 @@
         \label{eq:partial-F}
     \end{align}
     \begin{itemize}
-        \item $\MSRes$ comes from the \emph{full} model.
+        \item $\MSRes$ comes from the \emph{full} model. It estimates $\sigma^2$ without bias whether or not $H_0$ is true; the reduced model's $\MSRes$ overestimates $\sigma^2$ when $H_0$ is false, which would shrink $F_0$ exactly when we want to reject.
         \item Under $H_0:\bbeta_{(2)}=\mathbf{0}$, $F_0\sim F_{q,\,n-p}$.
         \item Reject $H_0$ at level $\alpha$ if $F_0>F_{\alpha,\,q,\,n-p}$.
     \end{itemize}
@@ -378,6 +378,9 @@
         F_0 = \frac{\hat\beta_j^{\,2}/C_{jj}}{\MSRes} = \left(\frac{\hat\beta_j}{\sqrt{\MSRes\,C_{jj}}}\right)^{2} = t_0^2
     \end{align*}
     The partial $F$-test for a single coefficient is the two-sided $t$-test, since $F_{1,\nu}=t_\nu^2$.
+    \svspace{0.5em}
+
+    Why $\hat\beta_j^{\,2}/C_{jj}$: this is the matrix form \eqref{eq:ssh} of the general linear hypothesis (later in this lecture) with $\mathbf{T}$ the row that has $1$ in the position of $\beta_j$ and $0$ elsewhere, so $\mathbf{T}\hat{\bbeta}=\hat\beta_j$ and $\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'=C_{jj}$.
 \end{frame}
 
 
@@ -624,6 +627,35 @@
         \item $F_0=(\SSH/q)/\MSRes$, the same statistic as \eqref{eq:glh-F}.
         \item No reduced model needs to be fit.
     \end{itemize}
+    \svspace{0.5em}
+    The next two frames derive \eqref{eq:ssh}.
+\end{frame}
+
+
+\begin{frame}{Deriving $\SSH$, Step 1: Restricted Least Squares}
+    The reduced-model fit $\tilde{\bbeta}$ minimizes $(\by-\bX\bbeta)'(\by-\bX\bbeta)$ subject to $\mathbf{T}\bbeta=\mathbf{0}$. With a Lagrange multiplier vector $\boldsymbol{\lambda}$ ($q\times1$), set the derivative of
+    \[
+    (\by-\bX\bbeta)'(\by-\bX\bbeta) + 2\boldsymbol{\lambda}'\mathbf{T}\bbeta
+    \]
+    to zero: $\bX'\bX\tilde{\bbeta}=\bX'\by-\mathbf{T}'\boldsymbol{\lambda}$, so $\tilde{\bbeta}=\hat{\bbeta}-(\bX'\bX)^{-1}\mathbf{T}'\boldsymbol{\lambda}$. Imposing $\mathbf{T}\tilde{\bbeta}=\mathbf{0}$ gives $\boldsymbol{\lambda}=\bigl[\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'\bigr]^{-1}\mathbf{T}\hat{\bbeta}$, hence
+    \begin{align}
+        \tilde{\bbeta} = \hat{\bbeta} - (\bX'\bX)^{-1}\mathbf{T}'\bigl[\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'\bigr]^{-1}\mathbf{T}\hat{\bbeta}
+        \label{eq:restricted-ls}
+    \end{align}
+\end{frame}
+
+
+\begin{frame}{Deriving $\SSH$, Step 2: The Residual Sum of Squares}
+    Write the reduced-model residuals as $\by-\bX\tilde{\bbeta}=\mathbf{e}+\bX(\hat{\bbeta}-\tilde{\bbeta})$. The cross term vanishes because $\bX'\mathbf{e}=\mathbf{0}$:
+    \[
+    \SSRes(\RM) = \mathbf{e}'\mathbf{e} + (\hat{\bbeta}-\tilde{\bbeta})'\bX'\bX(\hat{\bbeta}-\tilde{\bbeta})
+    \]
+    Let $\mathbf{M}=\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'$. By \eqref{eq:restricted-ls}, $\hat{\bbeta}-\tilde{\bbeta}=(\bX'\bX)^{-1}\mathbf{T}'\mathbf{M}^{-1}\mathbf{T}\hat{\bbeta}$, so
+    \begin{align*}
+        \SSRes(\RM)-\SSRes(\FM)
+        &= (\mathbf{T}\hat{\bbeta})'\mathbf{M}^{-1}\,\mathbf{T}(\bX'\bX)^{-1}\bX'\bX(\bX'\bX)^{-1}\mathbf{T}'\,\mathbf{M}^{-1}(\mathbf{T}\hat{\bbeta}) \\
+        &= (\mathbf{T}\hat{\bbeta})'\mathbf{M}^{-1}\mathbf{M}\mathbf{M}^{-1}(\mathbf{T}\hat{\bbeta}) = (\mathbf{T}\hat{\bbeta})'\mathbf{M}^{-1}(\mathbf{T}\hat{\bbeta}) = \SSH
+    \end{align*}
 \end{frame}
 
 
@@ -631,6 +663,7 @@
     \begin{itemize}
         \item $\Var(\mathbf{T}\hat{\bbeta})=\sigma^2\,\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'$.
         \item Under $H_0$, $\mathbf{T}\hat{\bbeta}$ has mean $\mathbf{0}$, so $\SSH/\sigma^2$ is a standardized squared length of a $q$-dimensional normal vector: $\chi^2_q$.
+        \item $\SSH$ depends on the data only through $\hat{\bbeta}$, and $\hat{\bbeta}$ is independent of $\MSRes$ (Lecture 5). So $F_0=(\SSH/q)/\MSRes\sim F_{q,\,n-p}$ under $H_0$.
         \item For $q=1$, $\SSH/\MSRes$ reduces to $(\mathbf{T}\hat{\bbeta})^2/\bigl(\MSRes\,\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'\bigr)=t_0^2$.
     \end{itemize}
 \end{frame}
@@ -657,7 +690,7 @@
     \end{align*}
     \begin{itemize}
         \item $\SSRes(\RM)-\SSRes(\FM)=278.634-278.623=0.0105$, matching $\SSH$.
-        \item The data are consistent with horsepower and torque having the same coefficient.
+        \item We cannot reject equality, but that is weak evidence \emph{for} it. Horsepower and torque are correlated at $0.96$, so $\hat\beta_{\mathrm{hp}}-\hat\beta_{\mathrm{tq}}=0.0036$ has standard error $\sqrt{11.609\times0.001217}=0.119$ and 95\% interval $(-0.24,\,0.25)$, far wider than either coefficient. The test has little power.
     \end{itemize}
 \end{frame}
 
@@ -681,7 +714,7 @@
     \qquad\Longrightarrow\qquad
     \SSH=(\mathbf{T}\hat{\bbeta}-\mathbf{c})'\bigl[\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'\bigr]^{-1}(\mathbf{T}\hat{\bbeta}-\mathbf{c})
     \]
-    Reduced model: move the known part to the left-hand side.
+    The derivation is the same as before, with $\mathbf{T}\hat{\bbeta}$ replaced by $\mathbf{T}\hat{\bbeta}-\mathbf{c}$. Reduced model: move the known part to the left-hand side.
     \begin{itemize}
         \item Example: $H_0:\beta_{\mathrm{cb}}=1$. Regress $y-x_{\mathrm{cb}}$ on the other regressors: $\SSRes(\RM)=282.81$.
         \item $F_0=(282.81-278.62)/11.609=0.36$ and $p=0.55$.
@@ -822,7 +855,7 @@
 
 
 \begin{frame}{When Sequential Equals Partial: Orthogonal Columns}
-    If $\bX_1'\bX_2=\mathbf{0}$, then $\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})=\SSR(\bbeta_{(2)})$: the contribution of each block is unaffected by the other, in any order. Here $\SSR(\bbeta_{(2)})$ is the regression sum of squares when $y$ is regressed on $\bX_2$ alone (plus an intercept).
+    If $\bX_1'\bX_2=\mathbf{0}$, then $\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})=\SSR(\bbeta_{(2)})$: the contribution of each block is unaffected by the other, in any order. Here $\SSR(\bbeta_{(2)})$ is the regression sum of squares when $y$ is regressed on $\bX_2$ alone (plus an intercept). Since $\bX_1$ contains the column of ones, $\bX_1'\bX_2=\mathbf{0}$ also requires every column of $\bX_2$ to have mean zero.
     \begin{itemize}
         \item Delivery data: replace $x_2$ by $z=e(x_2\mid x_1)$, the part of distance not explained by cases (orthogonal to $\mathbf{1}$ and $x_1$).
         \item Regress $y$ on $x_1$ and $z$: sequential sums of squares are $5382.41$ for $x_1$ and $168.40$ for $z$ in either order.
@@ -848,6 +881,21 @@
         \item \texttt{anova()} depends on the order of terms in the model formula.
         \item The $F$-statistics in the partial output equal $t_0^2$ for each coefficient.
         \item Check which type your software reports by default before interpreting a table.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Reading the $F$-Tests in \texttt{anova(fit)}}
+    Row $j$ of the sequential table reports
+    \[
+    F_0 = \frac{\SSR(\beta_j\mid\beta_0,\dots,\beta_{j-1})/1}{\MSRes},
+    \qquad \MSRes \text{ from the full model.}
+    \]
+    \begin{itemize}
+        \item It asks whether $x_j$ adds to the regressors entered \emph{before} it, ignoring those entered after it.
+        \item Only the last row is a partial $F$-test; the other rows change when the order changes.
+        \item Delivery data, cases first: $F_0=5382.41/10.62=506.6$ for cases and $15.85$ for distance (the partial $F$).
+        \item Distance first: $F_0=432.9$ for distance and $89.58$ for cases (the partial $F$).
     \end{itemize}
 \end{frame}
 
@@ -957,7 +1005,11 @@
 \begin{frame}{Consequences}
     \begin{itemize}
         \item The plot has the same residuals, hence the same residual sum of squares, as the full model.
-        \item The sum of squares explained by the line is $\hat\beta_j^{\,2}\sum_i e_i(x_j\mid\bX_{(j)})^2=\SSR(\beta_j\mid\text{others})$.
+        \item The sum of squares explained by the line is $\hat\beta_j^{\,2}\sum_i e_i(x_j\mid\bX_{(j)})^2=\SSR(\beta_j\mid\text{others})$. Why: square both sides of \eqref{eq:av-decomp}; the cross term is $0$ because $e(x_j\mid\bX_{(j)})'\mathbf{e}=0$, so
+        \[
+        \underbrace{\textstyle\sum e(y\mid\bX_{(j)})^2}_{\SSRes(\text{without }x_j)} = \hat\beta_j^{\,2}\textstyle\sum e(x_j\mid\bX_{(j)})^2 + \underbrace{\mathbf{e}'\mathbf{e}}_{\SSRes(\FM)},
+        \]
+        and the difference of the two residual sums of squares is the extra sum of squares \eqref{eq:extra-ss-res}.
         \item Delivery data, distance: $0.014385^2\times813{,}838.7=168.40$.
         \item Outliers and influential points for $\hat\beta_j$ can be seen directly in the plot.
     \end{itemize}
