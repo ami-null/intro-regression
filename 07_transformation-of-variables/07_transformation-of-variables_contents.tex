@@ -475,11 +475,11 @@ Later inference treats $\lambda$ as known, so it is only approximate.
 
 \begin{frame}{Confidence Interval for $\lambda$}
 \begin{align*}
-    \mathrm{SS}^* = \SSRes(\hat{\lambda})\left(1 + \frac{t_{\alpha/2,\,\nu}^2}{\nu}\right)
+    \SSstar = \SSRes(\hat{\lambda})\left(1 + \frac{t_{\alpha/2,\,\nu}^2}{\nu}\right)
 \end{align*}
 \begin{itemize}
     \item $\nu$ is the residual degrees of freedom
-    \item A $100(1-\alpha)\%$ confidence interval for $\lambda$ contains all $\lambda$ with $\SSRes(\lambda) \le \mathrm{SS}^*$
+    \item A $100(1-\alpha)\%$ confidence interval for $\lambda$ contains all $\lambda$ with $\SSRes(\lambda) \le \SSstar$
     \item If the interval contains $1$, no transformation is needed
     \item Otherwise choose a convenient value inside the interval, such as $-1$, $0$, $1/2$
 \end{itemize}
@@ -495,7 +495,7 @@ Later inference treats $\lambda$ as known, so it is only approximate.
 \end{align*}
 \begin{itemize}
     \item The likelihood-based interval keeps all $\lambda$ with $L(\hat{\lambda}) - L(\lambda) \le \tfrac{1}{2}\chi^2_{\alpha,\,1}$
-    \item Equivalently, $\SSRes(\lambda) \le \SSRes(\hat{\lambda})\exp\!\big(\chi^2_{\alpha,\,1}/n\big)$, which agrees closely with $\mathrm{SS}^*$ unless $n$ is small
+    \item Equivalently, $\SSRes(\lambda) \le \SSRes(\hat{\lambda})\exp\!\big(\chi^2_{\alpha,\,1}/n\big)$, which agrees closely with $\SSstar$ unless $n$ is small
     \item \texttt{MASS::boxcox} plots $L(\lambda)$ with this 95\% interval
 \end{itemize}
 \end{frame}
