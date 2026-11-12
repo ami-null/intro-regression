@@ -15,7 +15,7 @@
 \begin{itemize}
     \item Plot R-student against the fitted values $\hat{y}_i$
     \item Outward-opening funnel: the spread grows with $\E[y_i]$, common when $y$ is a count or an amount
-    \item Double bow: the spread is largest in the middle and small at the extremes, typical when $y$ is a proportion
+    % \item Double bow: the spread is largest in the middle and small at the extremes, typical when $y$ is a proportion
     \item With nonconstant variance the OLS estimators remain unbiased but are no longer minimum-variance, and the usual $t$ and $F$ tests are unreliable
 \end{itemize}
 \end{frame}
@@ -50,7 +50,7 @@ Relationship of $\sigma^2$ to $\E[y]$ & Transformation \\
 \midrule
 $\sigma^2 \propto \text{constant}$ & $y^* = y$ (no transformation) \\
 $\sigma^2 \propto \E[y]$ & $y^* = \sqrt{y}$ (Poisson data) \\
-$\sigma^2 \propto \E[y]\,(1 - \E[y])$ & $y^* = \sin^{-1}\!\big(\sqrt{y}\,\big)$ (binomial proportions, $0 \le y_i \le 1$) \\
+% $\sigma^2 \propto \E[y]\,(1 - \E[y])$ & $y^* = \sin^{-1}\!\big(\sqrt{y}\,\big)$ (binomial proportions, $0 \le y_i \le 1$) \\
 $\sigma^2 \propto (\E[y])^2$ & $y^* = \ln y$ \\
 $\sigma^2 \propto (\E[y])^3$ & $y^* = y^{-1/2}$ \\
 $\sigma^2 \propto (\E[y])^4$ & $y^* = y^{-1}$ \\
@@ -60,11 +60,43 @@ $\sigma^2 \propto (\E[y])^4$ & $y^* = y^{-1}$ \\
 \end{frame}
 
 
+\begin{frame}{Where the Table Comes From: The Delta Method}
+Let $\mu = \E[y]$. A first-order Taylor expansion of $h$ about $\mu$ gives
+\begin{align*}
+    h(y) \approx h(\mu) + h'(\mu)\,(y - \mu)
+    \quad\Longrightarrow\quad
+    \Var\big(h(y)\big) \approx \big[h'(\mu)\big]^2 \Var(y)
+\end{align*}
+\begin{itemize}
+    \item $\Var(h(y))$ is approximately constant when $h'(\mu) \propto 1/\sqrt{\Var(y)}$
+    \item So $h$ is found by integrating one over the standard deviation, viewed as a function of the mean
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{The Delta Method for Power Relationships}
+Suppose the standard deviation is a power of the mean, $\sigma \propto \mu^{a}$, that is $\sigma^2 \propto \mu^{2a}$. Then
+\begin{align*}
+    h'(\mu) \propto \mu^{-a}
+    \quad\Longrightarrow\quad
+    h(y) =
+    \begin{cases}
+        y^{1-a}, & a \neq 1 \\
+        \ln y, & a = 1
+    \end{cases}
+\end{align*}
+\begin{itemize}
+    \item $a = 1/2$: $y^{1/2}$; \ $a = 1$: $\ln y$; \ $a = 3/2$: $y^{-1/2}$; \ $a = 2$: $y^{-1}$, the rows of the table
+    \item The faster $\sigma$ grows with $\mu$, the smaller the power $1 - a$, and the stronger the transformation
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}{Reading the Table}
 \begin{itemize}
     \item The stronger the dependence of $\sigma^2$ on $\E[y]$, the stronger the transformation: $\sqrt{y}$, then $\ln y$, then $y^{-1/2}$, then $y^{-1}$
     \item Poisson counts have $\Var(y) = \E[y]$, so $\sigma^2 \propto \E[y]$ and the square root applies
-    \item A proportion $y = X/m$ with $X \sim \text{Binomial}(m, p)$ has $\Var(y) = p(1-p)/m$, so $\sigma^2 \propto \E[y](1 - \E[y])$ and the arcsine square root applies
+    % \item A proportion $y = X/m$ with $X \sim \text{Binomial}(m, p)$ has $\Var(y) = p(1-p)/m$, so $\sigma^2 \propto \E[y](1 - \E[y])$ and the arcsine square root applies
     \item $\sigma^2 \propto (\E[y])^2$ means the standard deviation is proportional to the mean, which calls for the logarithm
 \end{itemize}
 \end{frame}
@@ -84,9 +116,18 @@ The exact relationship between $\sigma^2$ and $\E[y]$ is rarely known, so the ch
 \begin{frame}{Consequences of Transforming the Response}
 \begin{itemize}
     \item Estimates and tests refer to the $y^*$ scale; for example, coefficients describe the change in $\sqrt{y}$, not in $y$
-    \item To predict on the original scale, apply the inverse transformation to fitted values and to interval endpoints
-    \item $R^2$ values from models with different responses cannot be compared
+    \item $R^2$ values from models with different responses cannot be compared; to compare fits on the $y$ scale, use for example the squared correlation between $y_i$ and the back-transformed fitted values $h^{-1}(\hat{y}_i^*)$
     \item Transforming $y$ also changes the shape of the relationship and the error distribution, so all residual checks must be repeated
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Back-Transforming to the Original Scale}
+\begin{itemize}
+    \item $h$ is monotone, so it preserves quantiles: a prediction interval $(L^*, U^*)$ for $y^*$ gives the prediction interval $\big(h^{-1}(L^*),\, h^{-1}(U^*)\big)$ for $y$ (endpoints swap if $h$ is decreasing, as for $y^{-1}$)
+    \item The fitted value $h^{-1}(\hat{y}^*)$ estimates the \emph{median} of $y$, not its mean, when the errors on the $y^*$ scale are symmetric; likewise a confidence interval for $\E[y^*]$ back-transforms to one for the median of $y$
+    \item Log scale, $y^* \sim N(\mu^*, \sigma^2)$: the median of $y$ is $e^{\mu^*}$ but $\E[y] = e^{\mu^* + \sigma^2/2}$
+    \item Square-root scale: $y = (y^*)^2$, so $\E[y] = (\mu^*)^2 + \sigma^2$
 \end{itemize}
 \end{frame}
 
@@ -137,7 +178,7 @@ The exact relationship between $\sigma^2$ and $\E[y]$ is rarely known, so the ch
 The residual plot is an outward-opening funnel, so the variance increases with the mean. Which row of the variance-stabilizing table would you try first, and what would you do if the funnel persisted?
 % Answer:
 % \begin{itemize}
-%     \item Try $\sigma^2 \propto E(y)$ first, that is $y^* = \sqrt{y}$
+%     \item Try $\sigma^2 \propto \E[y]$ first, that is $y^* = \sqrt{y}$
 %     \item If the funnel persists, move to the stronger transformation $\ln y$
 % \end{itemize}
 \end{frame}
@@ -152,8 +193,8 @@ The residual plot is an outward-opening funnel, so the variance increases with t
     R^2 &= 0.6485
 \end{align*}
 \begin{itemize}
-    \item R-student against $\hat{y}^*$ no longer shows a funnel
-    \item The variance now looks stable
+    \item R-student against $\hat{y}^*$ shows no funnel: the variance now looks stable
+    \item Still check the R-student near $-3.3$ and the isolated large $\hat{y}^*$, as in the previous lecture
 \end{itemize}
 \end{column}
 \begin{column}{0.5\textwidth}
@@ -191,6 +232,7 @@ $R^2$ dropped from $0.7046$ for $y$ to $0.6485$ for $\sqrt{y}$. Does this mean t
 % \begin{itemize}
 %     \item No: the two $R^2$ values describe different responses ($y$ and $\sqrt{y}$) and cannot be compared
 %     \item The transformed model is judged by its residual diagnostics, which now satisfy the constant-variance assumption
+%     \item On the original scale the $\sqrt{y}$ model fits slightly better: the squared correlation between $y_i$ and $(\hat{y}_i^*)^2$ is $0.7185$, against $0.7046$ for the straight line
 % \end{itemize}
 \end{frame}
 
@@ -205,10 +247,10 @@ $R^2$ dropped from $0.7046$ for $y$ to $0.6485$ for $\sqrt{y}$. Does this mean t
 %     \item $p_i = 0.05 + 0.90\,x_i$, with $x_i$ at 10 equally spaced points in $[0, 1]$ and 30 replicates at each ($n = 300$)
 % \end{itemize}
 % \begin{align*}
-%     E(y_i) = p_i, \qquad \Var(y_i) = \frac{p_i(1 - p_i)}{m}
+%     \E[y_i] = p_i, \qquad \Var(y_i) = \frac{p_i(1 - p_i)}{m}
 % \end{align*}
 % \begin{itemize}
-%     \item So $\sigma^2 \propto E(y)[1 - E(y)]$, and the table suggests $y^* = \sin^{-1}\!\big(\sqrt{y}\,\big)$
+%     \item So $\sigma^2 \propto \E[y](1 - \E[y])$, and the table suggests $y^* = \sin^{-1}\!\big(\sqrt{y}\,\big)$
 % \end{itemize}
 % \end{frame}
 
@@ -274,13 +316,23 @@ $R^2$ dropped from $0.7046$ for $y$ to $0.6485$ for $\sqrt{y}$. Does this mean t
 \toprule
 Function & Transformation & Linear form \\
 \midrule
-$y = \beta_0 x^{\beta_1}$ & $y' = \ln y$, $x' = \ln x$ & $y' = \ln \beta_0 + \beta_1 x'$ \\
-$y = \beta_0 e^{\beta_1 x}$ & $y' = \ln y$ & $y' = \ln \beta_0 + \beta_1 x$ \\
-$y = \beta_0 + \beta_1 \ln x$ & $x' = \ln x$ & $y = \beta_0 + \beta_1 x'$ \\
-$y = \dfrac{x}{\beta_0 x - \beta_1}$ & $y' = \dfrac{1}{y}$, $x' = \dfrac{1}{x}$ & $y' = \beta_0 - \beta_1 x'$ \\
+$y = \beta_0 x^{\beta_1}$ & $y^* = \ln y$, $x^* = \ln x$ & $y^* = \ln \beta_0 + \beta_1 x^*$ \\
+$y = \beta_0 e^{\beta_1 x}$ & $y^* = \ln y$ & $y^* = \ln \beta_0 + \beta_1 x$ \\
+$y = \beta_0 + \beta_1 \ln x$ & $x^* = \ln x$ & $y = \beta_0 + \beta_1 x^*$ \\
+$y = \beta_0 + \dfrac{\beta_1}{x}$ & $x^* = \dfrac{1}{x}$ & $y = \beta_0 + \beta_1 x^*$ \\
+$y = \dfrac{x}{\beta_0 x - \beta_1}$ & $y^* = \dfrac{1}{y}$, $x^* = \dfrac{1}{x}$ & $y^* = \beta_0 - \beta_1 x^*$ \\
 \bottomrule
 \end{tabular}}
 \end{center}
+\end{frame}
+
+
+\begin{frame}{Shapes of the Linearizable Functions}
+\begin{center}
+\mode<presentation>{\includegraphics[height=0.72\textheight]{figures/lin_shapes.pdf}}
+\mode<article>{\includegraphics[width=\linewidth]{figures/lin_shapes.pdf}}
+\end{center}
+Match the scatter plot to a panel, then use that row of the table.
 \end{frame}
 
 
@@ -294,6 +346,15 @@ $y = \dfrac{x}{\beta_0 x - \beta_1}$ & $y' = \dfrac{1}{y}$, $x' = \dfrac{1}{x}$ 
 \begin{itemize}
     \item The linearized model is appropriate if $\ln \varepsilon$ has mean zero, constant variance, and is normal
     \item If instead the error is additive, $y = \beta_0 e^{\beta_1 x} + \varepsilon$, taking logarithms does not give a linear model with additive error, and nonlinear regression is needed
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Interpreting Coefficients After a Log Transformation}
+\begin{itemize}
+    \item $\ln y = \beta_0 + \beta_1 x + \varepsilon$: a unit increase in $x$ multiplies the median of $y$ by $e^{\beta_1}$, a change of $100(e^{\beta_1} - 1)\%$, which is about $100\beta_1\%$ when $\beta_1$ is small
+    \item $y = \beta_0 + \beta_1 \ln x + \varepsilon$: a $1\%$ increase in $x$ changes $\E[y]$ by $\beta_1 \ln 1.01 \approx \beta_1/100$
+    \item $\ln y = \beta_0 + \beta_1 \ln x + \varepsilon$: a $1\%$ increase in $x$ multiplies the median of $y$ by $1.01^{\beta_1}$, about a $\beta_1\%$ change; $\beta_1$ is the elasticity of $y$ with respect to $x$
 \end{itemize}
 \end{frame}
 
@@ -330,16 +391,6 @@ $y = \dfrac{x}{\beta_0 x - \beta_1}$ & $y' = \dfrac{1}{y}$, $x' = \dfrac{1}{x}$ 
 \end{frame}
 
 
-\begin{frame}{Question: Which Transformation?}
-DC output rises with wind velocity but levels off, and the spread around the trend looks roughly constant. Which transformation would you try, and on which variable?
-% Answer:
-% \begin{itemize}
-%     \item The curve approaches an upper limit, which matches the form $y = x/(\beta_0 x - \beta_1)$
-%     \item The spread looks constant, so transform $x$ only: $x' = 1/x$
-% \end{itemize}
-\end{frame}
-
-
 \begin{frame}{Straight-Line Fit}
 \begin{columns}[T]
 \begin{column}{0.5\textwidth}
@@ -360,17 +411,27 @@ DC output rises with wind velocity but levels off, and the spread around the tre
 \end{frame}
 
 
+\begin{frame}{Question: Which Transformation?}
+DC output rises with wind velocity but levels off, and the spread around the trend looks roughly constant. Which transformation would you try, and on which variable?
+% Answer:
+% \begin{itemize}
+%     \item The curve rises and levels off, which matches the shape of $y = \beta_0 + \beta_1/x$ with $\beta_1 < 0$
+%     \item The spread looks constant, so transform $x$ only: $x^* = 1/x$
+% \end{itemize}
+\end{frame}
+
+
 \begin{frame}{Reciprocal Transformation of $x$}
 \begin{columns}[T]
 \begin{column}{0.5\textwidth}
 \begin{align*}
-    x' &= 1/x \\
-    \hat{y} &= 2.9789 - 6.9345\,x' \\
+    x^* &= 1/x \\
+    \hat{y} &= 2.9789 - 6.9345\,x^* \\
     R^2 &= 0.9800
 \end{align*}
 \begin{itemize}
-    \item The scatter plot against $x'$ is close to a straight line
-    \item As $x \to \infty$ the fitted output approaches $2.9789$, the upper limit
+    \item The scatter plot against $x^*$ is close to a straight line
+    \item The fitted curve levels off toward $2.9789$ as $x$ grows, but the data stop at $10.2$ mph, so this limit is an extrapolation
 \end{itemize}
 \end{column}
 \begin{column}{0.5\textwidth}
@@ -408,7 +469,8 @@ DC output rises with wind velocity but levels off, and the spread around the tre
     \item The variance-stabilizing table requires knowing how $\sigma^2$ depends on $\E[y]$, which is usually unknown
     \item Box and Cox (1964): estimate the power of the transformation from the data
     \item Considers the power family $y^\lambda$, with $\lambda$ estimated together with $\bbeta$ by maximum likelihood
-    \item Aims to correct nonnormality and nonconstant variance, and requires $y_i > 0$
+    \item Aims to correct nonnormality and nonconstant variance
+    \item Requires $y_i > 0$; if some $y_i \le 0$, shift to $y + c$ with $c$ large enough, or use the Yeo--Johnson family, which allows any real $y$
 \end{itemize}
 \end{frame}
 
@@ -428,13 +490,34 @@ DC output rises with wind velocity but levels off, and the spread around the tre
 \end{frame}
 
 
+\begin{frame}{Why $\SSRes$ Cannot Be Compared Across $\lambda$}
+\begin{itemize}
+    \item The units and size of $y^{(\lambda)}$ change with $\lambda$, so the raw $\SSRes$ changes with $\lambda$ even when the fit does not
+    \item Electric utility data, unscaled $\SSRes$:
+\end{itemize}
+\begin{center}
+{\renewcommand{\arraystretch}{1.2}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Response & $y$ & $\sqrt{y}$ & $\ln y$ \\
+\midrule
+$\SSRes$ & $126.87$ & $10.98$ & $27.53$ \\
+\bottomrule
+\end{tabular}}
+\end{center}
+\begin{itemize}
+    \item $\sqrt{y}$ is not ``ten times better'' than $y$: its values are simply smaller
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}{The Scaled Response}
 \begin{itemize}
-    \item The size of $y^\lambda$ changes with $\lambda$, so $\SSRes$ is not comparable across values of $\lambda$
-    \item Fix: divide by a factor involving the geometric mean $\dot{y}$
+    \item Fix: divide by a factor involving the geometric mean $\dot{y}$, which puts every $\lambda$ on the units of $y$
 \end{itemize}
 \begin{align*}
-    y^{(\lambda)} =
+    \tilde{y}^{(\lambda)} =
     \begin{cases}
         \dfrac{y^\lambda - 1}{\lambda\,\dot{y}^{\lambda - 1}}, & \lambda \neq 0 \\[1ex]
         \dot{y} \ln y, & \lambda = 0
@@ -442,22 +525,60 @@ DC output rises with wind velocity but levels off, and the spread around the tre
     \qquad
     \dot{y} = \exp\!\left[\frac{1}{n}\sum_{i=1}^{n} \ln y_i\right]
 \end{align*}
+\begin{itemize}
+    \item $\tilde{y}^{(\lambda)} = y^{(\lambda)}/\dot{y}^{\lambda - 1}$, so for each $\lambda$ the two versions differ by a constant factor and give the same fitted model up to scale
+    \item Check: at $\lambda = 1$, $\tilde{y}^{(1)} = y - 1$, so its $\SSRes$ is that of the straight-line fit to $y$
+\end{itemize}
 \end{frame}
 
 
 \begin{frame}{Model and Estimation}
 \begin{align*}
-    \by^{(\lambda)} = \bX\bbeta + \bvarepsilon, \qquad \bvarepsilon \sim N(\mathbf{0}, \sigma^2 \mathbf{I})
+    \tilde{\by}^{(\lambda)} = \bX\bbeta + \bvarepsilon, \qquad \bvarepsilon \sim N(\mathbf{0}, \sigma^2 \mathbf{I})
 \end{align*}
 \begin{itemize}
-    \item For fixed $\lambda$, $\hat{\bbeta} = (\bX'\bX)^{-1}\bX'\by^{(\lambda)}$
+    \item For fixed $\lambda$, $\hat{\bbeta} = (\bX'\bX)^{-1}\bX'\tilde{\by}^{(\lambda)}$
     \item Let $\SSRes(\lambda)$ be the residual sum of squares from this fit
 \end{itemize}
 \begin{align*}
-    \SSRes(\lambda) = \sum_{i=1}^{n} \big( y_i^{(\lambda)} - \hat{y}_i^{(\lambda)} \big)^2
+    \SSRes(\lambda) = \sum_{i=1}^{n} \big( \tilde{y}_i^{(\lambda)} - \hat{\tilde{y}}_i^{(\lambda)} \big)^2
 \end{align*}
 \begin{itemize}
-    \item With the scaled response, the maximum likelihood estimate $\hat{\lambda}$ is the value that minimizes $\SSRes(\lambda)$
+    \item With the scaled response, the maximum likelihood estimate $\hat{\lambda}$ is the value that minimizes $\SSRes(\lambda)$ (derivation next)
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Why Minimizing $\SSRes(\lambda)$ Is Maximum Likelihood (1)}
+\begin{itemize}
+    \item Assume $y_i^{(\lambda)} = \bx_i'\bbeta + \varepsilon_i$ with $\varepsilon_i \sim N(0, \sigma^2)$ independent (unscaled family)
+    \item The density of $y_i$ is the normal density of $y_i^{(\lambda)}$ times the Jacobian $\big|\mathrm{d} y_i^{(\lambda)}/\mathrm{d} y_i\big| = y_i^{\lambda - 1}$
+\end{itemize}
+\begin{align*}
+    \ell(\bbeta, \sigma^2, \lambda) = -\frac{n}{2}\ln(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^{n}\big(y_i^{(\lambda)} - \bx_i'\bbeta\big)^2 + (\lambda - 1)\sum_{i=1}^{n} \ln y_i
+\end{align*}
+\begin{itemize}
+    \item Without the Jacobian term, the likelihood would compare densities of different variables $y^{(\lambda)}$ rather than of the observed $y$
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Why Minimizing $\SSRes(\lambda)$ Is Maximum Likelihood (2)}
+\begin{itemize}
+    \item For fixed $\lambda$, maximize over $\bbeta$ and $\sigma^2$: OLS gives $\hat{\bbeta}$, and $\hat{\sigma}^2 = S(\lambda)/n$, where $S(\lambda)$ is the unscaled residual sum of squares
+    \item Substituting gives the profile log-likelihood
+\end{itemize}
+\begin{align*}
+    \ell_p(\lambda) = \text{const} - \frac{n}{2}\ln S(\lambda) + (\lambda - 1)\sum_{i=1}^{n} \ln y_i
+\end{align*}
+\begin{itemize}
+    \item Since $\sum_i \ln y_i = n \ln \dot{y}$, the last term is $\tfrac{n}{2}\ln \dot{y}^{\,2(\lambda - 1)}$, so
+\end{itemize}
+\begin{align*}
+    \ell_p(\lambda) = \text{const} - \frac{n}{2}\ln \frac{S(\lambda)}{\dot{y}^{\,2(\lambda - 1)}} = \text{const} - \frac{n}{2}\ln \SSRes(\lambda)
+\end{align*}
+\begin{itemize}
+    \item Dividing $y^{(\lambda)}$ by $\dot{y}^{\lambda - 1}$ divides $S(\lambda)$ by $\dot{y}^{2(\lambda-1)}$: the scaling absorbs the Jacobian
 \end{itemize}
 \end{frame}
 
@@ -465,7 +586,7 @@ DC output rises with wind velocity but levels off, and the spread around the tre
 \begin{frame}{The Box--Cox Procedure}
 \begin{enumerate}
     \item Choose a grid of values of $\lambda$, for example from $-2$ to $2$
-    \item For each $\lambda$, compute the scaled $y^{(\lambda)}$, fit the model, and record $\SSRes(\lambda)$
+    \item For each $\lambda$, compute the scaled $\tilde{y}^{(\lambda)}$, fit the model, and record $\SSRes(\lambda)$
     \item Plot $\SSRes(\lambda)$ against $\lambda$ and locate the minimum $\hat{\lambda}$
     \item Analyze the simple power $y^\lambda$ (not the scaled version), using a convenient value of $\lambda$ near $\hat{\lambda}$, and recheck the residuals
 \end{enumerate}
@@ -480,7 +601,7 @@ Later inference treats $\lambda$ as known, so it is only approximate.
 \begin{itemize}
     \item $\nu$ is the residual degrees of freedom
     \item A $100(1-\alpha)\%$ confidence interval for $\lambda$ contains all $\lambda$ with $\SSRes(\lambda) \le \SSstar$
-    \item If the interval contains $1$, no transformation is needed
+    \item If the interval contains $1$, the data give no evidence that a transformation is needed
     \item Otherwise choose a convenient value inside the interval, such as $-1$, $0$, $1/2$
 \end{itemize}
 \end{frame}
@@ -488,7 +609,7 @@ Later inference treats $\lambda$ as known, so it is only approximate.
 
 \begin{frame}{Log-Likelihood Form and \texttt{MASS::boxcox}}
 \begin{itemize}
-    \item Up to a constant, the profile log-likelihood of $\lambda$ is
+    \item Up to a constant, the profile log-likelihood of $\lambda$ is (as derived above)
 \end{itemize}
 \begin{align*}
     L(\lambda) = -\frac{n}{2} \ln \SSRes(\lambda)
@@ -497,6 +618,7 @@ Later inference treats $\lambda$ as known, so it is only approximate.
     \item The likelihood-based interval keeps all $\lambda$ with $L(\hat{\lambda}) - L(\lambda) \le \tfrac{1}{2}\chi^2_{\alpha,\,1}$
     \item Equivalently, $\SSRes(\lambda) \le \SSRes(\hat{\lambda})\exp\!\big(\chi^2_{\alpha,\,1}/n\big)$, which agrees closely with $\SSstar$ unless $n$ is small
     \item \texttt{MASS::boxcox} plots $L(\lambda)$ with this 95\% interval
+    \item \texttt{car::powerTransform} reports $\hat{\lambda}$, a Wald interval, and likelihood-ratio tests of $\lambda = 1$ and $\lambda = 0$
 \end{itemize}
 \end{frame}
 
@@ -506,6 +628,8 @@ Later inference treats $\lambda$ as known, so it is only approximate.
 
 
 \begin{frame}{$\SSRes(\lambda)$ for the Electric Utility Data}
+\begin{columns}[T]
+\begin{column}{0.3\textwidth}
 \begin{center}
 {\renewcommand{\arraystretch}{1.2}
 \small
@@ -523,9 +647,15 @@ $1$ & $126.87$ \\
 \bottomrule
 \end{tabular}}
 \end{center}
+\end{column}
+\begin{column}{0.68\textwidth}
 \begin{itemize}
-    \item The scaled $\SSRes(\lambda)$ is smallest near $\lambda = 0.5$
+    \item The scaled $\SSRes(\lambda)$ is smallest near $\lambda = 0.5$; the minimum is $\SSRes(0.552) = 96.63$
+    \item $\SSstar = 96.63\,\big(1 + 2.008^2/51\big) = 104.27$: $\lambda = 0.5$ and $0.75$ lie inside the interval, $0.25$ and $1$ outside
+    \item $\SSRes(1) = 126.87$ equals the $\SSRes$ of the straight-line fit to $y$
 \end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
 
 
@@ -534,7 +664,7 @@ $1$ & $126.87$ \\
 \begin{column}{0.4\textwidth}
 \begin{itemize}
     \item $\hat{\lambda} = 0.55$
-    \item 95\% interval: $(0.31,\ 0.78)$
+    \item 95\% interval: $(0.30,\ 0.79)$
     \item Contains $\lambda = 0.5$
     \item Excludes $\lambda = 1$ and $\lambda = 0$
 \end{itemize}
@@ -548,7 +678,7 @@ $1$ & $126.87$ \\
 
 
 \begin{frame}{Question: Which $\lambda$ Should We Use?}
-The estimate is $\hat{\lambda} = 0.55$ with 95\% interval $(0.31, 0.78)$. Which value would you use for the final model, and why?
+The estimate is $\hat{\lambda} = 0.55$ with 95\% interval $(0.30, 0.79)$. Which value would you use for the final model, and why?
 
 \pause
 
@@ -649,12 +779,7 @@ Substitute into $f(\alpha) \approx f(1) + (\alpha - 1)\, f'(1)$:
 \end{align*}
 \begin{itemize}
     \item The model is linear in the regressors $x$ and $w$, so the coefficients can be estimated by OLS
-    \item Recover the power by solving $\gamma = (\alpha - 1)\beta_1$ for $\alpha$
-\end{itemize}
-\begin{align*}
-    \alpha = \frac{\gamma}{\beta_1} + 1
-\end{align*}
-\begin{itemize}
+    \item Recover the power by solving $\gamma = (\alpha - 1)\beta_1$ for $\alpha$: \ $\alpha = \gamma/\beta_1 + 1$
     \item $\gamma = 0$ exactly when $\alpha = 1$, that is, when no transformation of $x$ is needed
 \end{itemize}
 \end{frame}
@@ -669,6 +794,10 @@ Substitute into $f(\alpha) \approx f(1) + (\alpha - 1)\, f'(1)$:
 \begin{align*}
     \hat{\alpha}_1 = \frac{\hat{\gamma}}{\hat{\beta}_1} + 1
 \end{align*}
+\begin{itemize}
+    \item The coefficients in step 2 are starred because the linearized model holds only approximately, so $\hat{\beta}_0^*$, $\hat{\beta}_1^*$ need not estimate $\beta_0$, $\beta_1$ well
+    \item Following Box and Tidwell, $\hat{\beta}_1$ is taken from the fit in step 1, not from step 2
+\end{itemize}
 \end{frame}
 
 
@@ -678,6 +807,7 @@ Substitute into $f(\alpha) \approx f(1) + (\alpha - 1)\, f'(1)$:
     \item Stop when $\hat{\alpha}_k \approx 1$, that is, when no further transformation is needed
     \item The overall estimate is the product $\hat{\alpha} = \prod_k \hat{\alpha}_k$, since a power of a power multiplies the exponents
     \item The $t$ statistic for $\hat{\gamma}$ gives an approximate test of $H_0\colon \alpha = 1$
+    \item In R, \texttt{car::boxTidwell} runs the iterations and reports $\hat{\alpha}$ with this test
 \end{itemize}
 \end{frame}
 
@@ -758,7 +888,8 @@ The estimated power is $-0.833$, but the reciprocal model has almost the same $R
 
 \begin{itemize}
     \item The reciprocal model: $R^2$ and $\hat{\sigma}$ are essentially unchanged and the fitted curves nearly coincide
-    \item $1/x$ is simpler to interpret and the intercept is the upper limit of DC output
+    \item $1/x$ is simpler to interpret: the intercept is the level the fitted curve approaches as $x$ grows
+    \item Treat that level with care: the two fits agree within $2.45$--$10.2$ mph, yet their limits are $2.98$ and $3.26$, so the data barely determine the upper limit
 \end{itemize}
 \end{frame}
 
@@ -774,5 +905,6 @@ The estimated power is $-0.833$, but the reciprocal model has almost the same $R
     \item Curved relationship with constant variance: transform $x$, guided by the shape of the scatter plot
     \item Unknown power for $x$: estimate it with the Box--Tidwell method
     \item After any transformation, repeat the residual analysis and interpret results on the transformed scale
+    \item Back-transformed predictions estimate the median of $y$; log-scale coefficients are percentage changes
 \end{itemize}
 \end{frame}
