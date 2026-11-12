@@ -24,20 +24,6 @@
 \end{frame}
 
 
-\begin{frame}{Roadmap}
-    \begin{enumerate}
-        \item Reduced versus full model.
-        \item Extra sum of squares.
-        \item Partial $F$-test.
-        \item General linear hypothesis $\mathbf{T}\bbeta=\mathbf{0}$.
-        \item Sequential versus partial sums of squares.
-        \item Added-variable plots.
-    \end{enumerate}
-    \svspace{0.5em}
-    Running examples: delivery time data (two regressors) and gasoline mileage data (MPV Table B.3, several regressors).
-\end{frame}
-
-
 \section{Reduced vs. Full Model}
 
 
@@ -990,6 +976,19 @@
             \mode<article>{\includegraphics[width=0.8\linewidth]{figures/delivery_av_cases.pdf}}
         \end{column}
     \end{columns}
+\end{frame}
+
+
+\begin{frame}{Added-Variable Plots in R: \texttt{car::avPlots()}}
+    \begin{center}
+        % Figure: delivery_avplots_car.pdf (see extra-ss-delivery.R)
+        \mode<presentation>{\includegraphics[width=0.75\linewidth]{figures/delivery_avplots_car.pdf}}
+        \mode<article>{\includegraphics[width=0.9\linewidth]{figures/delivery_avplots_car.pdf}}
+    \end{center}
+    \begin{itemize}
+        \item \texttt{car::avPlots(fit)} draws one panel per regressor, the same plots as the previous two slides.
+        \item By default it labels the two largest residuals (9, 20) and the two most extreme points horizontally in each panel.
+    \end{itemize}
 \end{frame}
 
 
