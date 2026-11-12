@@ -6,11 +6,11 @@
     \[
     y_i = \beta_0 + \beta_1 x_i + \varepsilon_i, \quad i=1,\dots,n.
     \]
-    OLS estimators, written through the sample covariance, the variances and the correlation coefficient $r$:
+    OLS estimators of the coefficients, with $S_{xy}=\sum_i(x_i-\bar x)(y_i-\bar y)$ and $S_{xx}=\sum_i(x_i-\bar x)^2$, and the unbiased estimator of the error variance:
     \begin{align}
         \hat\beta_1 &= \frac{S_{xy}}{S_{xx}} \label{eq:slr-b1}\\
         \hat\beta_0 &= \bar y - \hat\beta_1 \bar x, \notag\\
-        \hat\sigma^2 &= \frac{\mathrm{SSE}}{n-2}. \label{eq:slr-s2}
+        \hat\sigma^2 &= \frac{\SSRes}{n-2}. \label{eq:slr-s2}
     \end{align}
 \end{frame}
 
@@ -108,7 +108,7 @@
 
 \begin{frame}{Meaning of the coefficients}
     \[
-    \frac{\partial E[y\mid x_1,\dots,x_k]}{\partial x_j} = \beta_j, \quad j=1,\dots,k.
+    \frac{\partial \E[y\mid x_1,\dots,x_k]}{\partial x_j} = \beta_j, \quad j=1,\dots,k.
     \]
     \begin{itemize}
         \item $\beta_j$ is the change in the mean response per unit increase in $x_j$ \emph{when all other regressors are held fixed}.
@@ -142,26 +142,26 @@
 
 \begin{frame}{The MLR model in matrix form}
     \begin{align}
-        \mathbf y = \mathbf X\symbfit{\beta} + \symbfit{\varepsilon} \label{eq:mlr-matrix}
+        \by = \bX\bbeta + \bvarepsilon \label{eq:mlr-matrix}
     \end{align}
     \[
-    \underbrace{\mathbf y}_{n\times 1}, \qquad \underbrace{\mathbf X}_{n\times p}, \qquad \underbrace{\symbfit{\beta}}_{p\times 1}, \qquad \underbrace{\symbfit{\varepsilon}}_{n\times 1}.
+    \underbrace{\by}_{n\times 1}, \qquad \underbrace{\bX}_{n\times p}, \qquad \underbrace{\bbeta}_{p\times 1}, \qquad \underbrace{\bvarepsilon}_{n\times 1}.
     \]
 \end{frame}
 
 
-\begin{frame}{The vectors $\mathbf y$, $\symbfit{\beta}$, $\symbfit{\varepsilon}$}
+\begin{frame}{The vectors $\by$, $\bbeta$, $\bvarepsilon$}
     \[
-    \mathbf y = \begin{pmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{pmatrix}, \qquad
-    \symbfit{\beta} = \begin{pmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_k \end{pmatrix}, \qquad
-    \symbfit{\varepsilon} = \begin{pmatrix} \varepsilon_1 \\ \varepsilon_2 \\ \vdots \\ \varepsilon_n \end{pmatrix}.
+    \by = \begin{pmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{pmatrix}, \qquad
+    \bbeta = \begin{pmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_k \end{pmatrix}, \qquad
+    \bvarepsilon = \begin{pmatrix} \varepsilon_1 \\ \varepsilon_2 \\ \vdots \\ \varepsilon_n \end{pmatrix}.
     \]
 \end{frame}
 
 
-\begin{frame}{The design matrix $\mathbf X$}
+\begin{frame}{The design matrix $\bX$}
     \[
-    \mathbf X = \begin{pmatrix}
+    \bX = \begin{pmatrix}
         1 & x_{11} & x_{12} & \cdots & x_{1k} \\
         1 & x_{21} & x_{22} & \cdots & x_{2k} \\
         \vdots & \vdots & \vdots & & \vdots \\
@@ -177,21 +177,21 @@
 
 \begin{frame}{Model assumptions}
     \begin{align}
-        \E[\symbfit{\varepsilon}] &= \mathbf 0, \label{eq:assump-mean}\\
-        \Var(\symbfit{\varepsilon}) &= \sigma^2\mathbf I_n. \label{eq:assump-var}
+        \E[\bvarepsilon] &= \mathbf{0}, \label{eq:assump-mean}\\
+        \Var(\bvarepsilon) &= \sigma^2\mathbf{I}_n. \label{eq:assump-var}
     \end{align}
     \begin{itemize}
-        \item $\mathbf X$ is fixed (non-random) and has full column rank, i.e.\ $\mathrm{rank}(\mathbf X)=p\le n$.
-        \item No distributional assumption on $\symbfit{\varepsilon}$ is needed yet for estimation (however noramility assumption is required later for inference)
+        \item $\bX$ is fixed (non-random) and has full column rank, i.e.\ $\rank(\bX)=p\le n$.
+        \item No distributional assumption on $\bvarepsilon$ is needed yet for estimation (however noramility assumption is required later for inference)
     \end{itemize}
     \svspace{0.5em}
-    \(\E[\symbfit{\varepsilon}]\) is a \(n\) dimensional vector of zeroes.
+    \(\E[\bvarepsilon]\) is a \(n\) dimensional vector of zeroes.
 \end{frame}
 
 
-\begin{frame}{What does $\mathrm{Var}(\symbfit{\varepsilon})=\sigma^2\mathbf I_n$ say?}
+\begin{frame}{What does $\Var(\bvarepsilon)=\sigma^2\mathbf{I}_n$ say?}
     \[
-    \mathrm{Var}(\symbfit{\varepsilon}) = \E[\symbfit{\varepsilon}\symbfit{\varepsilon}'] = \E[(\symbfit{\varepsilon} - \mathbf{0}) (\symbfit{\varepsilon} - \mathbf{0})'] = 
+    \Var(\bvarepsilon) = \E[\bvarepsilon\bvarepsilon'] = \E[(\bvarepsilon - \mathbf{0}) (\bvarepsilon - \mathbf{0})'] = 
     \begin{pmatrix}
         \sigma^2 & 0 & \cdots & 0 \\
         0 & \sigma^2 & \cdots & 0 \\
@@ -200,7 +200,7 @@
     \end{pmatrix}
     \]
     \begin{itemize}
-        \item \(\Var(\symbfit{\varepsilon})\) is \(n \times n\) dimensional variance-covariance matrix.
+        \item \(\Var(\bvarepsilon)\) is \(n \times n\) dimensional variance-covariance matrix.
         \item Diagonal entries: the $i$-th diagonal entry contains the variance of the $i$-th error term. In this model, every error has the same variance $\sigma^2$ (constant variance).
         \item Off-diagonal entries: cell ($i$, $l$) contains the covariance between observations $i$ and $l$. In this model, errors of different observations are uncorrelated, hence covariances are zero.
     \end{itemize}
@@ -225,23 +225,23 @@
 
 
 \begin{frame}{The least-squares criterion}
-    Choose $\symbfit{\beta}$ to minimise the sum of squared errors
+    Choose $\bbeta$ to minimise the sum of squared errors
     \begin{align}
-        S(\symbfit{\beta}) = \sum_{i=1}^n \varepsilon_i^2 = \symbfit{\varepsilon}'\symbfit{\varepsilon} = (\mathbf y - \mathbf X\symbfit{\beta})'(\mathbf y - \mathbf X\symbfit{\beta}). \label{eq:ls-crit}
+        S(\bbeta) = \sum_{i=1}^n \varepsilon_i^2 = \bvarepsilon'\bvarepsilon = (\by - \bX\bbeta)'(\by - \bX\bbeta). \label{eq:ls-crit}
     \end{align}
 \end{frame}
 
 
-\begin{frame}{Expanding $S(\symbfit{\beta})$}
+\begin{frame}{Expanding $S(\bbeta)$}
     \begin{align}
-        S(\symbfit{\beta}) &= \mathbf y'\mathbf y - \symbfit{\beta}'\mathbf X'\mathbf y - \mathbf y'\mathbf X\symbfit{\beta} + \symbfit{\beta}'\mathbf X'\mathbf X\symbfit{\beta} \notag\\
-        &= \mathbf y'\mathbf y - 2\symbfit{\beta}'\mathbf X'\mathbf y + \symbfit{\beta}'\mathbf X'\mathbf X\symbfit{\beta}. \label{eq:ls-expanded}
+        S(\bbeta) &= \by'\by - \bbeta'\bX'\by - \by'\bX\bbeta + \bbeta'\bX'\bX\bbeta \notag\\
+        &= \by'\by - 2\bbeta'\bX'\by + \bbeta'\bX'\bX\bbeta. \label{eq:ls-expanded}
     \end{align}
     The second line combines the two middle terms.
 
     \svspace{1em}
 
-    Why is $\mathbf y'\mathbf X\symbfit{\beta} = \symbfit{\beta}'\mathbf X'\mathbf y$?
+    Why is $\by'\bX\bbeta = \bbeta'\bX'\by$?
 
     % Answer:
     % - y'X beta is a 1x1 matrix, i.e. a scalar.
@@ -250,50 +250,50 @@
 
 
 \begin{frame}{Two rules for differentiating with respect to a vector}
-    For a constant vector $\mathbf a$ and a constant symmetric matrix $\mathbf A$:
+    For a constant vector $\mathbf{a}$ and a constant symmetric matrix $\mathbf{A}$:
     \[
-    \frac{\partial\, \mathbf a'\symbfit{\beta}}{\partial\symbfit{\beta}} = \mathbf a,
+    \frac{\partial\, \mathbf{a}'\bbeta}{\partial\bbeta} = \mathbf{a},
     \qquad
-    \frac{\partial\, \symbfit{\beta}'\mathbf A\symbfit{\beta}}{\partial\symbfit{\beta}} = 2\mathbf A\symbfit{\beta}.
+    \frac{\partial\, \bbeta'\mathbf{A}\bbeta}{\partial\bbeta} = 2\mathbf{A}\bbeta.
     \]
-    Apply with $\mathbf a=\mathbf X'\mathbf y$ and $\mathbf A=\mathbf X'\mathbf X$ (symmetric) to \eqref{eq:ls-expanded}.
+    Apply with $\mathbf{a}=\bX'\by$ and $\mathbf{A}=\bX'\bX$ (symmetric) to \eqref{eq:ls-expanded}.
 \end{frame}
 
 
 \begin{frame}{The normal equations}
     \begin{align}
-        \frac{\partial S}{\partial\symbfit{\beta}} &= -2\mathbf X'\mathbf y + 2\mathbf X'\mathbf X\symbfit{\beta}, \notag\\
-        \left.\frac{\partial S}{\partial\symbfit{\beta}}\right|_{\symbfit{\beta} = \hat{\symbfit{\beta}}} &= -2\mathbf X'\mathbf y + 2\mathbf X'\mathbf X\hat{\symbfit{\beta}} =  \mathbf 0, \notag\\
-        \Rightarrow \mathbf X'\mathbf X\hat{\symbfit{\beta}} &= \mathbf X'\mathbf y. \label{eq:normal}
+        \frac{\partial S}{\partial\bbeta} &= -2\bX'\by + 2\bX'\bX\bbeta, \notag\\
+        \left.\frac{\partial S}{\partial\bbeta}\right|_{\bbeta = \hat{\bbeta}} &= -2\bX'\by + 2\bX'\bX\hat{\bbeta} =  \mathbf{0}, \notag\\
+        \Rightarrow \bX'\bX\hat{\bbeta} &= \bX'\by. \label{eq:normal}
     \end{align}
     This is a system of $p$ linear equations in the $p$ unknowns $\hat\beta_0,\dots,\hat\beta_k$.
 \end{frame}
 
 
 \begin{frame}{The OLS estimator}
-    If $\mathbf X'\mathbf X$ is invertible, the normal equations \eqref{eq:normal} have the unique solution
+    If $\bX'\bX$ is invertible, the normal equations \eqref{eq:normal} have the unique solution
     \begin{align}
-        \hat{\symbfit{\beta}} = (\mathbf X'\mathbf X)^{-1}\mathbf X'\mathbf y. \label{eq:ols}
+        \hat{\bbeta} = (\bX'\bX)^{-1}\bX'\by. \label{eq:ols}
     \end{align}
 \end{frame}
 
 
-\begin{frame}{When is $\mathbf X'\mathbf X$ invertible?}
+\begin{frame}{When is $\bX'\bX$ invertible?}
     \begin{itemize}
-        \item $\mathbf X'\mathbf X$ ($p\times p$) is invertible if and only if $\mathbf X$ has full column rank.
-        \item That requires $n\ge p$ and no column of $\mathbf X$ being a linear combination of the other columns.
-        \item If a regressor is (nearly) a linear combination of the others, $\mathbf X'\mathbf X$ is singular (nearly singular): this is the collinearity problem, discussed in a later lecture.
+        \item $\bX'\bX$ ($p\times p$) is invertible if and only if $\bX$ has full column rank.
+        \item That requires $n\ge p$ and no column of $\bX$ being a linear combination of the other columns.
+        \item If a regressor is (nearly) a linear combination of the others, $\bX'\bX$ is singular (nearly singular): this is the collinearity problem, discussed in a later lecture.
     \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Is $\hat{\symbfit{\beta}}$ a minimum?}
+\begin{frame}{Is $\hat{\bbeta}$ a minimum?}
     \[
-    \frac{\partial^2 S}{\partial\symbfit{\beta}\,\partial\symbfit{\beta}'} = 2\mathbf X'\mathbf X.
+    \frac{\partial^2 S}{\partial\bbeta\,\partial\bbeta'} = 2\bX'\bX.
     \]
     \begin{itemize}
-        \item For any $\mathbf a\neq\mathbf 0$: $\mathbf a'\mathbf X'\mathbf X\mathbf a = (\mathbf X\mathbf a)'(\mathbf X\mathbf a) = \|\mathbf X\mathbf a\|^2 > 0$, because full column rank gives $\mathbf X\mathbf a\neq\mathbf 0$.
-        \item So $\mathbf X'\mathbf X$ is positive definite and $\hat{\symbfit{\beta}}$ is the unique minimiser of \eqref{eq:ls-crit}.
+        \item For any $\mathbf{a}\neq\mathbf{0}$: $\mathbf{a}'\bX'\bX\mathbf{a} = (\bX\mathbf{a})'(\bX\mathbf{a}) = \|\bX\mathbf{a}\|^2 > 0$, because full column rank gives $\bX\mathbf{a}\neq\mathbf{0}$.
+        \item So $\bX'\bX$ is positive definite and $\hat{\bbeta}$ is the unique minimiser of \eqref{eq:ls-crit}.
     \end{itemize}
 \end{frame}
 
@@ -303,22 +303,22 @@
 
 \begin{frame}{Fitted values and residuals}
     \begin{align}
-        \hat{\symbfit{\beta}} &= (\mathbf X'\mathbf X)^{-1}\mathbf X' \mathbf y \notag\\ 
-        \hat{\mathbf y} &= \mathbf X\hat{\symbfit{\beta}} = \mathbf X (\mathbf X'\mathbf X)^{-1}\mathbf X' \mathbf y = \mathbf H\mathbf y, \notag\\
-        \mathbf H &= \mathbf X(\mathbf X'\mathbf X)^{-1}\mathbf X', \label{eq:H-def}\\
-        \mathbf e &= \mathbf y - \hat{\mathbf y} = (\mathbf I-\mathbf H)\mathbf y. \label{eq:resid}
+        \hat{\bbeta} &= (\bX'\bX)^{-1}\bX' \by \notag\\ 
+        \hat{\by} &= \bX\hat{\bbeta} = \bX (\bX'\bX)^{-1}\bX' \by = \mathbf{H}\by, \notag\\
+        \mathbf{H} &= \bX(\bX'\bX)^{-1}\bX', \label{eq:H-def}\\
+        \mathbf{e} &= \by - \hat{\by} = (\mathbf{I}-\mathbf{H})\by. \label{eq:resid}
     \end{align}
-    $\mathbf H$ is the $n\times n$ hat matrix: it puts the hat on $\mathbf y$.
+    $\mathbf{H}$ is the $n\times n$ hat matrix: it puts the hat on $\by$.
 \end{frame}
 
 
 \begin{frame}{Properties of the hat matrix}
     \begin{align}
-        \mathbf H' &= \mathbf H, \label{eq:H-sym}\\
-        \mathbf H^2 &= \mathbf H, \label{eq:H-idem}\\
-        \mathbf H\mathbf X &= \mathbf X. \label{eq:HX}
+        \mathbf{H}' &= \mathbf{H}, \label{eq:H-sym}\\
+        \mathbf{H}^2 &= \mathbf{H}, \label{eq:H-idem}\\
+        \mathbf{H}\bX &= \bX. \label{eq:HX}
     \end{align}
-    That is, $\mathbf H$ is symmetric and idempotent.
+    That is, $\mathbf{H}$ is symmetric and idempotent.
 
     \svspace{1em}
 
@@ -329,25 +329,25 @@
 \end{frame}
 
 
-\begin{frame}{Properties of $\mathbf I-\mathbf H$}
+\begin{frame}{Properties of $\mathbf{I}-\mathbf{H}$}
     From \eqref{eq:H-sym}, \eqref{eq:H-idem} and \eqref{eq:HX}:
     \begin{align}
-        (\mathbf I-\mathbf H)' &= \mathbf I-\mathbf H, \label{eq:IH-sym}\\
-        (\mathbf I-\mathbf H)^2 &= \mathbf I-\mathbf H, \label{eq:IH-idem}\\
-        (\mathbf I-\mathbf H)\mathbf X &= \mathbf 0. \label{eq:IHX}
+        (\mathbf{I}-\mathbf{H})' &= \mathbf{I}-\mathbf{H}, \label{eq:IH-sym}\\
+        (\mathbf{I}-\mathbf{H})^2 &= \mathbf{I}-\mathbf{H}, \label{eq:IH-idem}\\
+        (\mathbf{I}-\mathbf{H})\bX &= \mathbf{0}. \label{eq:IHX}
     \end{align}
 \end{frame}
 
 
 \begin{frame}{Geometry of least squares}
-    \(\mathbf{H}\) is symmetric and idempotent and \(\hat{\mathbf{y}} = \mathbf{H}\mathbf{y}\), therefore, \(\hat{\mathbf{y}}\) is the orthogonal projection of \(\mathbf{y}\) onto \(\mathbf{X}\).
+    \(\mathbf{H}\) is symmetric and idempotent and \(\hat{\by} = \mathbf{H}\by\), therefore, \(\hat{\by}\) is the orthogonal projection of \(\by\) onto \(\bX\).
     \begin{columns}[T]
         \begin{column}{0.48\textwidth}
             \begin{itemize}
-                \item The columns of $\mathbf X$ span a $p$-dimensional subspace $\mathrm{col}(\mathbf X)$ of $\mathbb R^n$.
-                \item $\hat{\mathbf y}=\mathbf H\mathbf y$ is the orthogonal projection of $\mathbf y$ onto $\mathrm{col}(\mathbf X)$.
-                \item $\mathbf e$ is perpendicular to $\mathrm{col}(\mathbf X)$.
-                \item $\hat{\mathbf y}$ is the point of $\mathrm{col}(\mathbf X)$ closest to $\mathbf y$, so $\hat{\symbfit{\beta}}$ minimises $\|\mathbf y-\mathbf X\symbfit{\beta}\|^2$.
+                \item The columns of $\bX$ span a $p$-dimensional subspace $\col(\bX)$ of $\mathbb R^n$.
+                \item $\hat{\by}=\mathbf{H}\by$ is the orthogonal projection of $\by$ onto $\col(\bX)$.
+                \item $\mathbf{e}$ is perpendicular to $\col(\bX)$.
+                \item $\hat{\by}$ is the point of $\col(\bX)$ closest to $\by$, so $\hat{\bbeta}$ minimises $\|\by-\bX\bbeta\|^2$.
             \end{itemize}
         \end{column}
         \begin{column}{0.48\textwidth}
@@ -358,10 +358,10 @@
                 \begin{tikzpicture}[scale=\tikzscale]
                     \fill[gray!25] (0,0) -- (4.4,0) -- (5.6,1.5) -- (1.2,1.5) -- cycle;
                     \draw[gray] (0,0) -- (4.4,0) -- (5.6,1.5) -- (1.2,1.5) -- cycle;
-                    \node[gray] at (2.9,0.15) {$\mathrm{col}(\mathbf X)$};
-                    \draw[->,thick] (1.4,0.35) -- (3.6,2.9) node[above] {$\mathbf y$};
-                    \draw[->,thick] (1.4,0.35) -- (3.6,0.9) node[below right] {$\hat{\mathbf y}$};
-                    \draw[dashed,thick] (3.6,0.9) -- (3.6,2.9) node[midway,right] {$\mathbf e$};
+                    \node[gray] at (2.9,0.15) {$\col(\bX)$};
+                    \draw[->,thick] (1.4,0.35) -- (3.6,2.9) node[above] {$\by$};
+                    \draw[->,thick] (1.4,0.35) -- (3.6,0.9) node[below right] {$\hat{\by}$};
+                    \draw[dashed,thick] (3.6,0.9) -- (3.6,2.9) node[midway,right] {$\mathbf{e}$};
                     \draw (3.3,0.825) -- (3.3,1.125) -- (3.6,1.2);
                 \end{tikzpicture}%
                 }
@@ -373,13 +373,13 @@
 
 \begin{frame}{Orthogonality of residuals and regressors}
     \begin{align}
-        \mathbf X'\mathbf e = \mathbf X'(\mathbf y-\mathbf X\hat{\symbfit{\beta}}) = \mathbf X'\mathbf y - \mathbf X'\mathbf X\hat{\symbfit{\beta}} = \mathbf 0, \label{eq:orth}
+        \bX'\mathbf{e} = \bX'(\by-\bX\hat{\bbeta}) = \bX'\by - \bX'\bX\hat{\bbeta} = \mathbf{0}, \label{eq:orth}
     \end{align}
     by the normal equations \eqref{eq:normal}. Consequences:
     \begin{itemize}
-        \item First row of $\mathbf X'$ is a row of ones, so $\sum_i e_i = 0$.
+        \item First row of $\bX'$ is a row of ones, so $\sum_i e_i = 0$.
         \item Row $j$ gives $\sum_i x_{ij}e_i = 0$ for each regressor.
-        \item $\hat{\mathbf y}'\mathbf e = \hat{\symbfit{\beta}}'\mathbf X'\mathbf e = 0$.
+        \item $\hat{\by}'\mathbf{e} = \hat{\bbeta}'\bX'\mathbf{e} = 0$.
     \end{itemize}
 \end{frame}
 
@@ -387,10 +387,10 @@
 \section{Delivery time example: OLS fit}
 
 
-\begin{frame}{Computing $\mathbf X'\mathbf X$ and $\mathbf X'\mathbf y$}
+\begin{frame}{Computing $\bX'\bX$ and $\bX'\by$}
     \begin{align*}
-        \mathbf X'\mathbf X &= \begin{pmatrix} 25 & 219 & 10\,232 \\ 219 & 3\,055 & 133\,899 \\ 10\,232 & 133\,899 & 6\,725\,688 \end{pmatrix}, \\
-        \mathbf X'\mathbf y &= \begin{pmatrix} 559.60 \\ 7\,375.44 \\ 337\,071.69 \end{pmatrix}.
+        \bX'\bX &= \begin{pmatrix} 25 & 219 & 10\,232 \\ 219 & 3\,055 & 133\,899 \\ 10\,232 & 133\,899 & 6\,725\,688 \end{pmatrix}, \\
+        \bX'\by &= \begin{pmatrix} 559.60 \\ 7\,375.44 \\ 337\,071.69 \end{pmatrix}.
     \end{align*}
 \end{frame}
 
@@ -399,7 +399,7 @@
     \small
     \setlength{\arraycolsep}{4pt}
     \[
-    (\mathbf X'\mathbf X)^{-1} =
+    (\bX'\bX)^{-1} =
     \begin{pmatrix}
         1.13\times10^{-1} & -4.45\times10^{-3} & -8.37\times10^{-5} \\
         -4.45\times10^{-3} & 2.74\times10^{-3} & -4.79\times10^{-5} \\
@@ -411,7 +411,7 @@
 
 \begin{frame}{The fitted equation}
     \[
-    \hat{\symbfit{\beta}} = (\mathbf X'\mathbf X)^{-1}\mathbf X'\mathbf y =
+    \hat{\bbeta} = (\bX'\bX)^{-1}\bX'\by =
     \begin{pmatrix} 2.3412 \\ 1.6159 \\ 0.01438 \end{pmatrix}
     \]
     \[
@@ -440,7 +440,7 @@ coef(lm(time ~ cases + distance,
         data = delivery))
 \end{verbatim}
     \begin{itemize}
-        \item \texttt{solve(A, b)} solves $\mathbf A\mathbf x=\mathbf b$ directly; it is numerically preferable to forming $\mathbf A^{-1}$ explicitly.
+        \item \texttt{solve(A, b)} solves $\mathbf{A}\bx=\mathbf{b}$ directly; it is numerically preferable to forming $\mathbf{A}^{-1}$ explicitly.
     \end{itemize}
 \end{frame}
 
@@ -450,28 +450,28 @@ coef(lm(time ~ cases + distance,
 
 \begin{frame}{Linearity}
     \begin{align}
-        \hat{\symbfit{\beta}} = \mathbf A\mathbf y, \qquad \mathbf A = (\mathbf X'\mathbf X)^{-1}\mathbf X'. \label{eq:linear}
+        \hat{\bbeta} = \mathbf{A}\by, \qquad \mathbf{A} = (\bX'\bX)^{-1}\bX'. \label{eq:linear}
     \end{align}
-    $\mathbf A$ is a $p\times n$ matrix of constants (given $\mathbf X$), so every $\hat\beta_j$ is a linear combination of $y_1,\dots,y_n$.
+    $\mathbf{A}$ is a $p\times n$ matrix of constants (given $\bX$), so every $\hat\beta_j$ is a linear combination of $y_1,\dots,y_n$.
 \end{frame}
 
 
-\begin{frame}{Decomposing $\hat{\symbfit{\beta}}$}
+\begin{frame}{Decomposing $\hat{\bbeta}$}
     Substitute the model \eqref{eq:mlr-matrix} into \eqref{eq:ols}:
     \begin{align}
-        \hat{\symbfit{\beta}} &= (\mathbf X'\mathbf X)^{-1}\mathbf X' \mathbf y \notag\\
-        \hat{\symbfit{\beta}} &= (\mathbf X'\mathbf X)^{-1}\mathbf X'(\mathbf X\symbfit{\beta} + \symbfit{\varepsilon}) \notag\\
-        &= \symbfit{\beta} + (\mathbf X'\mathbf X)^{-1}\mathbf X'\symbfit{\varepsilon}. \label{eq:decomp}
+        \hat{\bbeta} &= (\bX'\bX)^{-1}\bX' \by \notag\\
+        \hat{\bbeta} &= (\bX'\bX)^{-1}\bX'(\bX\bbeta + \bvarepsilon) \notag\\
+        &= \bbeta + (\bX'\bX)^{-1}\bX'\bvarepsilon. \label{eq:decomp}
     \end{align}
-    The estimator is the true $\symbfit{\beta}$ plus a linear function of the errors.
+    The estimator is the true $\bbeta$ plus a linear function of the errors.
 \end{frame}
 
 
 \begin{frame}{Unbiasedness}
-    Taking expectations in \eqref{eq:decomp} with $\mathbf X$ fixed, and using \eqref{eq:assump-mean}:
+    Taking expectations in \eqref{eq:decomp} with $\bX$ fixed, and using \eqref{eq:assump-mean}:
     \begin{align*}
-        E[\hat{\symbfit{\beta}}] &= \symbfit{\beta} + (\mathbf X'\mathbf X)^{-1}\mathbf X'E[\symbfit{\varepsilon}] \\
-        &= \symbfit{\beta}.
+        \E[\hat{\bbeta}] &= \bbeta + (\bX'\bX)^{-1}\bX'\E[\bvarepsilon] \\
+        &= \bbeta.
     \end{align*}
 \end{frame}
 
@@ -480,40 +480,40 @@ coef(lm(time ~ cases + distance,
     % \[
     % \mathrm{Var}(\hat{\symbfit{\beta}}) = E\big[(\hat{\symbfit{\beta}}-E[\hat{\symbfit{\beta}}])(\hat{\symbfit{\beta}}-E[\hat{\symbfit{\beta}}])'\big]
     % \]
-    \(\hat{\symbfit{\beta}}\) is \(p\) dimensional random vector. Therefore, \(\mathrm{Var}(\hat{\symbfit{\beta}})\) is a $p\times p$ symmetric matrix:
+    \(\hat{\bbeta}\) is \(p\) dimensional random vector. Therefore, \(\Var(\hat{\bbeta})\) is a $p\times p$ symmetric matrix:
     \begin{itemize}
-        \item diagonal entries: $\mathrm{Var}(\hat\beta_j)$;
-        \item off-diagonal entries: $\mathrm{Cov}(\hat\beta_i,\hat\beta_j)$.
+        \item diagonal entries: $\Var(\hat\beta_j)$;
+        \item off-diagonal entries: $\Cov(\hat\beta_i,\hat\beta_j)$.
     \end{itemize}
-    For a constant matrix $\mathbf B$ and a random vector $\mathbf z$, directly from the definition,
+    For a constant matrix $\mathbf{B}$ and a random vector $\mathbf{z}$, directly from the definition,
     \begin{align}
-        \mathrm{Var}(\mathbf B\mathbf z) = \mathbf B\,\mathrm{Var}(\mathbf z)\,\mathbf B'. \label{eq:var-rule}
+        \Var(\mathbf{B}\mathbf{z}) = \mathbf{B}\,\Var(\mathbf{z})\,\mathbf{B}'. \label{eq:var-rule}
     \end{align}
 \end{frame}
 
 
-\begin{frame}{Covariance matrix of $\hat{\symbfit{\beta}}$}
+\begin{frame}{Covariance matrix of $\hat{\bbeta}$}
     \begin{align}
-        \mathrm{Var}(\hat{\symbfit{\beta}}) &= \mathrm{Var}\big(\symbfit{\beta} + (\mathbf X'\mathbf X)^{-1}\mathbf X'\symbfit{\varepsilon}\big) \notag\\
-         &= \mathrm{Var}\big((\mathbf X'\mathbf X)^{-1}\mathbf X'\symbfit{\varepsilon}\big) \notag\\
-        &= (\mathbf X'\mathbf X)^{-1}\mathbf X'\,\mathrm{Var}(\symbfit{\varepsilon})\,\mathbf X(\mathbf X'\mathbf X)^{-1} \notag\\
-        &= \sigma^2(\mathbf X'\mathbf X)^{-1}\mathbf X'\mathbf X(\mathbf X'\mathbf X)^{-1} \notag\\
-        &= \sigma^2(\mathbf X'\mathbf X)^{-1}. \label{eq:cov-beta}
+        \Var(\hat{\bbeta}) &= \Var\big(\bbeta + (\bX'\bX)^{-1}\bX'\bvarepsilon\big) \notag\\
+         &= \Var\big((\bX'\bX)^{-1}\bX'\bvarepsilon\big) \notag\\
+        &= (\bX'\bX)^{-1}\bX'\,\Var(\bvarepsilon)\,\bX(\bX'\bX)^{-1} \notag\\
+        &= \sigma^2(\bX'\bX)^{-1}\bX'\bX(\bX'\bX)^{-1} \notag\\
+        &= \sigma^2(\bX'\bX)^{-1}. \label{eq:cov-beta}
     \end{align}
-    The steps use \eqref{eq:decomp} (the constant $\symbfit{\beta}$ adds no variance), \eqref{eq:var-rule} and \eqref{eq:assump-var}.
+    The steps use \eqref{eq:decomp} (the constant $\bbeta$ adds no variance), \eqref{eq:var-rule} and \eqref{eq:assump-var}.
 \end{frame}
 
 
 \begin{frame}{Reading the covariance matrix}
-    Let $\mathbf C = (\mathbf X'\mathbf X)^{-1}$, with entries $C_{ij}$, $i,j=0,\dots,k$.
+    Let $\mathbf{C} = (\bX'\bX)^{-1}$, with entries $C_{ij}$, $i,j=0,\dots,k$.
     \begin{align}
-        \mathrm{Var}(\hat\beta_j) &= \sigma^2 C_{jj}, \label{eq:var-bj}\\
-        \mathrm{Cov}(\hat\beta_i,\hat\beta_j) &= \sigma^2 C_{ij}, \quad i\neq j. \notag
+        \Var(\hat\beta_j) &= \sigma^2 C_{jj}, \label{eq:var-bj}\\
+        \Cov(\hat\beta_i,\hat\beta_j) &= \sigma^2 C_{ij}, \quad i\neq j. \notag
     \end{align}
 \end{frame}
 
 
-\begin{frame}{Question: what makes $\mathrm{Var}(\hat\beta_j)$ large?}
+\begin{frame}{Question: what makes $\Var(\hat\beta_j)$ large?}
     Using \eqref{eq:var-bj}, which features of the data and the design make the variance of $\hat\beta_j$ large?
 
     \svspace{1em}
@@ -523,8 +523,8 @@ coef(lm(time ~ cases + distance,
     \begin{itemize}
         \item Large error variance $\sigma^2$.
         \item Small sample size $n$.
-        \item Little spread in regressor $\mathbf{x}_j$ (as in SLR, $\Var(\hat{\beta}_1) = \sigma^2 / S_{xx}$).
-        \item Strong linear relationship between $\mathbf{x}_j$ and the other regressors: $C_{jj}$ becomes large. This is the collinearity problem.
+        \item Little spread in regressor $\bx_j$ (as in SLR, $\Var(\hat{\beta}_1) = \sigma^2 / S_{xx}$).
+        \item Strong linear relationship between $\bx_j$ and the other regressors: $C_{jj}$ becomes large. This is the collinearity problem.
     \end{itemize}
 \end{frame}
 
@@ -532,10 +532,10 @@ coef(lm(time ~ cases + distance,
 \subsection{Distribution of the estimates under normal errors}
 
 
-\begin{frame}{Distribution of $\hat{\symbfit{\beta}}$}
-    Add the assumption $\symbfit{\varepsilon}\sim N_n(\mathbf 0,\sigma^2\mathbf I_n)$. By \eqref{eq:decomp}, $\hat{\symbfit{\beta}}$ is a linear function of a normal vector, hence normal:
+\begin{frame}{Distribution of $\hat{\bbeta}$}
+    Add the assumption $\bvarepsilon\sim N_n(\mathbf{0},\sigma^2\mathbf{I}_n)$. By \eqref{eq:decomp}, $\hat{\bbeta}$ is a linear function of a normal vector, hence normal:
     \begin{align}
-        \hat{\symbfit{\beta}} \sim N_p\big(\symbfit{\beta},\ \sigma^2(\mathbf X'\mathbf X)^{-1}\big). \label{eq:beta-dist}
+        \hat{\bbeta} \sim N_p\big(\bbeta,\ \sigma^2(\bX'\bX)^{-1}\big). \label{eq:beta-dist}
     \end{align}
     The mean and covariance matrix are the ones derived above. This result drives the inference procedures in the coming weeks.
 \end{frame}
@@ -545,11 +545,11 @@ coef(lm(time ~ cases + distance,
 
 
 \begin{frame}{Gauss--Markov theorem}
-    Under \eqref{eq:assump-mean} and \eqref{eq:assump-var} (no normality needed), the OLS estimator $\hat{\symbfit{\beta}}$ is the best linear unbiased estimator (BLUE) of $\symbfit{\beta}$.
+    Under \eqref{eq:assump-mean} and \eqref{eq:assump-var} (no normality needed), the OLS estimator $\hat{\bbeta}$ is the best linear unbiased estimator (BLUE) of $\bbeta$.
     \begin{itemize}
-        \item Linear: a linear function of $\mathbf y$.
-        \item Unbiased: $E[\hat{\symbfit{\beta}}]=\symbfit{\beta}$.
-        \item Best: among all linear unbiased estimators, each $\hat\beta_j$, and more generally each $\mathbf c'\hat{\symbfit{\beta}}$, has the smallest variance.
+        \item Linear: a linear function of $\by$.
+        \item Unbiased: $\E[\hat{\bbeta}]=\bbeta$.
+        \item Best: among all linear unbiased estimators, each $\hat\beta_j$, and more generally each $\mathbf{c}'\hat{\bbeta}$, has the smallest variance.
     \end{itemize}
 \end{frame}
 
@@ -560,22 +560,22 @@ coef(lm(time ~ cases + distance,
 \begin{frame}{Maximum likelihood under normal errors}
     The likelihood function is given by:
     \begin{align*}
-        L(\symbfit{\beta},\sigma^2) &= \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}} \exp\!\left(-\frac{(y_i-\mathbf x_i'\symbfit{\beta})^2}{2\sigma^2}\right) \\
-        &= (2\pi\sigma^2)^{-n/2} \exp\!\left(-\frac{1}{2\sigma^2}(\mathbf y-\mathbf X\symbfit{\beta})'(\mathbf y-\mathbf X\symbfit{\beta})\right).
+        L(\bbeta,\sigma^2) &= \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}} \exp\!\left(-\frac{(y_i-\bx_i'\bbeta)^2}{2\sigma^2}\right) \\
+        &= (2\pi\sigma^2)^{-n/2} \exp\!\left(-\frac{1}{2\sigma^2}(\by-\bX\bbeta)'(\by-\bX\bbeta)\right).
     \end{align*}
 
-    The log-likelihood of $(\symbfit{\beta},\sigma^2)$ is
+    The log-likelihood of $(\bbeta,\sigma^2)$ is
     \begin{align}
-        \ell(\symbfit{\beta},\sigma^2) = -\frac n2\ln(2\pi\sigma^2) - \frac{1}{2\sigma^2}(\mathbf y-\mathbf X\symbfit{\beta})'(\mathbf y-\mathbf X\symbfit{\beta}). \label{eq:loglik}
+        \ell(\bbeta,\sigma^2) = -\frac n2\ln(2\pi\sigma^2) - \frac{1}{2\sigma^2}(\by-\bX\bbeta)'(\by-\bX\bbeta). \label{eq:loglik}
     \end{align}
-    For any fixed $\sigma^2$, maximising over $\symbfit{\beta}$ is the same as minimising $S(\symbfit{\beta})$ in \eqref{eq:ls-crit}, so the ML estimator of $\symbfit{\beta}$ equals the OLS estimator.
+    For any fixed $\sigma^2$, maximising over $\bbeta$ is the same as minimising $S(\bbeta)$ in \eqref{eq:ls-crit}, so the ML estimator of $\bbeta$ equals the OLS estimator.
 \end{frame}
 
 
 \begin{frame}{Maximum likelihood estimator of $\sigma^2$}
-    Setting $\partial\ell/\partial\sigma^2=0$ at $\symbfit{\beta}=\hat{\symbfit{\beta}}$ gives
+    Setting $\partial\ell/\partial\sigma^2=0$ at $\bbeta=\hat{\bbeta}$ gives
     \begin{align}
-        \hat\sigma^2_{\mathrm{ML}} = \frac{(\mathbf y-\mathbf X\hat{\symbfit{\beta}})'(\mathbf y-\mathbf X\hat{\symbfit{\beta}})}{n} = \frac{\mathrm{SSE}}{n}. \label{eq:mle-s2}
+        \hat\sigma^2_{\ML} = \frac{(\by-\bX\hat{\bbeta})'(\by-\bX\hat{\bbeta})}{n} = \frac{\SSRes}{n}. \label{eq:mle-s2}
     \end{align}
     We show next that this estimator is biased.
 \end{frame}
@@ -598,64 +598,64 @@ coef(lm(time ~ cases + distance,
 \begin{frame}{Residuals as a function of the errors}
     The residual vector can also be written as:
     \begin{align}
-        \mathbf{e} = \mathbf{y} - \mathbf{\hat{y}} = \mathbf{y} - \mathbf{H} \mathbf{y} &= (\mathbf I-\mathbf H)\mathbf{y} \notag \\
-        &= (\mathbf I-\mathbf H)(\mathbf X\symbfit{\beta}+\symbfit{\varepsilon}) = (\mathbf I-\mathbf H)\symbfit{\varepsilon}, \label{eq:e-eps}.
+        \mathbf{e} = \by - \hat{\by} = \by - \mathbf{H} \by &= (\mathbf{I}-\mathbf{H})\by \notag \\
+        &= (\mathbf{I}-\mathbf{H})(\bX\bbeta+\bvarepsilon) = (\mathbf{I}-\mathbf{H})\bvarepsilon, \label{eq:e-eps}.
     \end{align}
-    Equation \eqref{eq:e-eps} holds because \((\mathbf I-\mathbf H) \mathbf{X} = 0\) as per \eqref{eq:IHX}.
+    Equation \eqref{eq:e-eps} holds because \((\mathbf{I}-\mathbf{H}) \bX = 0\) as per \eqref{eq:IHX}.
     Then the residual sum of squares:
     \begin{align}
-        \mathrm{SSE} = \sum_{i=1}^{n} e_i^2 &= \mathbf e'\mathbf e \notag \notag \\
-        &= \symbfit{\varepsilon}' (\mathbf I-\mathbf H)' (\mathbf I-\mathbf H) \symbfit{\varepsilon} = \symbfit{\varepsilon}' (\mathbf I-\mathbf H) \symbfit{\varepsilon}. \label{eq:sse-eps}
+        \SSRes = \sum_{i=1}^{n} e_i^2 &= \mathbf{e}'\mathbf{e} \notag \notag \\
+        &= \bvarepsilon' (\mathbf{I}-\mathbf{H})' (\mathbf{I}-\mathbf{H}) \bvarepsilon = \bvarepsilon' (\mathbf{I}-\mathbf{H}) \bvarepsilon. \label{eq:sse-eps}
     \end{align}
-    Equation \eqref{eq:sse-eps} holds because \((\mathbf I-\mathbf H)\) is symmetric and idempotent as per equations \eqref{eq:IH-sym} and \eqref{eq:IH-idem}.
+    Equation \eqref{eq:sse-eps} holds because \((\mathbf{I}-\mathbf{H})\) is symmetric and idempotent as per equations \eqref{eq:IH-sym} and \eqref{eq:IH-idem}.
 \end{frame}
 
 
 \begin{frame}{Expectation of a quadratic form}
-    For a constant symmetric matrix $\mathbf B$:
+    For a constant symmetric matrix $\mathbf{B}$:
     \begin{align}
-        \E[\symbfit{\varepsilon}'\mathbf B\symbfit{\varepsilon}] &= \E\big[\mathrm{tr}(\symbfit{\varepsilon}'\mathbf B\symbfit{\varepsilon})\big] = \E\big[\mathrm{tr}(\mathbf B\symbfit{\varepsilon}\symbfit{\varepsilon}')\big] \notag\\
-        &= \mathrm{tr}\big(\mathbf B\,\E[\symbfit{\varepsilon}\symbfit{\varepsilon}']\big) = \sigma^2\,\mathrm{tr}(\mathbf B). \label{eq:quad-form}
+        \E[\bvarepsilon'\mathbf{B}\bvarepsilon] &= \E\big[\tr(\bvarepsilon'\mathbf{B}\bvarepsilon)\big] = \E\big[\tr(\mathbf{B}\bvarepsilon\bvarepsilon')\big] \notag\\
+        &= \tr\big(\mathbf{B}\,\E[\bvarepsilon\bvarepsilon']\big) = \sigma^2\,\tr(\mathbf{B}). \label{eq:quad-form}
     \end{align}
     \begin{itemize}
         \item A scalar equals its trace.
-        \item $\mathrm{tr}(\mathbf M\mathbf N)=\mathrm{tr}(\mathbf N\mathbf M)$, and expectation ($\E$) commutes with $\mathrm{tr}$.
-        \item $\E[\symbfit{\varepsilon}\symbfit{\varepsilon}']=\sigma^2\mathbf I_n$ becuase \(\E[\symbfit{\varepsilon}] = \mathbf 0\) as mentioned in \eqref{eq:assump-mean} and \(\Var(\symbfit{\varepsilon}) = \sigma^2\mathbf I_n\) as in \eqref{eq:assump-var}, therefore, \(\E[\symbfit{\varepsilon}\symbfit{\varepsilon}] = \E[(\symbfit{\varepsilon} - \mathbf{0}) (\symbfit{\varepsilon} - \mathbf{0})'] = \Var(\symbfit{\varepsilon}) = \sigma^2\mathbf{I}_n\).
+        \item $\tr(\mathbf{M}\mathbf{N})=\tr(\mathbf{N}\mathbf{M})$, and expectation ($\E$) commutes with $\tr$.
+        \item $\E[\bvarepsilon\bvarepsilon']=\sigma^2\mathbf{I}_n$ becuase \(\E[\bvarepsilon] = \mathbf{0}\) as mentioned in \eqref{eq:assump-mean} and \(\Var(\bvarepsilon) = \sigma^2\mathbf{I}_n\) as in \eqref{eq:assump-var}, therefore, \(\E[\bvarepsilon\bvarepsilon] = \E[(\bvarepsilon - \mathbf{0}) (\bvarepsilon - \mathbf{0})'] = \Var(\bvarepsilon) = \sigma^2\mathbf{I}_n\).
     \end{itemize}
 \end{frame}
 
 
-\begin{frame}{The trace of $\mathbf I-\mathbf H$}
+\begin{frame}{The trace of $\mathbf{I}-\mathbf{H}$}
     \begin{align}
-        \mathrm{tr}(\mathbf H) &= \mathrm{tr}\big(\mathbf X(\mathbf X'\mathbf X)^{-1}\mathbf X'\big) = \mathrm{tr}\big((\mathbf X'\mathbf X)^{-1}\mathbf X'\mathbf X\big) \notag\\
-        &= \mathrm{tr}(\mathbf I_p) = p, \notag\\
-        \mathrm{tr}(\mathbf I_n-\mathbf H) &= n-p. \label{eq:tr-IH}
+        \tr(\mathbf{H}) &= \tr\big(\bX(\bX'\bX)^{-1}\bX'\big) = \tr\big((\bX'\bX)^{-1}\bX'\bX\big) \notag\\
+        &= \tr(\mathbf{I}_p) = p, \notag\\
+        \tr(\mathbf{I}_n-\mathbf{H}) &= n-p. \label{eq:tr-IH}
     \end{align}
 \end{frame}
 
 
-\begin{frame}{$E[\mathrm{SSE}]$ and an unbiased estimator of $\sigma^2$}
-    Applying \eqref{eq:quad-form} with $\mathbf B=\mathbf I-\mathbf H$ to \eqref{eq:sse-eps}, and using \eqref{eq:tr-IH}:
+\begin{frame}{$\E[\SSRes]$ and an unbiased estimator of $\sigma^2$}
+    Applying \eqref{eq:quad-form} with $\mathbf{B}=\mathbf{I}-\mathbf{H}$ to \eqref{eq:sse-eps}, and using \eqref{eq:tr-IH}:
     \begin{align}
-        E[\mathrm{SSE}] &= \sigma^2(n-p), \label{eq:E-sse}\\
-        \hat\sigma^2 &= \mathrm{MSE} = \frac{\mathrm{SSE}}{n-p}. \label{eq:mse}
+        \E[\SSRes] &= \sigma^2(n-p), \label{eq:E-sse}\\
+        \hat\sigma^2 &= \MSRes = \frac{\SSRes}{n-p}. \label{eq:mse}
     \end{align}
-    $E[\mathrm{MSE}]=\sigma^2$. For $p=2$ this is the SLR estimator \eqref{eq:slr-s2}.
+    $\E[\MSRes]=\sigma^2$. For $p=2$ this is the SLR estimator \eqref{eq:slr-s2}.
 \end{frame}
 
 
 \begin{frame}{Question: why divide by $n-p$?}
     The $n$ residuals are $e_i=y_i-\hat y_i$. Looking at \eqref{eq:E-sse}, why is the divisor of SSE $n-p$ and not $n$?
-    What is the bias of $\hat\sigma^2_{\mathrm{ML}}$ in \eqref{eq:mle-s2}?
+    What is the bias of $\hat\sigma^2_{\ML}$ in \eqref{eq:mle-s2}?
 
     \svspace{1em}
 
     \pause
 
     \begin{itemize}
-        \item The residuals satisfy the $p$ linear constraints \(\mathbf{X'} \mathbf{e} = \mathbf{0}\) (as seen in euqation \ref{eq:orth}), so only $n-p$ of them are free, therefore, $n-p$ degrees of freedom
-        \item \(\E(\mathrm{SSE}/n) = \sigma^2 (n-p)/n\) which is smaller than \(\sigma^2\)
-        \item So the ML estimator of the variance term, \(\hat{\sigma}^2_{ml} = \mathrm{SSE}/n\) underestimates \(\sigma^2\)
+        \item The residuals satisfy the $p$ linear constraints \(\bX' \mathbf{e} = \mathbf{0}\) (as seen in euqation \ref{eq:orth}), so only $n-p$ of them are free, therefore, $n-p$ degrees of freedom
+        \item \(\E[\SSRes/n] = \sigma^2 (n-p)/n\) which is smaller than \(\sigma^2\)
+        \item So the ML estimator of the variance term, \(\hat{\sigma}^2_{\ML} = \SSRes/n\) underestimates \(\sigma^2\)
     \end{itemize}
 
     % Answer:
@@ -667,27 +667,27 @@ coef(lm(time ~ cases + distance,
 \begin{frame}{Standard errors of the coefficients}
     Replace $\sigma^2$ by $\hat\sigma^2$ in \eqref{eq:cov-beta} and \eqref{eq:var-bj}:
     \begin{align}
-        \widehat{\mathrm{Var}}(\hat{\symbfit{\beta}}) &= \hat\sigma^2(\mathbf X'\mathbf X)^{-1}, \notag\\
-        \mathrm{se}(\hat\beta_j) &= \sqrt{\hat\sigma^2 C_{jj}}. \label{eq:se}
+        \widehat{\Var}(\hat{\bbeta}) &= \hat\sigma^2(\bX'\bX)^{-1}, \notag\\
+        \se(\hat\beta_j) &= \sqrt{\hat\sigma^2 C_{jj}}. \label{eq:se}
     \end{align}
 \end{frame}
 
 
 \begin{frame}{Delivery time data: $\hat\sigma^2$}
     \begin{itemize}
-        \item $\mathrm{SSE} = 233.73$, with $n-p = 25-3 = 22$ degrees of freedom.
-        \item $\hat\sigma^2 = \mathrm{MSE} = 233.73/22 = 10.62$.
+        \item $\SSRes = 233.73$, with $n-p = 25-3 = 22$ degrees of freedom.
+        \item $\hat\sigma^2 = \MSRes = 233.73/22 = 10.62$.
         \item $\hat\sigma = 3.26$ minutes: the typical deviation of a delivery time from the fitted plane.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Delivery time data: variance-covariance matrix of the estimates}
-    From \eqref{eq:cov-beta} with $\sigma^2$ replaced by $\hat\sigma^2=10.62$ and $(\mathbf X'\mathbf X)^{-1}$ from before:
+    From \eqref{eq:cov-beta} with $\sigma^2$ replaced by $\hat\sigma^2=10.62$ and $(\bX'\bX)^{-1}$ from before:
     \footnotesize
     \setlength{\arraycolsep}{3pt}
     \begin{align*}
-        \widehat{\mathrm{Var}}(\hat{\symbfit{\beta}}) = \hat\sigma^2(\mathbf X'\mathbf X)^{-1}
+        \widehat{\Var}(\hat{\bbeta}) = \hat\sigma^2(\bX'\bX)^{-1}
         &= 10.62
         \begin{pmatrix}
             1.13\times10^{-1} & -4.45\times10^{-3} & -8.37\times10^{-5} \\
@@ -703,8 +703,8 @@ coef(lm(time ~ cases + distance,
     \end{align*}
     \normalsize
     \begin{itemize}
-        \item The diagonal entries are $\widehat{\mathrm{Var}}(\hat\beta_j)$; their square roots are the standard errors $1.097$, $0.171$ and $0.00362$ in \eqref{eq:se}.
-        \item The off-diagonal entries are estimated covariances; e.g.\ $\widehat{\mathrm{Cov}}(\hat\beta_1,\hat\beta_2)=-5.09\times10^{-4}<0$: the estimates of the cases and distance coefficients are negatively correlated, because the regressors are positively correlated ($r=0.82$).
+        \item The diagonal entries are $\widehat{\Var}(\hat\beta_j)$; their square roots are the standard errors $1.097$, $0.171$ and $0.00362$ in \eqref{eq:se}.
+        \item The off-diagonal entries are estimated covariances; e.g.\ $\widehat{\Cov}(\hat\beta_1,\hat\beta_2)=-5.09\times10^{-4}<0$: the estimates of the cases and distance coefficients are negatively correlated, because the regressors are positively correlated ($r=0.82$).
     \end{itemize}
 \end{frame}
 
@@ -731,10 +731,10 @@ coef(lm(time ~ cases + distance,
 
 \begin{frame}{Sums of squares}
     \begin{align}
-        \mathrm{SST} &= \sum_{i=1}^n (y_i-\bar y)^2 = \mathbf y'\mathbf y - n\bar y^2, \notag\\
-        \mathrm{SSE} &= \mathbf y'\mathbf y - \hat{\symbfit{\beta}}'\mathbf X'\mathbf y, \notag\\
-        \mathrm{SSR} &= \sum_{i=1}^n (\hat y_i-\bar y)^2 = \hat{\symbfit{\beta}}'\mathbf X'\mathbf y - n\bar y^2, \notag\\
-        \mathrm{SST} &= \mathrm{SSR} + \mathrm{SSE}. \label{eq:ss-decomp}
+        \SST &= \sum_{i=1}^n (y_i-\bar y)^2 = \by'\by - n\bar y^2, \notag\\
+        \SSRes &= \by'\by - \hat{\bbeta}'\bX'\by, \notag\\
+        \SSR &= \sum_{i=1}^n (\hat y_i-\bar y)^2 = \hat{\bbeta}'\bX'\by - n\bar y^2, \notag\\
+        \SST &= \SSR + \SSRes. \label{eq:ss-decomp}
     \end{align}
     The decomposition follows from the orthogonality \eqref{eq:orth}.
 \end{frame}
@@ -742,7 +742,7 @@ coef(lm(time ~ cases + distance,
 
 \begin{frame}{The coefficient of determination}
     \begin{align}
-        R^2 = \frac{\mathrm{SSR}}{\mathrm{SST}} = 1 - \frac{\mathrm{SSE}}{\mathrm{SST}}. \label{eq:r2}
+        R^2 = \frac{\SSR}{\SST} = 1 - \frac{\SSRes}{\SST}. \label{eq:r2}
     \end{align}
     \begin{itemize}
         \item The proportion of the variability in $y$ explained by the regressors; $0\le R^2\le 1$.
@@ -779,16 +779,16 @@ coef(lm(time ~ cases + distance,
 
 \begin{frame}{Adjusted $R^2$}
     \begin{align}
-        R^2_{\mathrm{adj}} &= 1 - \frac{\mathrm{SSE}/(n-p)}{\mathrm{SST}/(n-1)} = 1 - \frac{\mathrm{MSE}}{\mathrm{MST}}, \label{eq:adj-r2}\\
+        R^2_{\mathrm{adj}} &= 1 - \frac{\SSRes/(n-p)}{\SST/(n-1)} = 1 - \frac{\MSRes}{\MST}, \label{eq:adj-r2}\\
         &= 1 - \frac{n-1}{n-p}\,(1-R^2). \label{eq:adj-r2-alt}
     \end{align}
-    $\mathrm{MST}=\mathrm{SST}/(n-1)$ is the sample variance of $y$.
+    $\MST=\SST/(n-1)$ is the sample variance of $y$.
 \end{frame}
 
 
 \begin{frame}{Why adjusted $R^2$ penalises useless regressors}
     \begin{itemize}
-        \item $\mathrm{MST}$ does not depend on the model, so by \eqref{eq:adj-r2} $R^2_{\mathrm{adj}}$ increases if and only if $\mathrm{MSE}$ decreases.
+        \item $\MST$ does not depend on the model, so by \eqref{eq:adj-r2} $R^2_{\mathrm{adj}}$ increases if and only if $\MSRes$ decreases.
         \item Adding a regressor lowers SSE but also lowers the degrees of freedom $n-p$ in \eqref{eq:mse}.
         \item The MSE decreases only if the drop in SSE outweighs the lost degree of freedom.
     \end{itemize}
@@ -835,19 +835,19 @@ coef(lm(time ~ cases + distance,
 
 
 \begin{frame}[allowframebreaks]{SLR as a special Case of MLR}
-    For SLR, $\mathbf X = [\mathbf 1\;\; \mathbf x]$ and
+    For SLR, $\bX = [\mathbf{1}\;\; \bx]$ and
     \begin{align*}
-        \mathbf X'\mathbf X &= \begin{pmatrix} n & \sum x_i \\ \sum x_i & \sum x_i^2 \end{pmatrix}, &
-        \mathbf X'\mathbf y &= \begin{pmatrix} \sum y_i \\ \sum x_i y_i \end{pmatrix}.
+        \bX'\bX &= \begin{pmatrix} n & \sum x_i \\ \sum x_i & \sum x_i^2 \end{pmatrix}, &
+        \bX'\by &= \begin{pmatrix} \sum y_i \\ \sum x_i y_i \end{pmatrix}.
     \end{align*}
 
     \framebreak
 
     Since $n\sum x_i^2 - (\sum x_i)^2 = nS_{xx}$,
     \[
-    (\mathbf X'\mathbf X)^{-1} = \frac{1}{nS_{xx}}\begin{pmatrix} \sum x_i^2 & -\sum x_i \\ -\sum x_i & n \end{pmatrix}.
+    (\bX'\bX)^{-1} = \frac{1}{nS_{xx}}\begin{pmatrix} \sum x_i^2 & -\sum x_i \\ -\sum x_i & n \end{pmatrix}.
     \]
-    The second entry of $(\mathbf X'\mathbf X)^{-1}\mathbf X'\mathbf y$ is
+    The second entry of $(\bX'\bX)^{-1}\bX'\by$ is
     \[
     \hat\beta_1 = \frac{n\sum x_i y_i - \sum x_i\sum y_i}{nS_{xx}} = \frac{nS_{xy}}{nS_{xx}} = \frac{S_{xy}}{S_{xx}},
     \]
@@ -856,15 +856,15 @@ coef(lm(time ~ cases + distance,
 
 
 \begin{frame}{SLR variance from the MLR covariance matrix}
-    In equation (\ref{eq:cov-beta}) we found that \(\mathrm{Var}(\hat{\symbfit{\beta}}) = \sigma^2(\mathbf X'\mathbf X)^{-1}\).
+    In equation (\ref{eq:cov-beta}) we found that \(\Var(\hat{\bbeta}) = \sigma^2(\bX'\bX)^{-1}\).
 
     \svspace{0.5em}
 
     Using the inverse computed for SLR, with $\sum x_i^2 = S_{xx} + n\bar x^2$:
     \begin{align*}
-        \mathrm{Var}(\hat\beta_1) &= \sigma^2\,\frac{n}{nS_{xx}} = \frac{\sigma^2}{S_{xx}}, \\
-        \mathrm{Var}(\hat\beta_0) &= \sigma^2\,\frac{\sum x_i^2}{nS_{xx}} = \sigma^2\left(\frac1n + \frac{\bar x^2}{S_{xx}}\right), \\
-        \mathrm{Cov}(\hat\beta_0,\hat\beta_1) &= -\sigma^2\,\frac{\sum x_i}{nS_{xx}} = -\sigma^2\,\frac{\bar x}{S_{xx}}.
+        \Var(\hat\beta_1) &= \sigma^2\,\frac{n}{nS_{xx}} = \frac{\sigma^2}{S_{xx}}, \\
+        \Var(\hat\beta_0) &= \sigma^2\,\frac{\sum x_i^2}{nS_{xx}} = \sigma^2\left(\frac1n + \frac{\bar x^2}{S_{xx}}\right), \\
+        \Cov(\hat\beta_0,\hat\beta_1) &= -\sigma^2\,\frac{\sum x_i}{nS_{xx}} = -\sigma^2\,\frac{\bar x}{S_{xx}}.
     \end{align*}
     These are the familiar SLR results.
 \end{frame}
@@ -875,10 +875,10 @@ coef(lm(time ~ cases + distance,
 
 \begin{frame}{Summary}
     \begin{itemize}
-        \item Model: $\mathbf y=\mathbf X\symbfit{\beta}+\symbfit{\varepsilon}$, with $E[\symbfit{\varepsilon}]=\mathbf 0$ and $\mathrm{Var}(\symbfit{\varepsilon})=\sigma^2\mathbf I_n$ \eqref{eq:mlr-matrix}.
-        \item OLS: $\hat{\symbfit{\beta}}=(\mathbf X'\mathbf X)^{-1}\mathbf X'\mathbf y$ \eqref{eq:ols}; $\hat{\mathbf y}=\mathbf H\mathbf y$ is a projection onto $\mathrm{col}(\mathbf X)$.
-        \item $\hat{\symbfit{\beta}}$ is unbiased with $\mathrm{Var}(\hat{\symbfit{\beta}})=\sigma^2(\mathbf X'\mathbf X)^{-1}$ \eqref{eq:cov-beta}, and is BLUE.
-        \item $\hat\sigma^2=\mathrm{SSE}/(n-p)$ is unbiased for $\sigma^2$ \eqref{eq:mse}.
+        \item Model: $\by=\bX\bbeta+\bvarepsilon$, with $\E[\bvarepsilon]=\mathbf{0}$ and $\Var(\bvarepsilon)=\sigma^2\mathbf{I}_n$ \eqref{eq:mlr-matrix}.
+        \item OLS: $\hat{\bbeta}=(\bX'\bX)^{-1}\bX'\by$ \eqref{eq:ols}; $\hat{\by}=\mathbf{H}\by$ is a projection onto $\col(\bX)$.
+        \item $\hat{\bbeta}$ is unbiased with $\Var(\hat{\bbeta})=\sigma^2(\bX'\bX)^{-1}$ \eqref{eq:cov-beta}, and is BLUE.
+        \item $\hat\sigma^2=\SSRes/(n-p)$ is unbiased for $\sigma^2$ \eqref{eq:mse}.
         \item $R^2$ never decreases when regressors are added; $R^2_{\mathrm{adj}}$ \eqref{eq:adj-r2} penalises the loss of degrees of freedom.
     \end{itemize}
 \end{frame}
@@ -902,21 +902,21 @@ coef(lm(time ~ cases + distance,
 \begin{frame}{Gauss--Markov: setup of the proof}
     Any linear estimator can be written
     \[
-    \tilde{\symbfit{\beta}} = \big[(\mathbf X'\mathbf X)^{-1}\mathbf X' + \mathbf D\big]\mathbf y
+    \tilde{\bbeta} = \big[(\bX'\bX)^{-1}\bX' + \mathbf{D}\big]\by
     \]
-    for some $p\times n$ matrix $\mathbf D$. Its expectation is $\symbfit{\beta} + \mathbf D\mathbf X\symbfit{\beta}$, so unbiasedness for every $\symbfit{\beta}$ requires
+    for some $p\times n$ matrix $\mathbf{D}$. Its expectation is $\bbeta + \mathbf{D}\bX\bbeta$, so unbiasedness for every $\bbeta$ requires
     \begin{align}
-        \mathbf D\mathbf X = \mathbf 0. \label{eq:DX}
+        \mathbf{D}\bX = \mathbf{0}. \label{eq:DX}
     \end{align}
 \end{frame}
 
 
 \begin{frame}{Gauss--Markov: the variance comparison}
     \begin{align*}
-        \mathrm{Var}(\tilde{\symbfit{\beta}}) &= \sigma^2\big[(\mathbf X'\mathbf X)^{-1}\mathbf X' + \mathbf D\big]\big[\mathbf X(\mathbf X'\mathbf X)^{-1} + \mathbf D'\big] \\
-        &= \sigma^2\big[(\mathbf X'\mathbf X)^{-1} + (\mathbf X'\mathbf X)^{-1}(\mathbf D\mathbf X)' \\
-        &\qquad\quad + \mathbf D\mathbf X(\mathbf X'\mathbf X)^{-1} + \mathbf D\mathbf D'\big] \\
-        &= \sigma^2(\mathbf X'\mathbf X)^{-1} + \sigma^2\mathbf D\mathbf D',
+        \Var(\tilde{\bbeta}) &= \sigma^2\big[(\bX'\bX)^{-1}\bX' + \mathbf{D}\big]\big[\bX(\bX'\bX)^{-1} + \mathbf{D}'\big] \\
+        &= \sigma^2\big[(\bX'\bX)^{-1} + (\bX'\bX)^{-1}(\mathbf{D}\bX)' \\
+        &\qquad\quad + \mathbf{D}\bX(\bX'\bX)^{-1} + \mathbf{D}\mathbf{D}'\big] \\
+        &= \sigma^2(\bX'\bX)^{-1} + \sigma^2\mathbf{D}\mathbf{D}',
     \end{align*}
     where the last step uses \eqref{eq:DX}.
 \end{frame}
@@ -924,8 +924,8 @@ coef(lm(time ~ cases + distance,
 
 \begin{frame}{Gauss--Markov: conclusion}
     \begin{itemize}
-        \item $\mathbf a'\mathbf D\mathbf D'\mathbf a = \|\mathbf D'\mathbf a\|^2\ge 0$ for every $\mathbf a$, so $\mathbf D\mathbf D'$ is positive semidefinite.
-        \item Hence $\mathrm{Var}(\tilde{\symbfit{\beta}}) - \mathrm{Var}(\hat{\symbfit{\beta}})$ is positive semidefinite, and $\mathrm{Var}(\mathbf c'\tilde{\symbfit{\beta}})\ge\mathrm{Var}(\mathbf c'\hat{\symbfit{\beta}})$ for every $\mathbf c$.
-        \item Equality holds only for $\mathbf D=\mathbf 0$, i.e.\ $\tilde{\symbfit{\beta}}=\hat{\symbfit{\beta}}$.
+        \item $\mathbf{a}'\mathbf{D}\mathbf{D}'\mathbf{a} = \|\mathbf{D}'\mathbf{a}\|^2\ge 0$ for every $\mathbf{a}$, so $\mathbf{D}\mathbf{D}'$ is positive semidefinite.
+        \item Hence $\Var(\tilde{\bbeta}) - \Var(\hat{\bbeta})$ is positive semidefinite, and $\Var(\mathbf{c}'\tilde{\bbeta})\ge\Var(\mathbf{c}'\hat{\bbeta})$ for every $\mathbf{c}$.
+        \item Equality holds only for $\mathbf{D}=\mathbf{0}$, i.e.\ $\tilde{\bbeta}=\hat{\bbeta}$.
     \end{itemize}
 \end{frame}
