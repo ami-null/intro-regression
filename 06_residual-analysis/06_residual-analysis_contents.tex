@@ -2,11 +2,11 @@
 
 
 \begin{frame}{Assumptions Behind the Fitted Model}
-    The linear model $\mathbf y=\mathbf X\symbf\beta+\symbf\varepsilon$ is fitted under the following assumptions:
+    The linear model $\by=\bX\bbeta+\bvarepsilon$ is fitted under the following assumptions:
     \begin{itemize}
         \item The relationship between $y$ and the regressors is (approximately) linear
-        \item $\mathrm{E}[\varepsilon_i]=0$
-        \item $\mathrm{Var}(\varepsilon_i)=\sigma^2$ for all $i$ (constant variance)
+        \item $\E[\varepsilon_i]=0$
+        \item $\Var(\varepsilon_i)=\sigma^2$ for all $i$ (constant variance)
         \item The errors are uncorrelated (independence)
         \item The errors are normally distributed (needed for the inference)
     \end{itemize}
@@ -27,23 +27,23 @@
 \begin{frame}{Raw Residuals}
     The $i$th residual is $e_i=y_i-\hat y_i$. In matrix form
     \begin{align*}
-        \mathbf e = \mathbf y-\hat{\mathbf y} = \mathbf y - \mathbf H \mathbf y &= (\mathbf I-\mathbf H)\mathbf y \\
-        &= (\mathbf I-\mathbf H)(\mathbf X \symbf{\beta} + \symbf\varepsilon) \\
-        &= (\mathbf I-\mathbf H)\symbf\varepsilon ,
+        \mathbf{e} = \by-\hat{\by} = \by - \mathbf{H} \by &= (\mathbf{I}-\mathbf{H})\by \\
+        &= (\mathbf{I}-\mathbf{H})(\bX \bbeta + \bvarepsilon) \\
+        &= (\mathbf{I}-\mathbf{H})\bvarepsilon ,
     \end{align*}
-    where the last step uses $(\mathbf I-\mathbf H)\mathbf X=\mathbf 0$.
+    where the last step uses $(\mathbf{I}-\mathbf{H})\bX=\mathbf{0}$.
 \end{frame}
 
 
 \begin{frame}{Leverage}
-    The hat matrix is $\mathbf H=\mathbf X(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top$ with diagonal elements
+    The hat matrix is $\mathbf{H}=\bX(\bX'\bX)^{-1}\bX'$ with diagonal elements
     \[
-        h_{ii}=\mathbf x_i^\top(\mathbf X^\top\mathbf X)^{-1}\mathbf x_i .
+        h_{ii}=\bx_i'(\bX'\bX)^{-1}\bx_i .
     \]
     \begin{itemize}
-        \item Intuitively, $h_{ii}$ measures how far $\mathbf x_i$ is from the centroid of the regressor values
-        \item $h_{ii}$ is large when $\mathbf{x}_i$ is far from the centroid of the regressor values
-        \item Points with unusual $\mathbf{x}_i$-values have more ``leverage" to pull the fitted surface toward their own $y_i$
+        \item Intuitively, $h_{ii}$ measures how far $\bx_i$ is from the centroid of the regressor values
+        \item $h_{ii}$ is large when $\bx_i$ is far from the centroid of the regressor values
+        \item Points with unusual $\bx_i$-values have more ``leverage" to pull the fitted surface toward their own $y_i$
         \item $0\le h_{ii}\le 1$ and $\sum_{i=1}^n h_{ii}=p$, where $p$ is the number of model parameters
         \item $\hat y_i=\sum_j h_{ij}y_j$, so $h_{ii}$ is the weight of $y_i$ in its own fitted value
     \end{itemize}
@@ -58,7 +58,7 @@
     \begin{itemize}
         \item Delivery time data: $p=3$, $n=25$, so the cutoff is $2p/n = 2(3)/25 = 0.24$
         \item Observation 9: $h_{99}=0.498 > 0.24$, flagged as high leverage
-        \item High leverage is about an unusual $\mathbf x_i$, not an unusual $y_i$: a flagged point can still have a small residual if $y_i$ happens to agree with the trend at that $\mathbf x_i$
+        \item High leverage is about an unusual $\bx_i$, not an unusual $y_i$: a flagged point can still have a small residual if $y_i$ happens to agree with the trend at that $\bx_i$
     \end{itemize}
 \end{frame}
 
@@ -67,7 +67,7 @@
     \begin{columns}[T]
         \column{0.45\textwidth}
         \begin{itemize}
-            \item Leverage depends only on the location of $\mathbf x_i$, not on $y_i$
+            \item Leverage depends only on the location of $\bx_i$, not on $y_i$
             \item A point far from $\bar x$ has high leverage, whatever its $y$-value
             \item Here the flagged point sits far from the rest of the data in $x$, yet close to the fitted line: high leverage, small residual
         \end{itemize}
@@ -80,13 +80,13 @@
 
 \begin{frame}{Mean and Covariance of the Residuals}
     \begin{align}
-        \mathrm{E}[\mathbf e] &= \mathbf 0 \notag \\
-        \mathrm{Var}(\mathbf e) &= \sigma^2(\mathbf I-\mathbf H) \label{eq:var-e}
+        \E[\mathbf{e}] &= \mathbf{0} \notag \\
+        \Var(\mathbf{e}) &= \sigma^2(\mathbf{I}-\mathbf{H}) \label{eq:var-e}
     \end{align}
     Element by element
     \begin{align*}
-        \mathrm{Var}(e_i) &= \sigma^2(1-h_{ii}) \\
-        \mathrm{Cov}(e_i,e_j) &= -\sigma^2 h_{ij}, \qquad i\neq j .
+        \Var(e_i) &= \sigma^2(1-h_{ii}) \\
+        \Cov(e_i,e_j) &= -\sigma^2 h_{ij}, \qquad i\neq j .
     \end{align*}
 \end{frame}
 
@@ -98,7 +98,7 @@
 
     \svspace{1em}
 
-    No. $\mathrm{Var}(e_i)=\sigma^2(1-h_{ii})$ differs across $i$ whenever the $h_{ii}$ differ, $\mathrm{Cov}(e_i,e_j)=-\sigma^2h_{ij}\neq 0$, and the residuals satisfy the $p$ linear constraints $\mathbf X^\top\mathbf e=\mathbf 0$ (in particular $\sum_i e_i=0$ when the model has an intercept).
+    No. $\Var(e_i)=\sigma^2(1-h_{ii})$ differs across $i$ whenever the $h_{ii}$ differ, $\Cov(e_i,e_j)=-\sigma^2h_{ij}\neq 0$, and the residuals satisfy the $p$ linear constraints $\bX'\mathbf{e}=\mathbf{0}$ (in particular $\sum_i e_i=0$ when the model has an intercept).
 \end{frame}
 
 
@@ -107,22 +107,22 @@
 
 \begin{frame}{Standardized Residuals}
     \begin{align}
-        d_i = \frac{e_i}{\sqrt{\text{MSE}}}, \qquad \text{MSE}=\frac{\text{SS}_{\text{Res}}}{n-p} \label{eq:d}
+        d_i = \frac{e_i}{\sqrt{\MSRes}}, \qquad \MSRes=\frac{\SSRes}{n-p} \label{eq:d}
     \end{align}
     \begin{itemize}
-        \item $\mathrm{E}[d_i]=0$ and $\mathrm{Var}(d_i)\approx 1$, and $d_i$ is free of the units of $y$
+        \item $\E[d_i]=0$ and $\Var(d_i)\approx 1$, and $d_i$ is free of the units of $y$
         \item Rule of thumb: $|d_i|>3$ marks a potential outlier
-        \item $d_i$ ignores that $\mathrm{Var}(e_i)=\sigma^2(1-h_{ii})$ differs across observations, see \eqref{eq:var-e}
+        \item $d_i$ ignores that $\Var(e_i)=\sigma^2(1-h_{ii})$ differs across observations, see \eqref{eq:var-e}
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Studentized Residuals}
     \begin{align}
-        r_i = \frac{e_i}{\sqrt{\text{MSE}\,(1-h_{ii})}} = \frac{d_i}{\sqrt{1-h_{ii}}} \label{eq:r}
+        r_i = \frac{e_i}{\sqrt{\MSRes\,(1-h_{ii})}} = \frac{d_i}{\sqrt{1-h_{ii}}} \label{eq:r}
     \end{align}
     \begin{itemize}
-        \item Divides $e_i$ by its own estimated standard deviation from \eqref{eq:var-e}, so $\mathrm{Var}(r_i)=1$ for every $i$, whatever the location of $\mathbf x_i$
+        \item Divides $e_i$ by its own estimated standard deviation from \eqref{eq:var-e}, so $\Var(r_i)=1$ for every $i$, whatever the location of $\bx_i$
         \item $|r_i|\ge|d_i|$, with $d_i$ from \eqref{eq:d}
         \item $r_i\approx d_i$ when $h_{ii}$ is small, and they differ noticeably for high-leverage points
     \end{itemize}
@@ -143,15 +143,15 @@
 
 \begin{frame}{Variance of PRESS Residuals and the PRESS Statistic}
     \begin{align*}
-        \mathrm{Var}(e_{(i)}) &= \frac{\sigma^2}{1-h_{ii}} \\
-        \text{PRESS} &= \sum_{i=1}^n e_{(i)}^2
+        \Var(e_{(i)}) &= \frac{\sigma^2}{1-h_{ii}} \\
+        \mathrm{PRESS} &= \sum_{i=1}^n e_{(i)}^2
     \end{align*}
     \begin{itemize}
         \item PRESS measures predictive ability: smaller is better
         \item Standardizing $e_{(i)}$ by its standard deviation returns the studentized residual
     \end{itemize}
     \[
-        \frac{e_{(i)}}{\sqrt{\mathrm{Var}(e_{(i)})}} = \frac{e_i}{\sqrt{\sigma^2(1-h_{ii})}}
+        \frac{e_{(i)}}{\sqrt{\Var(e_{(i)})}} = \frac{e_i}{\sqrt{\sigma^2(1-h_{ii})}}
     \]
 \end{frame}
 
@@ -159,7 +159,7 @@
 \begin{frame}{Removing Observation $i$ From the Variance Estimate}
     MSE uses all $n$ observations, including observation $i$: a large $e_i$ inflates MSE and shrinks $r_i$. Instead use the variance estimate from the fit without observation $i$
     \begin{align}
-        S_{(i)}^2 = \frac{(n-p)\,\text{MSE} - e_i^2/(1-h_{ii})}{n-p-1} , \label{eq:s2i}
+        S_{(i)}^2 = \frac{(n-p)\,\MSRes - e_i^2/(1-h_{ii})}{n-p-1} , \label{eq:s2i}
     \end{align}
     which also needs no refit.
 \end{frame}
@@ -186,8 +186,8 @@
             Residual & Formula & Variance / distribution & Note \\
             \midrule
             Raw & $e_i$ & $\sigma^2(1-h_{ii})$ & Unequal variances \\
-            Standardized & $e_i/\sqrt{\text{MSE}}$ & $\approx 1$ & Ignores $h_{ii}$ \\
-            Studentized & $e_i/\sqrt{\text{MSE}(1-h_{ii})}$ & $1$ & Accounts for leverage \\
+            Standardized & $e_i/\sqrt{\MSRes}$ & $\approx 1$ & Ignores $h_{ii}$ \\
+            Studentized & $e_i/\sqrt{\MSRes(1-h_{ii})}$ & $1$ & Accounts for leverage \\
             PRESS & $e_i/(1-h_{ii})$ & $\sigma^2/(1-h_{ii})$ & Leave-one-out error \\
             R-student & $e_i/\sqrt{S_{(i)}^2(1-h_{ii})}$ & $t_{n-p-1}$ & Outlier detection \\
             \bottomrule
@@ -203,7 +203,7 @@
 
     \svspace{1em}
 
-    A large $h_{ii}$ pulls the fitted surface toward $y_i$, since $\hat y_i=\sum_j h_{ij}y_j$ contains $h_{ii}y_i$. Formally $\mathrm{Var}(e_i)=\sigma^2(1-h_{ii})\to 0$ as $h_{ii}\to 1$, so $e_i$ understates how far $y_i$ is from where the rest of the data would put it.
+    A large $h_{ii}$ pulls the fitted surface toward $y_i$, since $\hat y_i=\sum_j h_{ij}y_j$ contains $h_{ii}y_i$. Formally $\Var(e_i)=\sigma^2(1-h_{ii})\to 0$ as $h_{ii}\to 1$, so $e_i$ understates how far $y_i$ is from where the rest of the data would put it.
 \end{frame}
 
 
@@ -219,7 +219,7 @@
     \end{itemize}
     Fitted model
     \[
-        \hat y = 2.341 + 1.616\,x_1 + 0.0144\,x_2, \qquad \text{MSE}=10.624, \quad \hat\sigma=3.259 .
+        \hat y = 2.341 + 1.616\,x_1 + 0.0144\,x_2, \qquad \MSRes=10.624, \quad \hat\sigma=3.259 .
     \]
 \end{frame}
 
@@ -240,7 +240,7 @@
             \bottomrule
         \end{tabular}
     \end{center}
-    Six of the 25 observations. $d_i$ standardized, $r_i$ studentized, $e_{(i)}$ PRESS, $t_i$ R-student. $\text{PRESS}=459.04$.
+    Six of the 25 observations. $d_i$ standardized, $r_i$ studentized, $e_{(i)}$ PRESS, $t_i$ R-student. $\mathrm{PRESS}=459.04$.
 \end{frame}
 
 
@@ -251,7 +251,7 @@
 
     \svspace{1em}
 
-    $r_9=d_9/\sqrt{1-h_{99}}=d_9/0.708$: high leverage shrinks $\mathrm{Var}(e_9)$, so the raw residual understates how unusual the point is. $t_9$ replaces $\text{MSE}=10.624$ by $S_{(9)}^2=5.905$, the variance estimate without observation 9 itself: the outlier no longer inflates the denominator.
+    $r_9=d_9/\sqrt{1-h_{99}}=d_9/0.708$: high leverage shrinks $\Var(e_9)$, so the raw residual understates how unusual the point is. $t_9$ replaces $\MSRes=10.624$ by $S_{(9)}^2=5.905$, the variance estimate without observation 9 itself: the outlier no longer inflates the denominator.
 \end{frame}
 
 
@@ -374,7 +374,7 @@
         \column{0.45\textwidth}
         \begin{itemize}
             \item Spread of the residuals grows with $\hat y_i$
-            \item The variance is not constant, typically $\mathrm{Var}(y)$ increases with $\mathrm{E}(y)$
+            \item The variance is not constant, typically $\Var(y)$ increases with $\E[y]$
             \item Remedies: variance-stabilizing transformation of $y$, weighted least squares
         \end{itemize}
         \column{0.52\textwidth}
@@ -389,7 +389,7 @@
         \column{0.45\textwidth}
         \begin{itemize}
             \item Spread is largest in the middle and smallest at both ends
-            \item Typical when $y$ is a proportion in $(0,1)$, where $\mathrm{Var}(y)\propto p(1-p)$
+            \item Typical when $y$ is a proportion in $(0,1)$, where $\Var(y)\propto p(1-p)$
             \item Remedy: transformation of $y$
         \end{itemize}
         \column{0.52\textwidth}
@@ -442,7 +442,7 @@
 \begin{frame}{Why a Test?}
     A funnel plot is a judgment call. Formal tests of
     \begin{align*}
-        H_0&: \mathrm{Var}(\varepsilon_i)=\sigma^2 \text{ for all } i \\
+        H_0&: \Var(\varepsilon_i)=\sigma^2 \text{ for all } i \\
         H_1&: \text{the variance depends on the regressors}
     \end{align*}
     Two common choices: Breusch--Pagan and White.
@@ -452,9 +452,9 @@
 \begin{frame}{Breusch--Pagan Test}
     \begin{enumerate}
         \item Fit the model and obtain the residuals $e_i$
-        \item Regress $e_i^2$ on the $k$ regressors and record $R^2_{\text{aux}}$
-        \item Compute $LM=n\,R^2_{\text{aux}}$
-        \item Under $H_0$, $LM\sim\chi^2_k$ approximately for large $n$; reject for large $LM$
+        \item Regress $e_i^2$ on the $k$ regressors and record $R^2_{\mathrm{aux}}$
+        \item Compute $\LM=n\,R^2_{\mathrm{aux}}$
+        \item Under $H_0$, $\LM\sim\chi^2_k$ approximately for large $n$; reject for large $\LM$
     \end{enumerate}
     This is the studentized form, the default in \texttt{bptest} in R.
 \end{frame}
@@ -463,7 +463,7 @@
 \begin{frame}{White Test}
     Same steps as Breusch--Pagan, but the auxiliary regression of $e_i^2$ uses the regressors, their squares and their cross-products. For $k=2$ regressors
     \[
-        e_i^2 \text{ on } x_1,\ x_2,\ x_1^2,\ x_2^2,\ x_1x_2 \quad\Longrightarrow\quad LM\sim\chi^2_5 .
+        e_i^2 \text{ on } x_1,\ x_2,\ x_1^2,\ x_2^2,\ x_1x_2 \quad\Longrightarrow\quad \LM\sim\chi^2_5 .
     \]
     \begin{itemize}
         \item No assumption on the form of the heteroscedasticity
@@ -476,7 +476,7 @@
     \begin{center}
         \begin{tabular}{lrrr}
             \toprule
-            Test & $LM$ & df & $p$-value \\
+            Test & $\LM$ & df & $p$-value \\
             \midrule
             Breusch--Pagan & 11.99 & 2 & 0.0025 \\
             White & 14.96 & 5 & 0.0105 \\
@@ -485,7 +485,7 @@
     \end{center}
     \begin{itemize}
         \item Both reject constant variance at the 5\% level
-        \item The rejection is driven by observation 9: refitting without it (diagnostic only) gives Breusch--Pagan $LM=3.22$, $p=0.20$
+        \item The rejection is driven by observation 9: refitting without it (diagnostic only) gives Breusch--Pagan $\LM=3.22$, $p=0.20$
     \end{itemize}
 \end{frame}
 
@@ -599,9 +599,9 @@
         \varepsilon_t=\phi\,\varepsilon_{t-1}+a_t, \qquad |\phi|<1, \qquad a_t \overset{iid}{\sim} N(0,\sigma_a^2)
     \]
     \begin{align*}
-        \mathrm{E}[\varepsilon_t] &= 0 \\
-        \mathrm{Var}(\varepsilon_t) &= \frac{\sigma_a^2}{1-\phi^2} \\
-        \mathrm{Corr}(\varepsilon_t,\varepsilon_{t+j}) &= \phi^{\,j}
+        \E[\varepsilon_t] &= 0 \\
+        \Var(\varepsilon_t) &= \frac{\sigma_a^2}{1-\phi^2} \\
+        \Corr(\varepsilon_t,\varepsilon_{t+j}) &= \phi^{\,j}
     \end{align*}
     $\phi>0$: neighboring errors are similar (positive autocorrelation). $\phi<0$: they tend to alternate in sign.
 \end{frame}
