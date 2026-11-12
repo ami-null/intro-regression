@@ -30,6 +30,9 @@ plot_pdf("eu_rstudent_original.pdf", {
 fit_sqrt <- lm(sqrt(y) ~ x, data = eu)
 print(summary(fit_sqrt))
 
+# R^2 on the original scale: squared correlation of y with the back-transformed fit
+cat("R^2 of y vs (fitted sqrt)^2:", cor(eu$y, fitted(fit_sqrt)^2)^2, "\n")
+
 plot_pdf("eu_rstudent_sqrt.pdf", {
     plot(fitted(fit_sqrt), rstudent(fit_sqrt), pch = 19,
          xlab = expression(hat(y)^"*"), ylab = "R-student")
@@ -47,7 +50,9 @@ plot_pdf("eu_rstudent_log.pdf", {
 })
 
 # ---- Box-Cox procedure with MASS::boxcox ----
-lambda_grid <- seq(-0.5, 1.5, by = 0.01)
+# Fine grid: a coarse grid only keeps grid points inside the interval and
+# reports a slightly narrower interval than the true one
+lambda_grid <- seq(-0.5, 1.5, by = 0.001)
 bc <- boxcox(y ~ x, data = eu, lambda = lambda_grid, plotit = FALSE)
 
 lambda_hat <- bc$x[which.max(bc$y)]
@@ -77,6 +82,22 @@ lambdas <- c(-1, -0.5, 0, 0.25, 0.5, 0.75, 1)
 ssres_tab <- data.frame(lambda = lambdas,
                         SSRes = sapply(lambdas, ssres_scaled))
 print(ssres_tab, digits = 6)
+
+# Unscaled SSRes: not comparable across lambda (different units)
+cat("Unscaled SSRes for y, sqrt(y), log(y):",
+    sum(resid(fit0)^2), sum(resid(fit_sqrt)^2), sum(resid(fit_log)^2), "\n")
+
+# MPV cutoff SS* = SSRes(lambda_hat) * (1 + t^2 / nu)
+opt <- optimize(ssres_scaled, c(-1, 2))
+nu <- n - 2
+ss_star <- opt$objective * (1 + qt(0.975, nu)^2 / nu)
+cat("lambda_hat =", opt$minimum, " SSRes(lambda_hat) =", opt$objective,
+    " SS* =", ss_star, "\n")
+
+# Same estimate and a Wald interval from the car package
+if (requireNamespace("car", quietly = TRUE)) {
+    print(summary(car::powerTransform(fit0)))
+}
 
 # ---- Model with the selected transformation ----
 fit_bc <- lm(sqrt(y) ~ x, data = eu)
