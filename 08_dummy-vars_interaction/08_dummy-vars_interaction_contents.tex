@@ -12,7 +12,7 @@
 \end{frame}
 
 
-\begin{frame}{Example dataset: tool life data}
+\begin{frame}{Example dataset: tool life data (MPV Example 8.1)}
     \begin{itemize}
         \item $y$: hours of tool life; $x_1$: lathe speed (rpm); two tool types, A and B, $n = 20$.
     \end{itemize}
@@ -131,8 +131,8 @@
         \item Setting $x_2 = 0$ and $x_2 = 1$ gives the mean response for each tool type:
     \end{itemize}
     \begin{align*}
-        \text{Type A } (x_2 = 0)\colon \quad \E[y \mid x_1] &= \beta_0 + \beta_1 x_1, \\
-        \text{Type B } (x_2 = 1)\colon \quad \E[y \mid x_1] &= (\beta_0 + \beta_2) + \beta_1 x_1.
+        \text{Type A}\colon \quad \E[y \mid x_1, x_2 = 0] &= \beta_0 + \beta_1 x_1, \\
+        \text{Type B}\colon \quad \E[y \mid x_1, x_2 = 1] &= (\beta_0 + \beta_2) + \beta_1 x_1.
     \end{align*}
     \begin{itemize}
         \item The lines have the same slope $\beta_1$ and intercepts that differ by $\beta_2$: the lines are \textbf{parallel}.
@@ -266,6 +266,7 @@
     \]
     \begin{itemize}
         \item Numerator: increase in $\SSRes$ per restriction. Denominator: $\MSRes$ of the FM, an estimate of $\sigma^2$.
+        \item We use this distributional result here; Lecture 9 derives it.
         \item Reject $H_0$ at level $\alpha$ if $F_0 > F_{\alpha,\, q,\, n-p}$.
         \item For $q = 1$ the test is equivalent to the two-sided $t$-test of the coefficient, with $F_0 = t_0^2$.
     \end{itemize}
@@ -288,12 +289,30 @@
 \end{frame}
 
 
+\begin{frame}{Special case: indicator only = two-sample $t$-test}
+    \begin{itemize}
+        \item Drop speed and regress $y$ on the indicator alone: $y = \beta_0 + \beta_2 x_2 + \varepsilon$.
+        \item The group means are $\E[y \mid x_2 = 0] = \beta_0$ and $\E[y \mid x_2 = 1] = \beta_0 + \beta_2$, and OLS gives the sample means:
+    \end{itemize}
+    \[
+        \hat{\beta}_0 = \bar{y}_A = 17.11, \qquad \hat{\beta}_2 = \bar{y}_B - \bar{y}_A = 31.93 - 17.11 = 14.82 .
+    \]
+    \begin{itemize}
+        \item $t_0 = \hat{\beta}_2 / \se(\hat{\beta}_2) = 14.82 / 2.30 = 6.44$ on $n - 2 = 18$ df: exactly the pooled-variance two-sample $t$-test of $\mu_A = \mu_B$.
+        \item With $m$ levels and $m - 1$ indicators, the overall $F$-test of the regression is the one-way ANOVA $F$-test.
+        \item Adding speed raises $t_0$ for tool type from $6.44$ to $11.04$: speed explains part of the noise, so $\hat{\sigma}$ falls from $5.15$ to $3.04$.
+    \end{itemize}
+\end{frame}
+
+
 \section{Factors with more than two levels}
 
 
-\begin{frame}{Categorical regressor with $k$ levels}
+\begin{frame}{Categorical regressor with $m$ levels}
     \begin{itemize}
-        \item A factor with $k$ levels is represented by $k-1$ indicator variables.
+        \item A categorical regressor is called a \textbf{factor}; its categories are its \textbf{levels} (tool type is a factor with levels A and B).
+        \item We write $m$ for the number of levels ($k$ remains the number of regressors, $p = k + 1$).
+        \item A factor with $m$ levels is represented by $m-1$ indicator variables.
         \item The level without an indicator is the reference level.
         \item Suppose there were three tool types A, B, C (hypothetical extension), with A as reference:
     \end{itemize}
@@ -313,7 +332,7 @@
 \end{frame}
 
 
-\begin{frame}{Coding and interpretation for $k = 3$}
+\begin{frame}{Coding and interpretation for $m = 3$}
     \[
         y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \varepsilon
     \]
@@ -321,7 +340,7 @@
     \small
     \begin{tabular}{lrrl}
         \toprule
-        Type & $x_2$ & $x_3$ & $\E[y \mid x_1]$ \\
+        Type & $x_2$ & $x_3$ & $\E[y \mid x_1, x_2, x_3]$ \\
         \midrule
         A & 0 & 0 & $\beta_0 + \beta_1 x_1$ \\
         B & 1 & 0 & $(\beta_0 + \beta_2) + \beta_1 x_1$ \\
@@ -337,7 +356,7 @@
 
 \begin{frame}{The dummy variable trap}
     \begin{itemize}
-        \item Suppose we include all $k = 3$ indicators $\mathbf{d}_A, \mathbf{d}_B, \mathbf{d}_C$ together with an intercept.
+        \item Suppose we include all $m = 3$ indicators $\mathbf{d}_A, \mathbf{d}_B, \mathbf{d}_C$ together with an intercept, where $\mathbf{d}_B = \bx_2$, $\mathbf{d}_C = \bx_3$ and $\mathbf{d}_A$ is the indicator of type A.
         \item Every observation belongs to exactly one type, so
     \end{itemize}
     \begin{align*}
@@ -345,8 +364,8 @@
         \rank(\bX) &= 4 < 5 \text{ columns}.
     \end{align*}
     \begin{itemize}
-        \item $\bX' \bX$ is singular: the normal equations have no unique solution and $\bbeta$ is not identifiable.
-        \item Remedy: drop one indicator (use $k-1$), or drop the intercept (then each coefficient is a level-specific intercept).
+        \item $\bX$ lacks full column rank, so $\bX' \bX$ is singular (Lecture 4): the normal equations have no unique solution and $\bbeta$ is not \textbf{identifiable}, i.e.\ different coefficient vectors give the same $\E[\by] = \bX\bbeta$.
+        \item Remedy: drop one indicator (use $m-1$), or drop the intercept (then each coefficient is a level-specific intercept).
     \end{itemize}
 \end{frame}
 
@@ -362,14 +381,32 @@
 \begin{frame}{Choice of reference level}
     \begin{itemize}
         \item Changing the reference level changes the coefficients, not the model.
-        \item With reference C instead of A, the model $\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3$ is re-expressed as
+        \item With reference C, use the indicators $d_A$, $d_B$: $\ \E[y] = \beta_0' + \beta_1' x_1 + \beta_A' d_A + \beta_B' d_B$.
+        \item Both codings describe the same three lines, so the mean of each type must agree:
     \end{itemize}
-    \begin{align*}
-        \beta_0' &= \beta_0 + \beta_3, \\
-        \beta_{A}' &= -\beta_3, \\
-        \beta_{B}' &= \beta_2 - \beta_3 .
-    \end{align*}
+    \centering
+    \small
+    \begin{tabular}{llll}
+        \toprule
+        Type & Reference A & Reference C & Solve \\
+        \midrule
+        C & $(\beta_0 + \beta_3) + \beta_1 x_1$ & $\beta_0' + \beta_1' x_1$ & $\beta_0' = \beta_0 + \beta_3$, $\ \beta_1' = \beta_1$ \\
+        A & $\beta_0 + \beta_1 x_1$ & $(\beta_0' + \beta_A') + \beta_1' x_1$ & $\beta_A' = \beta_0 - \beta_0' = -\beta_3$ \\
+        B & $(\beta_0 + \beta_2) + \beta_1 x_1$ & $(\beta_0' + \beta_B') + \beta_1' x_1$ & $\beta_B' = \beta_2 - \beta_3$ \\
+        \bottomrule
+    \end{tabular}
+
+    \vspace{0.8em}
+    \raggedright
     \begin{itemize}
+        \item The slope $\beta_1$ does not change; only the differences are measured from C instead of A.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Reference level: what changes and what does not}
+    \begin{itemize}
+        \item Coefficients of the indicators and the intercept change with the reference level; their $t$-tests compare each level with a different baseline.
         \item Fitted values, residuals, $\SSRes$, $R^2$ and the overall $F$-test of the factor are identical for every choice of reference level.
         \item Choose the reference level that makes the comparisons of interest direct (e.g.\ a control group).
     \end{itemize}
@@ -382,10 +419,10 @@
         \item To test whether the factor matters at all, $H_0\colon \beta_2 = \beta_3 = 0$, use the partial $F$-test:
     \end{itemize}
     \[
-        F_0 = \frac{\left[\SSRes(\RM) - \SSRes(\FM)\right]/(k-1)}{\SSRes(\FM)/(n - p)} \sim F_{k-1,\, n-p} \quad \text{under } H_0,
+        F_0 = \frac{\left[\SSRes(\RM) - \SSRes(\FM)\right]/(m-1)}{\SSRes(\FM)/(n - p)} \sim F_{m-1,\, n-p} \quad \text{under } H_0,
     \]
     \begin{itemize}
-        \item where the reduced model omits all $k-1$ indicators and $p$ is the number of parameters of the full model.
+        \item where the reduced model omits all $m-1$ indicators and $p$ is the number of parameters of the full model.
     \end{itemize}
 \end{frame}
 
@@ -394,7 +431,7 @@
     \begin{itemize}
         \item Tempting alternative: one regressor with codes A $= 1$, B $= 2$, C $= 3$ (allocated codes).
         \item This forces $\E[y]$ to change by the same amount $\beta$ from A to B and from B to C, as if the levels were equally spaced on a numeric scale.
-        \item For nominal categories that ordering and spacing is arbitrary; recoding to A $= 1$, C $= 2$, B $= 3$ would change the fit.
+        \item For \textbf{nominal} categories (no natural order, e.g.\ tool type or region) that ordering and spacing is arbitrary; recoding to A $= 1$, C $= 2$, B $= 3$ would change the fit.
         \item Indicator variables impose no such structure: each level gets its own mean shift.
         \item Allocated codes are defensible only when the levels are genuinely ordered and roughly equally spaced.
     \end{itemize}
@@ -418,9 +455,10 @@
         \item Add the product of the indicator and the quantitative regressor:
     \end{itemize}
     \[
-        y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \beta_3 x_{i1} x_{i2} + \varepsilon_i .
+        y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \beta_{12}\, x_{i1} x_{i2} + \varepsilon_i .
     \]
     \begin{itemize}
+        \item The subscript of $\beta_{12}$ (read ``beta one-two'', not ``beta twelve'') names the regressors whose product the term contains: $x_1$ and $x_2$. In general, the coefficient of $x_j x_l$ is written $\beta_{jl}$.
         \item The effect of $x_1$ now depends on the category, and the effect of the category depends on $x_1$.
     \end{itemize}
 \end{frame}
@@ -428,12 +466,12 @@
 
 \begin{frame}{Group-specific lines}
     \begin{align*}
-        \text{Type A } (x_2 = 0)\colon \quad \E[y \mid x_1] &= \beta_0 + \beta_1 x_1, \\
-        \text{Type B } (x_2 = 1)\colon \quad \E[y \mid x_1] &= (\beta_0 + \beta_2) + (\beta_1 + \beta_3)\, x_1 .
+        \text{Type A}\colon \quad \E[y \mid x_1, x_2 = 0] &= \beta_0 + \beta_1 x_1, \\
+        \text{Type B}\colon \quad \E[y \mid x_1, x_2 = 1] &= (\beta_0 + \beta_2) + (\beta_1 + \beta_{12})\, x_1 .
     \end{align*}
     \begin{itemize}
-        \item $\beta_2$: difference in intercepts; $\beta_3$: difference in slopes.
-        \item The difference between the types at speed $x_1$ is $\beta_2 + \beta_3 x_1$; it changes linearly with $x_1$.
+        \item $\beta_2$: difference in intercepts; $\beta_{12}$: difference in slopes.
+        \item The difference between the types at speed $x_1$ is $\beta_2 + \beta_{12} x_1$; it changes linearly with $x_1$.
     \end{itemize}
 \end{frame}
 
@@ -450,15 +488,15 @@
                     \node[anchor=east] at (0,1.0) {\small $\beta_0$};
                     \node[anchor=east] at (0,2.0) {\small $\beta_0 + \beta_2$};
                     \node[blue!70!black, anchor=north west] at (2.6,1.45) {\scriptsize slope $\beta_1$};
-                    \node[orange!85!black, anchor=south east] at (3.7,3.1) {\scriptsize slope $\beta_1 + \beta_3$};
+                    \node[orange!85!black, anchor=south east] at (3.7,3.1) {\scriptsize slope $\beta_1 + \beta_{12}$};
                 \end{tikzpicture}
             \end{center}
         \end{column}
         \begin{column}{0.5\textwidth}
             \begin{itemize}
                 \item Two free intercepts and two free slopes.
-                \item The vertical gap between the lines grows with $x_1$ when $\beta_3 > 0$.
-                \item The lines cross at $x_1 = -\beta_2 / \beta_3$ (if this lies in the range of the data, the ranking of the types reverses).
+                \item The difference B $-$ A grows with $x_1$ when $\beta_{12} > 0$.
+                \item If $\beta_{12} \ne 0$, the lines cross at $x_1 = -\beta_2 / \beta_{12}$ (if this lies in the range of the data, the ranking of the types reverses).
             \end{itemize}
         \end{column}
     \end{columns}
@@ -478,7 +516,7 @@
         Intercept & $32.775$ & $4.634$ & $7.07$ \\
         $x_1$ (speed) & $-0.0210$ & $0.0061$ & $-3.45$ \\
         $x_2$ (type B) & $23.971$ & $6.769$ & $3.54$ \\
-        $x_1 x_2$ & $-0.0119$ & $0.0088$ & $-1.35$ \\
+        $x_1 x_2$ ($\beta_{12}$) & $-0.0119$ & $0.0088$ & $-1.35$ \\
         \bottomrule
     \end{tabular}
 
@@ -499,8 +537,9 @@
             \begin{itemize}
                 \item Type A: $\hat{y} = 32.78 - 0.0210\, x_1$.
                 \item Type B: $\hat{y} = 56.75 - 0.0329\, x_1$.
-                \item The estimated slope is steeper for type B ($\hat{\beta}_3 = -0.0119$), so the lines converge as speed increases.
-                \item Is this difference larger than sampling variation?
+                \item Steeper slope for type B ($\hat{\beta}_{12} = -0.0119$): the lines converge as speed increases.
+                \item They would cross at $-\hat{\beta}_2/\hat{\beta}_{12} \approx 2007$ rpm, far beyond the data (500--1000 rpm).
+                \item Is the slope difference larger than sampling variation?
             \end{itemize}
         \end{column}
     \end{columns}
@@ -509,10 +548,10 @@
 
 \begin{frame}{Testing the interaction}
     \begin{itemize}
-        \item $H_0\colon \beta_3 = 0$ (parallel lines): is the interaction term needed beyond $x_1$ and $x_2$? Compare nested models, with $q = 1$ and $n - p = 16$:
+        \item $H_0\colon \beta_{12} = 0$ (parallel lines): is the interaction term needed beyond $x_1$ and $x_2$? Compare nested models, with $q = 1$ and $n - p = 16$:
     \end{itemize}
     \begin{align*}
-        \FM\colon\quad y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2 + \varepsilon, \\
+        \FM\colon\quad y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_{12} x_1 x_2 + \varepsilon, \\
         \RM\colon\quad y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon .
     \end{align*}
 \end{frame}
@@ -533,15 +572,39 @@
 
 \begin{frame}{Testing sequence}
     \begin{itemize}
-        \item Test the interaction first; effects of the indicator are interpreted in the model that survives.
-        \item Equal lines overall, $H_0\colon \beta_2 = \beta_3 = 0$ ($q = 2$): FM is the interaction model, RM is the speed-only regression:
+        \item Test the interaction first: the meaning of $\beta_2$ depends on whether $x_1 x_2$ is in the model, so the indicator is tested in the model that survives.
+    \end{itemize}
+    \vspace{0.3em}
+    \centering
+    \small
+    \begin{tabular}{clllrl}
+        \toprule
+        Step & $H_0$ & Question & FM vs.\ RM & $F_0$ & $p$ \\
+        \midrule
+        1 & $\beta_{12} = 0$ & Parallel lines? & interaction vs.\ parallel & $1.82$ & $0.196$ \\
+        2 & $\beta_2 = 0$ & Do they coincide? & parallel vs.\ speed only & $121.8$ & $< 0.001$ \\
+        \bottomrule
+    \end{tabular}
+
+    \vspace{0.8em}
+    \raggedright
+    \begin{itemize}
+        \item Step 1 does not reject, so $x_1 x_2$ is dropped and step 2 is carried out in the parallel-lines model.
+        \item Step 2 rejects. Conclusion for tool life: keep $x_1$ and $x_2$, drop $x_1 x_2$.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{One-step alternative: are the two lines identical?}
+    \begin{itemize}
+        \item Test both differences at once, $H_0\colon \beta_2 = \beta_{12} = 0$ ($q = 2$): FM is the interaction model, RM is the speed-only regression:
     \end{itemize}
     \[
         F_0 = \frac{(1282.08 - 140.98)/2}{140.98/16} = 64.8 \quad (p < 0.001).
     \]
     \begin{itemize}
         \item Reject: one common line is not adequate; tool type matters.
-        \item Conclusion for tool life: keep $x_1$ and $x_2$, drop $x_1 x_2$.
+        \item Rejection does not say whether the intercepts, the slopes or both differ; the two-step sequence answers that.
     \end{itemize}
 \end{frame}
 
@@ -558,13 +621,46 @@
     \begin{itemize}
         \item Separate fits (type A, type B) reproduce the interaction model coefficients:
     \end{itemize}
-    \begin{align*}
-        \text{A}\colon\quad \hat{\beta}_0,\ \hat{\beta}_1 &= 32.775,\ -0.0210, \\
-        \text{B}\colon\quad \hat{\beta}_0 + \hat{\beta}_2,\ \hat{\beta}_1 + \hat{\beta}_3 &= 56.745,\ -0.0329 .
-    \end{align*}
+    \centering
+    \small
+    \begin{tabular}{lll}
+        \toprule
+        Fit & Intercept & Slope \\
+        \midrule
+        Type A alone & $32.775 = \hat{\beta}_0$ & $-0.0210 = \hat{\beta}_1$ \\
+        Type B alone & $56.745 = \hat{\beta}_0 + \hat{\beta}_2$ & $-0.0329 = \hat{\beta}_1 + \hat{\beta}_{12}$ \\
+        \bottomrule
+    \end{tabular}
+
+    \vspace{0.8em}
+    \raggedright
+    \begin{itemize}
+        \item Only the single model allows direct tests of $\beta_2$, $\beta_{12}$, and of the special cases (parallel, equal lines).
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Common versus separate error variance}
     \begin{itemize}
         \item The interaction model assumes a common $\sigma^2$ and estimates it from all $n$ observations; separate fits estimate one $\sigma^2$ per group.
-        \item Only the single model allows direct tests of $\beta_2$, $\beta_3$, and of the special cases (parallel, equal lines).
+    \end{itemize}
+    \centering
+    \small
+    \begin{tabular}{lrrr}
+        \toprule
+        Fit & $\SSRes$ & df & $\hat{\sigma}^2 = \MSRes$ \\
+        \midrule
+        Type A alone & $47.57$ & $8$ & $5.95$ \\
+        Type B alone & $93.40$ & $8$ & $11.68$ \\
+        Interaction model (pooled) & $140.98$ & $16$ & $8.81$ \\
+        \bottomrule
+    \end{tabular}
+
+    \vspace{0.8em}
+    \raggedright
+    \begin{itemize}
+        \item Pooled $\SSRes$ = sum of the separate ones; its $16$ df (instead of $8$) give shorter intervals and more powerful tests, if the groups share one $\sigma^2$.
+        \item The group estimates differ by a factor of about $2$; with $8$ df each this is within sampling variation (variance-ratio $F$-test, $p \approx 0.36$). Check with residual plots by group (Lecture 6).
     \end{itemize}
 \end{frame}
 
@@ -590,36 +686,60 @@
 \end{frame}
 
 
+\begin{frame}{Two quantitative regressors: slices of the fitted surface}
+    \begin{columns}[T]
+        \begin{column}{0.54\textwidth}
+            \centering
+            \mode<presentation>{\includegraphics[width=\linewidth]{figures/quant-interaction.pdf}}
+            \mode<article>{\includegraphics[width=0.6\linewidth]{figures/quant-interaction.pdf}}
+        \end{column}
+        \begin{column}{0.46\textwidth}
+            \begin{itemize}
+                \item Simulated data, $n = 100$: $\hat{y} = 0.69 + 0.508\, x_1 + 1.053\, x_2 + 0.0443\, x_1 x_2$.
+                \item Fitted lines in $x_1$ at $x_2 = 15, 20, 25$ have slopes $\hat{\beta}_1 + \hat{\beta}_{12} x_2 = 1.17,\ 1.39,\ 1.61$.
+                \item The larger $x_2$, the steeper the effect of $x_1$: the lines fan out.
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Interpreting coefficients when an interaction is present}
+    \begin{itemize}
+        \item The coefficients of the single regressors ($\beta_1$, $\beta_2$) are called \textbf{main effects}, as opposed to the interaction $\beta_{12}$. With $x_1 x_2$ in the model, $\beta_1$ is the effect of $x_1$ only at $x_2 = 0$; it is not an overall effect of $x_1$ unless $x_2 = 0$ is meaningful.
+        \item Centering the quantitative regressors at their means makes $\beta_1$ and $\beta_2$ interpretable at average values. It also reduces \textbf{collinearity}, i.e.\ strong correlation between $x_1 x_2$ and its components, which inflates standard errors (Lecture 4: nearly dependent columns make $\bX'\bX$ nearly singular; treated in detail in a later lecture).
+    \end{itemize}
+\end{frame}
+
+
 \begin{frame}{Practical guidance on interactions}
     \begin{itemize}
-        \item With $x_1 x_2$ in the model, $\beta_1$ is the effect of $x_1$ only at $x_2 = 0$; it is not a ``main effect'' unless $x_2 = 0$ is meaningful.
-        \item Keep the lower-order terms $x_1$ and $x_2$ whenever $x_1 x_2$ is included (hierarchy).
-        \item Centering the quantitative regressors at their means makes $\beta_1$ and $\beta_2$ interpretable at average values and reduces collinearity with $x_1 x_2$.
+        \item \textbf{Hierarchy principle:} whenever $x_1 x_2$ is in the model, keep the lower-order terms $x_1$ and $x_2$, even if their $t$-tests are not significant.
         \item Do not interpret interaction coefficients in isolation; plot the fitted lines at chosen values of the other regressor.
         \item Each additional interaction costs a degree of freedom; add them for substantive reasons, not by default.
     \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Interaction with a $k$-level factor}
+\begin{frame}{Interaction with an $m$-level factor}
     \begin{itemize}
         \item For a three-level factor (indicators $x_2$, $x_3$) allow a separate slope for each level:
     \end{itemize}
     \[
-        y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_4 x_1 x_2 + \beta_5 x_1 x_3 + \varepsilon .
+        y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_{12} x_1 x_2 + \beta_{13} x_1 x_3 + \varepsilon .
     \]
     \begin{itemize}
-        \item Slopes in $x_1$: $\beta_1$ (reference), $\beta_1 + \beta_4$, $\beta_1 + \beta_5$.
-        \item Test of equal slopes, $H_0\colon \beta_4 = \beta_5 = 0$: partial $F$-test with $k - 1 = 2$ numerator degrees of freedom.
+        \item Slopes in $x_1$: $\beta_1$ (reference A), $\beta_1 + \beta_{12}$ (B), $\beta_1 + \beta_{13}$ (C).
+        \item Test of equal slopes, $H_0\colon \beta_{12} = \beta_{13} = 0$: partial $F$-test with $m - 1 = 2$ numerator degrees of freedom.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Summary}
     \begin{itemize}
-        \item An indicator variable encodes a binary category as $0/1$; a factor with $k$ levels needs $k-1$ indicators plus an intercept.
+        \item An indicator variable encodes a binary category as $0/1$; a factor with $m$ levels needs $m-1$ indicators plus an intercept.
         \item Indicators shift the intercept: they give parallel lines with common slope. Coefficients are differences from the reference level.
-        \item Including all $k$ indicators with an intercept makes $\bX' \bX$ singular (dummy variable trap).
+        \item Including all $m$ indicators with an intercept makes $\bX' \bX$ singular (dummy variable trap).
         \item The reference level changes coefficients, not the fit; test a whole factor with the partial $F$-test.
         \item Interaction terms $x_1 x_2$ let the slope depend on the category (or on another regressor); test them first with the extra-sum-of-squares $F$-test (RM versus FM).
         \item Tool life data: type matters ($F_0 = 121.8$); the slope difference is not significant ($p = 0.196$).

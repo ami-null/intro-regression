@@ -25,8 +25,8 @@ model.matrix(~ x1 + type, data = tool)[c(1, 11), ]
 
 # ---- Tests (reduced vs full) ----------------------------------------------
 anova(m_slr, m_par)   # H0: beta2 = 0 (F = t^2)
-anova(m_par, m_int)   # H0: beta3 = 0 (parallel lines)
-anova(m_slr, m_int)   # H0: beta2 = beta3 = 0 (one common line)
+anova(m_par, m_int)   # H0: beta12 = 0 (parallel lines)
+anova(m_slr, m_int)   # H0: beta2 = beta12 = 0 (one common line)
 
 # ---- Separate regressions: same coefficients as the interaction model ------
 coef(lm(y ~ x1, data = tool, subset = type == "A"))
@@ -59,7 +59,7 @@ plot_tool("tool-slr.pdf", ignore_type = TRUE)  # simple regression ignoring type
 plot_tool("tool-parallel.pdf", model = m_par)  # parallel lines
 plot_tool("tool-interaction.pdf", model = m_int)  # different slopes
 
-# ---- Factor with k = 3 levels (simulated, for illustration) ----------------
+# ---- Factor with m = 3 levels (simulated, for illustration) ----------------
 set.seed(1)
 d3 <- data.frame(x1 = runif(60, 500, 1000), g = factor(rep(c("A", "B", "C"), each = 20)))
 d3$y <- 35 - 0.025 * d3$x1 + c(A = 0, B = 12, C = 6)[as.character(d3$g)] + rnorm(60, sd = 3)
@@ -89,5 +89,31 @@ q$y <- 5 + 0.4 * q$x1 + 0.8 * q$x2 + 0.05 * q$x1 * q$x2 + rnorm(100, sd = 3)
 cor(q$x1, q$x1 * q$x2)
 q$c1 <- q$x1 - mean(q$x1); q$c2 <- q$x2 - mean(q$x2)
 cor(q$c1, q$c1 * q$c2)
-summary(lm(y ~ x1 * x2, data = q))
+m_q <- lm(y ~ x1 * x2, data = q)
+summary(m_q)
 summary(lm(y ~ c1 * c2, data = q))
+
+# Fitted lines in x1 at three values of x2: slopes differ (beta1 + beta12 * x2)
+x2_vals <- c(15, 20, 25)
+x2_cols <- c("steelblue4", "gray30", "darkorange2")
+grid_q <- seq(min(q$x1), max(q$x1), length.out = 100)
+pdf("quant-interaction.pdf", width = 4, height = 3.2, pointsize = 11)
+par(mar = c(4, 4, 0.5, 0.5), las = 1)
+plot(y ~ x1, data = q, pch = 19, col = "gray75", xlab = expression(x[1]), ylab = "y")
+for (j in seq_along(x2_vals)) {
+    lines(grid_q, predict(m_q, data.frame(x1 = grid_q, x2 = x2_vals[j])),
+          col = x2_cols[j], lwd = 2)
+}
+legend("topleft", legend = paste("x2 =", x2_vals), col = x2_cols, lwd = 2, bty = "n")
+dev.off()
+coef(m_q)
+coef(m_q)["x1"] + coef(m_q)["x1:x2"] * x2_vals   # slopes of the three lines
+
+# ---- Indicator only: same as the pooled two-sample t-test --------------------
+summary(lm(y ~ x2, data = tool))
+t.test(y ~ type, data = tool, var.equal = TRUE)
+
+# ---- Separate error variances vs pooled ------------------------------------
+c(A = deviance(lm(y ~ x1, data = tool, subset = type == "A")),
+  B = deviance(lm(y ~ x1, data = tool, subset = type == "B")),
+  pooled = deviance(m_int))
