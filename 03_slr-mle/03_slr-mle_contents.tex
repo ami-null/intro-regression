@@ -21,7 +21,7 @@
 
 	\pause
 	
-	Since $\log$ is monotonically increasing, maximizing $L$ is equivalent to maximizing the log-likelihood:
+	Since $\ln$ is monotonically increasing, maximizing $L$ is equivalent to maximizing the log-likelihood:
 	\begin{align}
 		\ell(\beta_0,\beta_1,\sigma^2;\ \by,\bx) &= -\frac n2\ln(2\pi) - \frac n2\ln(\sigma^2) - \frac{1}{2\sigma^2}\sum_i(y_i-\beta_0-\beta_1 x_i)^2 \label{eq:loglik}
 	\end{align}
@@ -35,7 +35,7 @@
 	\end{itemize}
 	\svspace{1em}
 	\begin{itemize}
-		\item[] \textbf{Question:} what does this imply about $\hat\beta_{0,MLE},\hat\beta_{1,MLE}$ versus the OLS estimates?
+		\item[] \textbf{Question:} what does this imply about $\hat\beta_{0,\ML},\hat\beta_{1,\ML}$ versus the OLS estimates?
 	\end{itemize}
 	\svspace{1em}
 	\begin{itemize}
@@ -50,22 +50,22 @@
 \begin{frame}{MLE of $\sigma^2$}
 	Differentiating $\ell$ (Equation~\eqref{eq:loglik}) with respect to $\sigma^2$ and solving:
 	\begin{align}
-		\frac{\partial \ell}{\partial \sigma^2} &= -\frac{n}{2\sigma^2} + \frac{SSE}{2\sigma^4} = 0 \notag\\
-		\hat\sigma^2_{MLE} &= \frac{SSE}{n} \label{eq:mle-sigma2}
+		\frac{\partial \ell}{\partial \sigma^2} &= -\frac{n}{2\sigma^2} + \frac{\SSRes}{2\sigma^4} = 0 \notag\\
+		\hat\sigma^2_{\ML} &= \frac{\SSRes}{n} \label{eq:mle-sigma2}
 	\end{align}
 	\begin{itemize}
-		\item Compare to the OLS/unbiased estimator: $MSE = SSE/(n-2)$
-		\item $\hat\sigma^2_{MLE}$ divides by $n$, not $n-2$ --- it is \emph{biased}: $E[\hat\sigma^2_{MLE}] = \frac{n-2}{n}\sigma^2$
-		\item $MSE$ is the bias-corrected version of $\hat\sigma^2_{MLE}$
+		\item Compare to the OLS/unbiased estimator: $\MSRes = \SSRes/(n-2)$
+		\item $\hat\sigma^2_{\ML}$ divides by $n$, not $n-2$ --- it is \emph{biased}: $\E[\hat\sigma^2_{\ML}] = \frac{n-2}{n}\sigma^2$
+		\item $\MSRes$ is the bias-corrected version of $\hat\sigma^2_{\ML}$
 	\end{itemize}
 \end{frame}
 
 
 \begin{frame}{The Difference, in Our Example}
-	Rocket-propellant data: $n=20$, $SSE=166{,}254.65$
+	Rocket-propellant data: $n=20$, $\SSRes=166{,}254.65$
 	\begin{align*}
-		\hat\sigma^2_{MLE} &= \frac{SSE}{n} = \frac{166{,}254.65}{20} = 8312.73 &&\text{by Equation~\eqref{eq:mle-sigma2}}\\
-		MSE &= \frac{SSE}{n-2} = \frac{166{,}254.65}{18} = 9236.37
+		\hat\sigma^2_{\ML} &= \frac{\SSRes}{n} = \frac{166{,}254.65}{20} = 8312.73 &&\text{by Equation~\eqref{eq:mle-sigma2}}\\
+		\MSRes &= \frac{\SSRes}{n-2} = \frac{166{,}254.65}{18} = 9236.37
 	\end{align*}
 	\begin{itemize}
 		\item The MLE underestimates $\sigma^2$ by about 10\% here --- $n=20$ is small enough for the bias to matter
@@ -84,7 +84,7 @@
 			\midrule
 			Needs a distribution? & No (mean, variance only) & Yes (full distribution)\\
 			$\beta_0,\beta_1$ estimates & Least squares & Identical, under normality\\
-			$\sigma^2$ estimate & Unbiased, $SSE/(n-2)$ & Biased, $SSE/n$\\
+			$\sigma^2$ estimate & Unbiased, $\SSRes/(n-2)$ & Biased, $\SSRes/n$\\
 			Framework & Geometric & Probabilistic\\
 			Optimality & Gauss--Markov (BLUE) & Asymptotic efficiency\\
 			\bottomrule
@@ -110,6 +110,6 @@
 	\begin{itemize}
 		\item Gauss--Markov: OLS is BLUE assuming only zero-mean, constant-variance, uncorrelated errors --- \emph{no} distributional assumption required
 		\item MLE's efficiency and consistency rely on the assumed distribution being (at least approximately) correct
-		\item Here, $\hat\beta_0,\hat\beta_1$ are unbiased in both approaches, but $\hat\sigma^2_{MLE}$ is biased while $\hat\sigma^2_{OLS} = MSE$ is not
+		\item Here, $\hat\beta_0,\hat\beta_1$ are unbiased in both approaches, but $\hat\sigma^2_{\ML}$ is biased while $\hat\sigma^2_{\OLS} = \MSRes$ is not
 	\end{itemize}
 \end{frame}
