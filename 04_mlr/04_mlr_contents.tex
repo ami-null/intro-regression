@@ -779,7 +779,7 @@ coef(lm(time ~ cases + distance,
 
 \begin{frame}{Adjusted $R^2$}
     \begin{align}
-        R^2_{\mathrm{adj}} &= 1 - \frac{\SSRes/(n-p)}{\SST/(n-1)} = 1 - \frac{\MSRes}{\MST}, \label{eq:adj-r2}\\
+        \Radj &= 1 - \frac{\SSRes/(n-p)}{\SST/(n-1)} = 1 - \frac{\MSRes}{\MST}, \label{eq:adj-r2}\\
         &= 1 - \frac{n-1}{n-p}\,(1-R^2). \label{eq:adj-r2-alt}
     \end{align}
     $\MST=\SST/(n-1)$ is the sample variance of $y$.
@@ -788,7 +788,7 @@ coef(lm(time ~ cases + distance,
 
 \begin{frame}{Why adjusted $R^2$ penalises useless regressors}
     \begin{itemize}
-        \item $\MST$ does not depend on the model, so by \eqref{eq:adj-r2} $R^2_{\mathrm{adj}}$ increases if and only if $\MSRes$ decreases.
+        \item $\MST$ does not depend on the model, so by \eqref{eq:adj-r2} $\Radj$ increases if and only if $\MSRes$ decreases.
         \item Adding a regressor lowers SSE but also lowers the degrees of freedom $n-p$ in \eqref{eq:mse}.
         \item The MSE decreases only if the drop in SSE outweighs the lost degree of freedom.
     \end{itemize}
@@ -800,7 +800,7 @@ coef(lm(time ~ cases + distance,
         \mode<presentation>{\small}
         \begin{tabular}{lccc}
             \toprule
-            Model & $p$ & $R^2$ & $R^2_{\mathrm{adj}}$ \\
+            Model & $p$ & $R^2$ & $\Radj$ \\
             \midrule
             cases                       & 2 & 0.9305  & 0.9275 \\
             cases, distance             & 3 & 0.9596  & 0.9559 \\
@@ -808,24 +808,24 @@ coef(lm(time ~ cases + distance,
             \bottomrule
         \end{tabular}
     \end{center}
-    $R^2_{\mathrm{adj}}$ rises when the relevant regressor (distance) is added and falls when the irrelevant $z$ is added.
+    $\Radj$ rises when the relevant regressor (distance) is added and falls when the irrelevant $z$ is added.
 \end{frame}
 
 
 \begin{frame}{Properties of adjusted $R^2$}
     From \eqref{eq:adj-r2-alt}:
     \begin{itemize}
-        \item For $p>1$, $R^2_{\mathrm{adj}} < R^2$ unless $R^2=1$.
+        \item For $p>1$, $\Radj < R^2$ unless $R^2=1$.
         \item It can decrease when a regressor is added.
-        \item It can be negative: $R^2_{\mathrm{adj}}<0$ whenever $R^2 < (p-1)/(n-1)$.
+        \item It can be negative: $\Radj<0$ whenever $R^2 < (p-1)/(n-1)$.
     \end{itemize}
 
     \svspace{1em}
     
     However,
     \begin{itemize}
-        \item A high $R^2$ or $R^2_{\mathrm{adj}}$ does not mean the model is adequate: the assumptions must be checked with residual analysis.
-        \item $R^2_{\mathrm{adj}}$ is a descriptive measure, not a hypothesis test.
+        \item A high $R^2$ or $\Radj$ does not mean the model is adequate: the assumptions must be checked with residual analysis.
+        \item $\Radj$ is a descriptive measure, not a hypothesis test.
         \item Formal comparison of models is done later with F-tests and information criteria.
     \end{itemize}
 \end{frame}
@@ -879,7 +879,7 @@ coef(lm(time ~ cases + distance,
         \item OLS: $\hat{\bbeta}=(\bX'\bX)^{-1}\bX'\by$ \eqref{eq:ols}; $\hat{\by}=\mathbf{H}\by$ is a projection onto $\col(\bX)$.
         \item $\hat{\bbeta}$ is unbiased with $\Var(\hat{\bbeta})=\sigma^2(\bX'\bX)^{-1}$ \eqref{eq:cov-beta}, and is BLUE.
         \item $\hat\sigma^2=\SSRes/(n-p)$ is unbiased for $\sigma^2$ \eqref{eq:mse}.
-        \item $R^2$ never decreases when regressors are added; $R^2_{\mathrm{adj}}$ \eqref{eq:adj-r2} penalises the loss of degrees of freedom.
+        \item $R^2$ never decreases when regressors are added; $\Radj$ \eqref{eq:adj-r2} penalises the loss of degrees of freedom.
     \end{itemize}
 \end{frame}
 
