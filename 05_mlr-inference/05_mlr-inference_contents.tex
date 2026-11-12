@@ -9,7 +9,7 @@
 
     In matrix form, with $p = k+1$ parameters,
     \[
-        \by = \bX\bbeta + \boldsymbol{\varepsilon}, \qquad \boldsymbol{\varepsilon} \sim N(\mathbf{0}, \sigma^2 \mathbf{I})
+        \by = \bX\bbeta + \bvarepsilon, \qquad \bvarepsilon \sim N(\mathbf{0}, \sigma^2 \mathbf{I})
     \]
 
     \begin{itemize}
@@ -37,7 +37,7 @@
     \end{align*}
     \begin{itemize}
         \item $\MSRes$ is independent of $\hat{\bbeta}$
-        \item Normal divided by an independent $\sqrt{\chi^2/\text{df}}$ gives a $t$ distribution
+        \item Normal divided by an independent $\sqrt{\chi^2/\df}$ gives a $t$ distribution
     \end{itemize}
 \end{frame}
 
@@ -165,8 +165,8 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 \begin{frame}{Why a large $F_0$ is evidence against $H_0$}
     Let $\bbeta^* = (\beta_1,\dots,\beta_k)'$ and let $\bX_c$ be the regressor matrix with columns centered at their means.
     \begin{align*}
-        E(\MSRes) &= \sigma^2 \\
-        E(\MSR) &= \sigma^2 + \frac{\bbeta^{*\prime}\bX_c'\bX_c\bbeta^*}{k}
+        \E[\MSRes] &= \sigma^2 \\
+        \E[\MSR] &= \sigma^2 + \frac{\bbeta^{*\prime}\bX_c'\bX_c\bbeta^*}{k}
     \end{align*}
     \begin{itemize}
         \item Under $H_0$ both mean squares estimate $\sigma^2$, so $F_0$ is near 1
@@ -225,11 +225,11 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 \begin{frame}{$R^2$ and adjusted $R^2$}
     \begin{align*}
         R^2 &= \frac{\SSR}{\SST} = 1 - \frac{\SSRes}{\SST} \\
-        R^2_{\text{adj}} &= 1 - \frac{\SSRes/(n-p)}{\SST/(n-1)}
+        \Radj &= 1 - \frac{\SSRes/(n-p)}{\SST/(n-1)}
     \end{align*}
     \begin{itemize}
-        \item Delivery time data: $R^2 = 5550.81/5784.54 = 0.9596$ and $R^2_{\text{adj}} = 0.9559$
-        \item $R^2$ never decreases when a regressor is added; $R^2_{\text{adj}}$ can
+        \item Delivery time data: $R^2 = 5550.81/5784.54 = 0.9596$ and $\Radj = 0.9559$
+        \item $R^2$ never decreases when a regressor is added; $\Radj$ can
     \end{itemize}
 \end{frame}
 
@@ -284,7 +284,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 \begin{frame}{Standard error of $\hat\beta_j$}
     \begin{align*}
         \Var(\hat\beta_j) &= \sigma^2 C_{jj} \\
-        \operatorname{se}(\hat\beta_j) &= \sqrt{\hat\sigma^2 C_{jj}} = \sqrt{\MSRes\, C_{jj}}
+        \se(\hat\beta_j) &= \sqrt{\hat\sigma^2 C_{jj}} = \sqrt{\MSRes\, C_{jj}}
     \end{align*}
     where $C_{jj}$ is the $j$th diagonal element of $(\bX'\bX)^{-1}$.
 \end{frame}
@@ -292,7 +292,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 
 \begin{frame}{The $t$ statistic}
     \begin{align*}
-        t_0 = \frac{\hat\beta_j}{\operatorname{se}(\hat\beta_j)} \sim t_{n-p} \quad \text{under } H_0
+        t_0 = \frac{\hat\beta_j}{\se(\hat\beta_j)} \sim t_{n-p} \quad \text{under } H_0
     \end{align*}
     Reject $H_0$ at level $\alpha$ if $|t_0| > t_{\alpha/2,\,n-p}$, or if the two-sided $p$-value $2\,P(t_{n-p} > |t_0|)$ is below $\alpha$.
 \end{frame}
@@ -301,7 +301,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 \begin{frame}{Testing a general null value}
     For $H_0: \beta_j = \beta_{j0}$,
     \begin{align*}
-        t_0 = \frac{\hat\beta_j - \beta_{j0}}{\operatorname{se}(\hat\beta_j)} \sim t_{n-p}
+        t_0 = \frac{\hat\beta_j - \beta_{j0}}{\se(\hat\beta_j)} \sim t_{n-p}
     \end{align*}
     \begin{itemize}
         \item One-sided alternatives $H_1: \beta_j > \beta_{j0}$ or $\beta_j < \beta_{j0}$ use $t_{\alpha,\,n-p}$ and a one-sided $p$-value
@@ -312,7 +312,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 \begin{frame}{Delivery time data: test for cases ($\beta_1$)}
     From $(\bX'\bX)^{-1}$ we get $C_{11} = 0.002744$, and $\MSRes = 10.6242$.
     \begin{align*}
-        \operatorname{se}(\hat\beta_1) &= \sqrt{10.6242 \times 0.002744} = 0.1707 \\
+        \se(\hat\beta_1) &= \sqrt{10.6242 \times 0.002744} = 0.1707 \\
         t_0 &= \frac{1.6159}{0.1707} = 9.46
     \end{align*}
     $t_{0.025,\,22} = 2.074$, so $|t_0| > 2.074$ and we reject $H_0: \beta_1 = 0$.
@@ -382,10 +382,10 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 
 \begin{frame}{The pivotal quantity}
     \begin{align*}
-        \frac{\hat\beta_j - \beta_j}{\operatorname{se}(\hat\beta_j)} \sim t_{n-p}
+        \frac{\hat\beta_j - \beta_j}{\se(\hat\beta_j)} \sim t_{n-p}
     \end{align*}
     \begin{align*}
-        P\!\left(-t_{\alpha/2,\,n-p} \le \frac{\hat\beta_j - \beta_j}{\operatorname{se}(\hat\beta_j)} \le t_{\alpha/2,\,n-p}\right) = 1-\alpha
+        P\!\left(-t_{\alpha/2,\,n-p} \le \frac{\hat\beta_j - \beta_j}{\se(\hat\beta_j)} \le t_{\alpha/2,\,n-p}\right) = 1-\alpha
     \end{align*}
 \end{frame}
 
@@ -393,7 +393,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 \begin{frame}{Confidence interval for $\beta_j$}
     Solving the inequality for $\beta_j$:
     \begin{align*}
-        \hat\beta_j \pm t_{\alpha/2,\,n-p}\, \operatorname{se}(\hat\beta_j)
+        \hat\beta_j \pm t_{\alpha/2,\,n-p}\, \se(\hat\beta_j)
     \end{align*}
     \begin{itemize}
         \item Interpretation: in repeated sampling, $100(1-\alpha)\%$ of intervals built this way cover the true $\beta_j$
@@ -488,7 +488,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
     \begin{align*}
         \hat y_0 = \bx_0'\hat{\bbeta}
     \end{align*}
-    estimates both $E(y \mid \bx_0)$ and the new observation $y_0$.
+    estimates both $\E[y \mid \bx_0]$ and the new observation $y_0$.
     \begin{align*}
         \bx_0 = (1, 8, 275)' \;\Rightarrow\; \hat y_0 = 2.3412 + 1.6159(8) + 0.014385(275) = 19.22 \text{ min}
     \end{align*}
@@ -501,7 +501,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
     \]
 
     \[
-        \frac{\hat y_0 - E(y \mid \bx_0)}{\sqrt{\MSRes\, \bx_0'(\bX'\bX)^{-1}\bx_0}} \sim t_{n-p}
+        \frac{\hat y_0 - \E[y \mid \bx_0]}{\sqrt{\MSRes\, \bx_0'(\bX'\bX)^{-1}\bx_0}} \sim t_{n-p}
     \]
 \end{frame}
 
@@ -555,7 +555,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
             \toprule
              & Target & Variance term inside $\sqrt{\cdot}$ & Delivery data at $\bx_0$ \\
             \midrule
-            CI & $E(y \mid \bx_0)$ & $\bx_0'(\bX'\bX)^{-1}\bx_0$ & $(17.65,\, 20.79)$ \\
+            CI & $\E[y \mid \bx_0]$ & $\bx_0'(\bX'\bX)^{-1}\bx_0$ & $(17.65,\, 20.79)$ \\
             PI & $y_0$ & $1 + \bx_0'(\bX'\bX)^{-1}\bx_0$ & $(12.28,\, 26.16)$ \\
             \bottomrule
         \end{tabular}
@@ -709,9 +709,9 @@ predict(fit, new, interval = "prediction")
             Procedure & Target & Statistic or interval & Reference \\
             \midrule
             Overall test & $H_0: \beta_1=\cdots=\beta_k=0$ & $F_0 = \MSR/\MSRes$ & $F_{k,\,n-p}$ \\
-            $t$ test & $H_0: \beta_j = \beta_{j0}$ & $t_0 = \dfrac{\hat\beta_j - \beta_{j0}}{\operatorname{se}(\hat\beta_j)}$ & $t_{n-p}$ \\[1.5ex]
-            CI for $\beta_j$ & $\beta_j$ & $\hat\beta_j \pm t_{\alpha/2,n-p}\operatorname{se}(\hat\beta_j)$ & $t_{n-p}$ \\[0.5ex]
-            CI for mean & $E(y \mid \bx_0)$ & $\hat y_0 \pm t_{\alpha/2,n-p}\sqrt{\MSRes\, h_{00}}$ & $t_{n-p}$ \\[0.5ex]
+            $t$ test & $H_0: \beta_j = \beta_{j0}$ & $t_0 = \dfrac{\hat\beta_j - \beta_{j0}}{\se(\hat\beta_j)}$ & $t_{n-p}$ \\[1.5ex]
+            CI for $\beta_j$ & $\beta_j$ & $\hat\beta_j \pm t_{\alpha/2,n-p}\se(\hat\beta_j)$ & $t_{n-p}$ \\[0.5ex]
+            CI for mean & $\E[y \mid \bx_0]$ & $\hat y_0 \pm t_{\alpha/2,n-p}\sqrt{\MSRes\, h_{00}}$ & $t_{n-p}$ \\[0.5ex]
             PI & $y_0$ & $\hat y_0 \pm t_{\alpha/2,n-p}\sqrt{\MSRes(1 + h_{00})}$ & $t_{n-p}$ \\
             \bottomrule
         \end{tabular}
