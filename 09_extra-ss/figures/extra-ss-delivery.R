@@ -64,6 +64,13 @@ summary(av_fit)$r.squared                     # 0.4188 = 168.40 / 402.13
 # cross-check with the car package
 car::avPlots(fit_full)
 
+# save the car version (both regressors side by side) for the slides
+pdf("delivery_avplots_car.pdf", width = 2 * fig_w, height = 1.3 * fig_h, bg = "transparent")
+par(mar = c(4, 4, 0.5, 0.5), mgp = c(2.2, 0.7, 0), cex = 0.8)
+car::avPlots(fit_full, layout = c(1, 2), main = "", grid = FALSE,
+             col = pt_col, col.lines = line_col, pch = 16)
+dev.off()
+
 # ---- Figures ------------------------------------------------------------------
 # Raw scatter: time vs distance (marginal slope 0.0426)
 p_raw <- ggplot(delivery, aes(x = distance, y = time)) +
