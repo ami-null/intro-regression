@@ -40,7 +40,7 @@
         \bbeta_{(1)} \\ \bbeta_{(2)}
     \end{bmatrix},
     \qquad
-    \bX = \begin{bmatrix} \bX_1 & \bX_2 \end{bmatrix}
+    \bX = \begin{bmatrix} \bX_{(1)} & \bX_{(2)} \end{bmatrix}
     \]
     \begin{itemize}
         \item $\bbeta_{(1)}$ is $(p-q)\times 1$ and contains the intercept.
@@ -51,7 +51,7 @@
 
 \begin{frame}{The Full Model}
     \[
-    \by = \bX\bbeta + \bvarepsilon = \bX_1\bbeta_{(1)} + \bX_2\bbeta_{(2)} + \bvarepsilon
+    \by = \bX\bbeta + \bvarepsilon = \bX_{(1)}\bbeta_{(1)} + \bX_{(2)}\bbeta_{(2)} + \bvarepsilon
     \]
     \begin{itemize}
         \item Uses all $p$ parameters.
@@ -68,12 +68,12 @@
     \qquad\text{versus}\qquad
     H_1:\bbeta_{(2)}\neq\mathbf{0}
     \]
-    If $H_0$ is true, the regressors in $\bX_2$ drop out. The \emph{reduced model} is
+    If $H_0$ is true, the regressors in $\bX_{(2)}$ drop out. The \emph{reduced model} is
     \[
-    \by = \bX_1\bbeta_{(1)} + \bvarepsilon
+    \by = \bX_{(1)}\bbeta_{(1)} + \bvarepsilon
     \]
     \begin{itemize}
-        \item Least-squares fit: $\hat{\bbeta}_{(1)}=(\bX_1'\bX_1)^{-1}\bX_1'\by$.
+        \item Least-squares fit: $\hat{\bbeta}_{(1)}=(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}'\by$.
         \item Residual sum of squares $\SSRes(\RM)$ with $n-p+q$ degrees of freedom.
     \end{itemize}
 \end{frame}
@@ -96,7 +96,7 @@
     The full model always has the smaller (or equal) residual sum of squares.
     \svspace{0.5em}
     \begin{itemize}
-        \item So can we conclude that $\bX_2$ matters whenever $\SSRes(\FM)<\SSRes(\RM)$?
+        \item So can we conclude that $\bX_{(2)}$ matters whenever $\SSRes(\FM)<\SSRes(\RM)$?
         \item What would a useful comparison need?
     \end{itemize}
     % Answer:
@@ -110,10 +110,10 @@
     \begin{columns}[T]
         \begin{column}{0.4\textwidth}
             \begin{itemize}
-                \item $\col(\bX_1)\subset\col(\bX)$.
-                \item $\hat{\by}_1=\mathbf{H}_1\by$ projects onto the smaller space, $\hat{\by}=\mathbf{H}\by$ onto the larger. Here $\mathbf{H}_1=\bX_1(\bX_1'\bX_1)^{-1}\bX_1'$ is the hat matrix of the reduced model.
-                \item $\hat{\by}-\hat{\by}_1$ is the part of the fit due to $\bX_2$.
-                \item $\SSRes(\RM)=\|\by-\hat{\by}_1\|^2$ and $\SSRes(\FM)=\|\by-\hat{\by}\|^2$.
+                \item $\col(\bX_{(1)})\subset\col(\bX)$.
+                \item $\hat{\by}_{(1)}=\mathbf{H}_{(1)}\by$ projects onto the smaller space, $\hat{\by}=\mathbf{H}\by$ onto the larger. Here $\mathbf{H}_{(1)}=\bX_{(1)}(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}'$ is the hat matrix of the reduced model.
+                \item $\hat{\by}-\hat{\by}_{(1)}$ is the part of the fit due to $\bX_{(2)}$.
+                \item $\SSRes(\RM)=\|\by-\hat{\by}_{(1)}\|^2$ and $\SSRes(\FM)=\|\by-\hat{\by}\|^2$.
             \end{itemize}
         \end{column}
         \begin{column}{0.6\textwidth}
@@ -123,7 +123,7 @@
                 \draw[gray] (0,0)--(6.6,0)--(8.1,2.2)--(1.5,2.2)--cycle;
                 \node[gray!70!black, anchor=west] at (7.75,1.2) {$\col(\bX)$};
                 \draw[very thick, teal!70!black] (0.5,0.7)--(6.6,0.7);
-                \node[teal!70!black, anchor=north west] at (0.75,0.62) {$\col(\bX_1)$};
+                \node[teal!70!black, anchor=north west] at (0.75,0.62) {$\col(\bX_{(1)})$};
                 \coordinate (O) at (1.5,0.7);
                 \coordinate (P1) at (4.5,0.7);
                 \coordinate (P) at (5.4,1.9);
@@ -133,9 +133,9 @@
                 \node[anchor=west] at (5.55,2.05) {$\hat{\by}$};
                 \draw[dashed] (Y)--(P) node[midway, right] {$\mathbf{e}$};
                 \draw[dashed] (P)--(P1);
-                \node[anchor=west] at (5.1,1.15) {$\hat{\by}-\hat{\by}_1$};
+                \node[anchor=west] at (5.1,1.15) {$\hat{\by}-\hat{\by}_{(1)}$};
                 \fill (P1) circle (1.6pt);
-                \node[anchor=north] at (4.5,0.6) {$\hat{\by}_1$};
+                \node[anchor=north] at (4.5,0.6) {$\hat{\by}_{(1)}$};
                 \draw (P1)++(-0.28,0)--++(0.18,0.24)--++(0.28,0);
                 \draw (P)++(-0.3,0)--++(0,0.3)--++(0.3,0);
             \end{tikzpicture}
@@ -183,9 +183,9 @@
 
 \begin{frame}{Interpreting the Extra Sum of Squares}
     \begin{itemize}
-        \item It is the increase in the regression sum of squares when $\bX_2$ is added to a model that already contains $\bX_1$.
-        \item The word ``given'' matters: the contribution of $\bX_2$ depends on what is already in the model.
-        \item Equivalently, it is how much of the unexplained variation $\bX_2$ removes.
+        \item It is the increase in the regression sum of squares when $\bX_{(2)}$ is added to a model that already contains $\bX_{(1)}$.
+        \item The word ``given'' matters: the contribution of $\bX_{(2)}$ depends on what is already in the model.
+        \item Equivalently, it is how much of the unexplained variation $\bX_{(2)}$ removes.
     \end{itemize}
 \end{frame}
 
@@ -210,7 +210,7 @@
     \SSR(\bbeta) = \SSR(\bbeta_{(1)}) + \SSR(\bbeta_{(2)}\mid\bbeta_{(1)})
     \]
     \begin{itemize}
-        \item The regression sum of squares splits into what $\bX_1$ explains and what $\bX_2$ adds.
+        \item The regression sum of squares splits into what $\bX_{(1)}$ explains and what $\bX_{(2)}$ adds.
         \item Degrees of freedom split the same way: $p-1=(p-q-1)+q$.
     \end{itemize}
 \end{frame}
@@ -245,35 +245,35 @@
     \[
     \mathbf{H}=\bX(\bX'\bX)^{-1}\bX',
     \qquad
-    \mathbf{H}_1=\bX_1(\bX_1'\bX_1)^{-1}\bX_1'
+    \mathbf{H}_{(1)}=\bX_{(1)}(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}'
     \]
     Residual sums of squares are quadratic forms in $\by$:
     \begin{align*}
         \SSRes(\FM) &= \by'(\mathbf{I}-\mathbf{H})\by \\
-        \SSRes(\RM) &= \by'(\mathbf{I}-\mathbf{H}_1)\by \\
-        \SSR(\bbeta_{(2)}\mid\bbeta_{(1)}) &= \by'(\mathbf{H}-\mathbf{H}_1)\by
+        \SSRes(\RM) &= \by'(\mathbf{I}-\mathbf{H}_{(1)})\by \\
+        \SSR(\bbeta_{(2)}\mid\bbeta_{(1)}) &= \by'(\mathbf{H}-\mathbf{H}_{(1)})\by
     \end{align*}
 \end{frame}
 
 
-\begin{frame}{Why $\mathbf{H}-\mathbf{H}_1$ Is a Projection: Step 1}
-    $\col(\bX_1)\subset\col(\bX)$, so projecting a vector already in $\col(\bX_1)$ onto $\col(\bX)$ leaves it unchanged: $\mathbf{H}\bX_1=\bX_1$. Hence
+\begin{frame}{Why $\mathbf{H}-\mathbf{H}_{(1)}$ Is a Projection: Step 1}
+    $\col(\bX_{(1)})\subset\col(\bX)$, so projecting a vector already in $\col(\bX_{(1)})$ onto $\col(\bX)$ leaves it unchanged: $\mathbf{H}\bX_{(1)}=\bX_{(1)}$. Hence
     \begin{align*}
-        \mathbf{H}\mathbf{H}_1 &= \mathbf{H}\bX_1(\bX_1'\bX_1)^{-1}\bX_1' = \bX_1(\bX_1'\bX_1)^{-1}\bX_1' = \mathbf{H}_1 \\
-        \mathbf{H}_1\mathbf{H} &= (\mathbf{H}\mathbf{H}_1)' = \mathbf{H}_1
+        \mathbf{H}\mathbf{H}_{(1)} &= \mathbf{H}\bX_{(1)}(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}' = \bX_{(1)}(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}' = \mathbf{H}_{(1)} \\
+        \mathbf{H}_{(1)}\mathbf{H} &= (\mathbf{H}\mathbf{H}_{(1)})' = \mathbf{H}_{(1)}
     \end{align*}
 \end{frame}
 
 
-\begin{frame}{Why $\mathbf{H}-\mathbf{H}_1$ Is a Projection: Step 2}
+\begin{frame}{Why $\mathbf{H}-\mathbf{H}_{(1)}$ Is a Projection: Step 2}
     \begin{align*}
-        (\mathbf{H}-\mathbf{H}_1)^2 &= \mathbf{H} - \mathbf{H}\mathbf{H}_1 - \mathbf{H}_1\mathbf{H} + \mathbf{H}_1 = \mathbf{H}-\mathbf{H}_1 \\
-        \rank(\mathbf{H}-\mathbf{H}_1) &= \tr(\mathbf{H}-\mathbf{H}_1) = p-(p-q) = q
+        (\mathbf{H}-\mathbf{H}_{(1)})^2 &= \mathbf{H} - \mathbf{H}\mathbf{H}_{(1)} - \mathbf{H}_{(1)}\mathbf{H} + \mathbf{H}_{(1)} = \mathbf{H}-\mathbf{H}_{(1)} \\
+        \rank(\mathbf{H}-\mathbf{H}_{(1)}) &= \tr(\mathbf{H}-\mathbf{H}_{(1)}) = p-(p-q) = q
     \end{align*}
     \begin{itemize}
-        \item $\mathbf{H}-\mathbf{H}_1$ is symmetric and idempotent of rank $q$: a projection onto a $q$-dimensional space.
-        \item Also $(\mathbf{H}-\mathbf{H}_1)(\mathbf{I}-\mathbf{H})=\mathbf{0}$, so the two quadratic forms involve orthogonal pieces of $\by$ and are independent.
-        \item Under $H_0$, $\E[\by]=\bX_1\bbeta_{(1)}$ is annihilated (sent to $\mathbf{0}$) by $\mathbf{H}-\mathbf{H}_1$, so the form depends on $\bvarepsilon$ only and is $\sigma^2\chi^2_q$.
+        \item $\mathbf{H}-\mathbf{H}_{(1)}$ is symmetric and idempotent of rank $q$: a projection onto a $q$-dimensional space.
+        \item Also $(\mathbf{H}-\mathbf{H}_{(1)})(\mathbf{I}-\mathbf{H})=\mathbf{0}$, so the two quadratic forms involve orthogonal pieces of $\by$ and are independent.
+        \item Under $H_0$, $\E[\by]=\bX_{(1)}\bbeta_{(1)}$ is annihilated (sent to $\mathbf{0}$) by $\mathbf{H}-\mathbf{H}_{(1)}$, so the form depends on $\bvarepsilon$ only and is $\sigma^2\chi^2_q$.
     \end{itemize}
 \end{frame}
 
@@ -287,7 +287,7 @@
         \item Nothing of $\mathbf{v}$ survives the multiplication.
         \item The set of all vectors that $\mathbf{A}$ annihilates is its \emph{null space}.
         \item Familiar case: $\mathbf{I}-\mathbf{H}$ annihilates every vector in $\col(\bX)$, since $(\mathbf{I}-\mathbf{H})\bX\bbeta=\bX\bbeta-\bX\bbeta=\mathbf{0}$. This is why the residuals $\mathbf{e}=(\mathbf{I}-\mathbf{H})\by=(\mathbf{I}-\mathbf{H})\bvarepsilon$ contain no trace of $\E[\by]$.
-        \item Here: $\mathbf{H}\bX_1=\bX_1=\mathbf{H}_1\bX_1$, so $\mathbf{H}-\mathbf{H}_1$ annihilates $\col(\bX_1)$, which contains $\E[\by]=\bX_1\bbeta_{(1)}$ under $H_0$.
+        \item Here: $\mathbf{H}\bX_{(1)}=\bX_{(1)}=\mathbf{H}_{(1)}\bX_{(1)}$, so $\mathbf{H}-\mathbf{H}_{(1)}$ annihilates $\col(\bX_{(1)})$, which contains $\E[\by]=\bX_{(1)}\bbeta_{(1)}$ under $H_0$.
     \end{itemize}
 \end{frame}
 
@@ -855,7 +855,7 @@
 
 
 \begin{frame}{When Sequential Equals Partial: Orthogonal Columns}
-    If $\bX_1'\bX_2=\mathbf{0}$, then $\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})=\SSR(\bbeta_{(2)})$: the contribution of each block is unaffected by the other, in any order. Here $\SSR(\bbeta_{(2)})$ is the regression sum of squares when $y$ is regressed on $\bX_2$ alone (plus an intercept). Since $\bX_1$ contains the column of ones, $\bX_1'\bX_2=\mathbf{0}$ also requires every column of $\bX_2$ to have mean zero.
+    If $\bX_{(1)}'\bX_{(2)}=\mathbf{0}$, then $\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})=\SSR(\bbeta_{(2)})$: the contribution of each block is unaffected by the other, in any order. Here $\SSR(\bbeta_{(2)})$ is the regression sum of squares when $y$ is regressed on $\bX_{(2)}$ alone (plus an intercept). Since $\bX_{(1)}$ contains the column of ones, $\bX_{(1)}'\bX_{(2)}=\mathbf{0}$ also requires every column of $\bX_{(2)}$ to have mean zero.
     \begin{itemize}
         \item Delivery data: replace $x_2$ by $z=e(x_2\mid x_1)$, the part of distance not explained by cases (orthogonal to $\mathbf{1}$ and $x_1$).
         \item Regress $y$ on $x_1$ and $z$: sequential sums of squares are $5382.41$ for $x_1$ and $168.40$ for $z$ in either order.
@@ -924,11 +924,11 @@
 
 
 \begin{frame}{Constructing an Added-Variable Plot}
-    Let $\bX_{(j)}$ be the design matrix with the column of $x_j$ removed (intercept kept).
+    Let $\bX_{(-j)}$ be the design matrix with the column of $x_j$ removed (intercept kept).
     \begin{enumerate}
-        \item Regress $y$ on $\bX_{(j)}$ and keep the residuals $e(y\mid\bX_{(j)})$.
-        \item Regress $x_j$ on $\bX_{(j)}$ and keep the residuals $e(x_j\mid\bX_{(j)})$.
-        \item Plot $e(y\mid\bX_{(j)})$ against $e(x_j\mid\bX_{(j)})$.
+        \item Regress $y$ on $\bX_{(-j)}$ and keep the residuals $e(y\mid\bX_{(-j)})$.
+        \item Regress $x_j$ on $\bX_{(-j)}$ and keep the residuals $e(x_j\mid\bX_{(-j)})$.
+        \item Plot $e(y\mid\bX_{(-j)})$ against $e(x_j\mid\bX_{(-j)})$.
     \end{enumerate}
     \svspace{0.5em}
     Also called a partial regression plot.
@@ -936,10 +936,10 @@
 
 
 \begin{frame}{Residuals as Adjusted Variables}
-    With $\mathbf{H}_{(j)}=\bX_{(j)}(\bX_{(j)}'\bX_{(j)})^{-1}\bX_{(j)}'$:
+    With $\mathbf{H}_{(-j)}=\bX_{(-j)}(\bX_{(-j)}'\bX_{(-j)})^{-1}\bX_{(-j)}'$:
     \begin{align*}
-        e(y\mid\bX_{(j)}) &= (\mathbf{I}-\mathbf{H}_{(j)})\by \\
-        e(x_j\mid\bX_{(j)}) &= (\mathbf{I}-\mathbf{H}_{(j)})\bx_j
+        e(y\mid\bX_{(-j)}) &= (\mathbf{I}-\mathbf{H}_{(-j)})\by \\
+        e(x_j\mid\bX_{(-j)}) &= (\mathbf{I}-\mathbf{H}_{(-j)})\bx_j
     \end{align*}
     \begin{itemize}
         \item The first is the part of $y$ not explained by the other regressors.
@@ -982,11 +982,11 @@
 \begin{frame}{Derivation, Step 1: Decompose $y$}
     The full-model fit separates $x_j$ from the other regressors:
     \[
-    \by = \bX_{(j)}\hat{\bbeta}_{(j)} + \bx_j\hat\beta_j + \mathbf{e}
+    \by = \bX_{(-j)}\hat{\bbeta}_{(-j)} + \bx_j\hat\beta_j + \mathbf{e}
     \]
-    Apply $\mathbf{I}-\mathbf{H}_{(j)}$. It annihilates $\bX_{(j)}$, and $(\mathbf{I}-\mathbf{H}_{(j)})\mathbf{e}=\mathbf{e}$ because $\mathbf{e}\perp\col(\bX)\supset\col(\bX_{(j)})$:
+    Apply $\mathbf{I}-\mathbf{H}_{(-j)}$. It annihilates $\bX_{(-j)}$, and $(\mathbf{I}-\mathbf{H}_{(-j)})\mathbf{e}=\mathbf{e}$ because $\mathbf{e}\perp\col(\bX)\supset\col(\bX_{(-j)})$:
     \begin{align}
-        e(y\mid\bX_{(j)}) = \hat\beta_j\,e(x_j\mid\bX_{(j)}) + \mathbf{e}
+        e(y\mid\bX_{(-j)}) = \hat\beta_j\,e(x_j\mid\bX_{(-j)}) + \mathbf{e}
         \label{eq:av-decomp}
     \end{align}
 \end{frame}
@@ -995,19 +995,19 @@
 \begin{frame}{Derivation, Step 2: Slope and Residuals}
     Both adjusted variables have mean zero, so the line through the plot has no intercept. Its slope is
     \begin{align*}
-        \frac{e(x_j\mid\bX_{(j)})'\,e(y\mid\bX_{(j)})}{e(x_j\mid\bX_{(j)})'\,e(x_j\mid\bX_{(j)})}
-        = \hat\beta_j + \frac{e(x_j\mid\bX_{(j)})'\,\mathbf{e}}{e(x_j\mid\bX_{(j)})'\,e(x_j\mid\bX_{(j)})}
+        \frac{e(x_j\mid\bX_{(-j)})'\,e(y\mid\bX_{(-j)})}{e(x_j\mid\bX_{(-j)})'\,e(x_j\mid\bX_{(-j)})}
+        = \hat\beta_j + \frac{e(x_j\mid\bX_{(-j)})'\,\mathbf{e}}{e(x_j\mid\bX_{(-j)})'\,e(x_j\mid\bX_{(-j)})}
     \end{align*}
-    The numerator of the last term is $\bx_j'(\mathbf{I}-\mathbf{H}_{(j)})\mathbf{e}=\bx_j'\mathbf{e}=0$. So the slope is $\hat\beta_j$ and, by \eqref{eq:av-decomp}, the residuals about the line are $\mathbf{e}$.
+    The numerator of the last term is $\bx_j'(\mathbf{I}-\mathbf{H}_{(-j)})\mathbf{e}=\bx_j'\mathbf{e}=0$. So the slope is $\hat\beta_j$ and, by \eqref{eq:av-decomp}, the residuals about the line are $\mathbf{e}$.
 \end{frame}
 
 
 \begin{frame}{Consequences}
     \begin{itemize}
         \item The plot has the same residuals, hence the same residual sum of squares, as the full model.
-        \item The sum of squares explained by the line is $\hat\beta_j^{\,2}\sum_i e_i(x_j\mid\bX_{(j)})^2=\SSR(\beta_j\mid\text{others})$. Why: square both sides of \eqref{eq:av-decomp}; the cross term is $0$ because $e(x_j\mid\bX_{(j)})'\mathbf{e}=0$, so
+        \item The sum of squares explained by the line is $\hat\beta_j^{\,2}\sum_i e_i(x_j\mid\bX_{(-j)})^2=\SSR(\beta_j\mid\text{others})$. Why: square both sides of \eqref{eq:av-decomp}; the cross term is $0$ because $e(x_j\mid\bX_{(-j)})'\mathbf{e}=0$, so
         \[
-        \underbrace{\textstyle\sum e(y\mid\bX_{(j)})^2}_{\SSRes(\text{without }x_j)} = \hat\beta_j^{\,2}\textstyle\sum e(x_j\mid\bX_{(j)})^2 + \underbrace{\mathbf{e}'\mathbf{e}}_{\SSRes(\FM)},
+        \underbrace{\textstyle\sum e(y\mid\bX_{(-j)})^2}_{\SSRes(\text{without }x_j)} = \hat\beta_j^{\,2}\textstyle\sum e(x_j\mid\bX_{(-j)})^2 + \underbrace{\mathbf{e}'\mathbf{e}}_{\SSRes(\FM)},
         \]
         and the difference of the two residual sums of squares is the extra sum of squares \eqref{eq:extra-ss-res}.
         \item Delivery data, distance: $0.014385^2\times813{,}838.7=168.40$.
@@ -1052,7 +1052,7 @@
 \begin{frame}{Squared Correlation in the Plot}
     The squared correlation between the two adjusted variables is
     \begin{align*}
-        r^2 = \frac{\hat\beta_j^{\,2}\sum e(x_j\mid\bX_{(j)})^2}{\sum e(y\mid\bX_{(j)})^2}
+        r^2 = \frac{\hat\beta_j^{\,2}\sum e(x_j\mid\bX_{(-j)})^2}{\sum e(y\mid\bX_{(-j)})^2}
         = \frac{\SSR(\beta_j\mid\text{others})}{\SSRes(\text{model without }x_j)}
     \end{align*}
     \begin{itemize}
@@ -1066,9 +1066,9 @@
 \begin{frame}{Collinearity in the Plot}
     The horizontal spread of the plot is what is left of $x_j$ after the other regressors take their share:
     \[
-    \sum_i e_i(x_j\mid\bX_{(j)})^2 = (1-R_j^2)\sum_i(x_{ij}-\bar x_j)^2,
+    \sum_i e_i(x_j\mid\bX_{(-j)})^2 = (1-R_j^2)\sum_i(x_{ij}-\bar x_j)^2,
     \qquad
-    \Var(\hat\beta_j)=\frac{\sigma^2}{\sum_i e_i(x_j\mid\bX_{(j)})^2}
+    \Var(\hat\beta_j)=\frac{\sigma^2}{\sum_i e_i(x_j\mid\bX_{(-j)})^2}
     \]
     \begin{itemize}
         \item $R_j^2$ is the $R^2$ from regressing $x_j$ on the other regressors.
@@ -1142,7 +1142,7 @@
             \midrule
             Overall & $\beta_1=\cdots=\beta_k=0$ & $k$ & Intercept only \\
             Individual & $\beta_j=0$ & 1 & Drop $x_j$ \\
-            Subset (partial $F$) & $\bbeta_{(2)}=\mathbf{0}$ & $q$ & Drop $\bX_2$ \\
+            Subset (partial $F$) & $\bbeta_{(2)}=\mathbf{0}$ & $q$ & Drop $\bX_{(2)}$ \\
             General linear & $\mathbf{T}\bbeta=\mathbf{0}$ & $q$ & Impose restrictions \\
             \bottomrule
         \end{tabular}
