@@ -32,13 +32,13 @@
 \begin{frame}{The SLR Model Equation}
 	For an outcome variable \(Y\) and a single predictor variable \(X\), the model is given as
 	\[
-		Y = \beta_0 + \beta_1 X + \epsilon, \qquad \epsilon \sim N(0, \sigma^2)
+		Y = \beta_0 + \beta_1 X + \varepsilon, \qquad \varepsilon \sim N(0, \sigma^2)
 	\]
 
 	\begin{itemize}
 		\item $\beta_0$: the intercept --- expected or average value of \(Y\) when the value of \(X\) is zero
 		\item $\beta_1$: the slope --- the expected or average change in \(Y\) for a one-unit increase \(X\)
-		\item $\epsilon_i$: random error --- everything affecting \(Y\) that \(X\) does not capture
+		\item $\varepsilon_i$: random error --- everything affecting \(Y\) that \(X\) does not capture
 		\item $\beta_0, \beta_1$ are unknown \textbf{population parameters}; we estimate them from data as $\hat\beta_0, \hat\beta_1$
 	\end{itemize}
 \end{frame}
@@ -89,10 +89,10 @@
 
 \begin{frame}{Assumptions of the SLR Model}
 	\begin{itemize}
-		\item \textbf{Linearity:} the mean of $y$ is a linear function of $x$, i.e.\ $E[\varepsilon_i] = 0$
-		\item \textbf{Independence:} $\operatorname{Cov}(\varepsilon_i, \varepsilon_j) = 0$ for $i \neq j$
+		\item \textbf{Linearity:} the mean of $y$ is a linear function of $x$, i.e.\ $\E[\varepsilon_i] = 0$
+		\item \textbf{Independence:} $\Cov(\varepsilon_i, \varepsilon_j) = 0$ for $i \neq j$
 		\item \textbf{Normality}: $\varepsilon_i \sim N(0, \sigma^2)$
-		\item \textbf{Constant variance (homoscedasticity):} $\operatorname{Var}(\varepsilon_i) = \sigma^2$ for all $i$
+		\item \textbf{Constant variance (homoscedasticity):} $\Var(\varepsilon_i) = \sigma^2$ for all $i$
 		\item $x_i$ values are fixed, known constants, measured without error
 	\end{itemize}
 \end{frame}
@@ -263,15 +263,15 @@
 \begin{frame}{Estimator of \texorpdfstring{\(\beta_1\)}{beta1} in terms of Covariance}
 	Recall that
 	\[
-		\operatorname{CoV}(X, Y) = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{n-1} = \frac{S_{xy}}{n-1} 
+		\Cov(X, Y) = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{n-1} = \frac{S_{xy}}{n-1} 
 	\]
 	and
 	\[
-		\operatorname{V}(X) = \frac{\sum_i (x_i - \bar x)^2}{n-1} = \frac{S_{xx}}{n-1},
+		\Var(X) = \frac{\sum_i (x_i - \bar x)^2}{n-1} = \frac{S_{xx}}{n-1},
 	\]
 	hence,
 	\[
-		\hat{\beta}_1 = \frac{\operatorname{CoV}(X, Y)}{\operatorname{V}(X)}.
+		\hat{\beta}_1 = \frac{\Cov(X, Y)}{\Var(X)}.
 	\]
 \end{frame}
 
@@ -279,11 +279,11 @@
 \begin{frame}{Relationship between \texorpdfstring{\(\hat{\beta}_1\)}{beta1hat} and the Correlation Coefficient}
 	Recall that the population correlation coefficient \(\rho\) is estimated by
 	\[
-		r = \frac{\operatorname{Cov}(X, Y)}{\sqrt{\operatorname{V}(X) \cdot \operatorname{V}(Y)}},
+		r = \frac{\Cov(X, Y)}{\sqrt{\Var(X) \cdot \Var(Y)}},
 	\]
 	therefore
 	\[
-		r = \frac{\sqrt{\operatorname{V}(X)}}{\sqrt{\operatorname{V}(Y)}} \hat{\beta}_1.
+		r = \frac{\sqrt{\Var(X)}}{\sqrt{\Var(Y)}} \hat{\beta}_1.
 	\]
 \end{frame}
 
@@ -478,7 +478,7 @@
 \begin{frame}{Unbiasedness of $\hat\beta_1$}
 	Treating the $x_i$ as fixed and using $y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$:
 	\[
-		E[\hat\beta_1] = E\left[\sum_i c_i y_i\right] = \sum_i c_i E[y_i] = \sum_i c_i(\beta_0 + \beta_1 x_i)
+		\E[\hat\beta_1] = \E\left[\sum_i c_i y_i\right] = \sum_i c_i \E[y_i] = \sum_i c_i(\beta_0 + \beta_1 x_i)
 	\]
 	\pause
 	\[
@@ -486,47 +486,47 @@
 	\]
 	\pause
 	\[
-		\boxed{E[\hat\beta_1] = \beta_1}
+		\boxed{\E[\hat\beta_1] = \beta_1}
 	\]
 	On average, across repeated samples, the OLS slope estimate equals the true parameter.
 \end{frame}
 
 
-\begin{frame}{A Preliminary Result: $E[\bar y]$}
-	Since $y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$ with $E[\varepsilon_i] = 0$:
+\begin{frame}{A Preliminary Result: $\E[\bar y]$}
+	Since $y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$ with $\E[\varepsilon_i] = 0$:
 	\[
-		E[y_i] = \beta_0 + \beta_1 x_i
+		\E[y_i] = \beta_0 + \beta_1 x_i
 	\]
 	\pause
 	Averaging over $i = 1, \dots, n$:
 	\[
-		E[\bar y] = \frac{1}{n}\sum_i E[y_i] = \frac{1}{n}\left(n\beta_0 + \beta_1\sum_i x_i\right) = \beta_0 + \beta_1\bar x
+		\E[\bar y] = \frac{1}{n}\sum_i \E[y_i] = \frac{1}{n}\left(n\beta_0 + \beta_1\sum_i x_i\right) = \beta_0 + \beta_1\bar x
 	\]
 \end{frame}
 
 
 \begin{frame}{Unbiasedness of $\hat\beta_0$}
-	Using $\hat\beta_0 = \bar y - \hat\beta_1 \bar x$ and $E[\bar y] = \beta_0 + \beta_1 \bar x$:
+	Using $\hat\beta_0 = \bar y - \hat\beta_1 \bar x$ and $\E[\bar y] = \beta_0 + \beta_1 \bar x$:
 	\[
-		E[\hat\beta_0] = E[\bar y] - \bar x\, E[\hat\beta_1] = (\beta_0 + \beta_1 \bar x) - \bar x \beta_1
+		\E[\hat\beta_0] = \E[\bar y] - \bar x\, \E[\hat\beta_1] = (\beta_0 + \beta_1 \bar x) - \bar x \beta_1
 	\]
 	\pause
 	\[
-		\boxed{E[\hat\beta_0] = \beta_0}
+		\boxed{\E[\hat\beta_0] = \beta_0}
 	\]
 	Both OLS estimators are unbiased.
 \end{frame}
 
 
 \begin{frame}{Variance of the OLS Estimators}
-	Because the $\varepsilon_i$ are independent with common variance $\sigma^2$, and $\hat\beta_1 = \sum_i c_i y_i$ with $\operatorname{Var}(y_i) = \sigma^2$:
+	Because the $\varepsilon_i$ are independent with common variance $\sigma^2$, and $\hat\beta_1 = \sum_i c_i y_i$ with $\Var(y_i) = \sigma^2$:
 	\[
-		\operatorname{Var}(\hat\beta_1) = \sum_i c_i^2 \operatorname{Var}(y_i) = \sigma^2 \sum_i c_i^2 = \frac{\sigma^2}{S_{xx}}
+		\Var(\hat\beta_1) = \sum_i c_i^2 \Var(y_i) = \sigma^2 \sum_i c_i^2 = \frac{\sigma^2}{S_{xx}}
 	\]
 	\pause
 	A similar calculation for $\hat\beta_0 = \bar y - \hat\beta_1 \bar x$ gives
 	\[
-		\operatorname{Var}(\hat\beta_0) = \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right)
+		\Var(\hat\beta_0) = \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right)
 	\]
 	\pause
 	More spread-out $x$ values (larger $S_{xx}$) give more precise slope estimates --- intuitively, advertising spend that varies a lot from month to month tells us more about its effect on sales than spend that barely changes.
@@ -536,9 +536,9 @@
 \begin{frame}{Variance of $\hat\beta_0$}
 	Using $\hat\beta_0 = \bar y - \hat\beta_1\bar x$:
 	\begin{align*}
-		\operatorname{Var}(\hat\beta_0) &= \operatorname{Var}(\bar y) + \bar x^2\operatorname{Var}(\hat\beta_1) - 2\operatorname{Cov}(\bar y, \hat\beta_1 \bar x) \\
-		&= \frac{\sigma^2}{n} + \bar x^2\cdot\frac{\sigma^2}{S_{xx}} - 2\bar x\operatorname{Cov}\left(\bar y, \sum_{i=1}^n c_i y_i\right) \\
-		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\sum_{i=1}^n c_i\operatorname{Cov}(\bar y, y_i)
+		\Var(\hat\beta_0) &= \Var(\bar y) + \bar x^2\Var(\hat\beta_1) - 2\Cov(\bar y, \hat\beta_1 \bar x) \\
+		&= \frac{\sigma^2}{n} + \bar x^2\cdot\frac{\sigma^2}{S_{xx}} - 2\bar x\Cov\left(\bar y, \sum_{i=1}^n c_i y_i\right) \\
+		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\sum_{i=1}^n c_i\Cov(\bar y, y_i)
 	\end{align*}
 	
 \end{frame}
@@ -546,14 +546,14 @@
 
 \begin{frame}
 	\begin{align*}
-		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\sum_{i=1}^n c_i\operatorname{Cov}\left(\frac{1}{n}\sum_{j=1}^n y_j,\ y_i\right) \\
+		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\sum_{i=1}^n c_i\Cov\left(\frac{1}{n}\sum_{j=1}^n y_j,\ y_i\right) \\
 		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\sum_{i=1}^n c_i\cdot\frac{\sigma^2}{n} \\
 		&= \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right) - 2\bar x\cdot 0\cdot\sigma^2
 	\end{align*}
 
 	\pause
 	\[
-		\boxed{\operatorname{Var}(\hat\beta_0) = \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right)}
+		\boxed{\Var(\hat\beta_0) = \sigma^2\left(\frac{1}{n} + \frac{\bar x^2}{S_{xx}}\right)}
 	\]
 \end{frame}
 
@@ -650,17 +650,17 @@
 	\svspace{0.5em}
 	Define the \textbf{error sum of squares}:
 	\[
-		SS_E = \sum_{i=1}^n \hat\varepsilon_i^2 = \sum_{i=1}^n (y_i - \hat y_i)^2
+		\SSRes = \sum_{i=1}^n \hat\varepsilon_i^2 = \sum_{i=1}^n (y_i - \hat y_i)^2
 	\]
 	\pause
-	It can be shown that $E[SS_E] = (n-2)\sigma^2$.
+	It can be shown that $\E[\SSRes] = (n-2)\sigma^2$.
 \end{frame}
 
 
 \begin{frame}{An Unbiased Estimator of $\sigma^2$}
-	Since $E[SS_E] = (n-2)\sigma^2$, we can write:
+	Since $\E[\SSRes] = (n-2)\sigma^2$, we can write:
 	\[
-		\boxed{\hat\sigma^2 = MS_E = \frac{SS_E}{n-2}}
+		\boxed{\hat\sigma^2 = \MSRes = \frac{\SSRes}{n-2}}
 	\]
 	The divisor $n-2$ reflects that two degrees of freedom were used up in estimating $\beta_0$ and $\beta_1$ before we could compute residuals.
 	
@@ -668,11 +668,11 @@
 
 	\pause
 
-	Since $E[SS_E] = (n-2)\sigma^2$, it follows that
+	Since $\E[\SSRes] = (n-2)\sigma^2$, it follows that
 	\[
-		E[\hat\sigma^2] = \frac{E(SS_E)}{n-2} = \frac{(n-2) \sigma^2}{n-2} = \sigma^2
+		\E[\hat\sigma^2] = \frac{\E[\SSRes]}{n-2} = \frac{(n-2) \sigma^2}{n-2} = \sigma^2
 	\]
-	so $MS_E$ is an unbiased estimator of the error variance. This quantity is required for confidence intervals, and hypothesis tests for $\beta_0$ and $\beta_1$.
+	so $\MSRes$ is an unbiased estimator of the error variance. This quantity is required for confidence intervals, and hypothesis tests for $\beta_0$ and $\beta_1$.
 \end{frame}
 
 
@@ -699,10 +699,10 @@
 \end{frame}
 
 
-\section*{Finding the Expected Value of \texorpdfstring{\(SS_E\)}{SSE}}
+\section*{Finding the Expected Value of \texorpdfstring{\(\SSRes\)}{SSE}}
 
 
-\begin{frame}{Why $E[SS_E] = (n-2)\sigma^2$: Rewriting the Residual}
+\begin{frame}{Why $\E[\SSRes] = (n-2)\sigma^2$: Rewriting the Residual}
 	Recall $\hat\beta_0 = \bar y - \hat\beta_1 \bar x$. Substituting into $\hat y_i = \hat\beta_0 + \hat\beta_1 x_i$:
 	\[
 		\hat y_i = (\bar y - \hat\beta_1\bar x) + \hat\beta_1 x_i = \bar y + \hat\beta_1(x_i - \bar x)
@@ -715,20 +715,20 @@
 \end{frame}
  
 
-\begin{frame}{Why $E[SS_E] = (n-2)\sigma^2$ (cont.)}
+\begin{frame}{Why $\E[\SSRes] = (n-2)\sigma^2$ (cont.)}
 	Squaring and summing over $i$:
 	\begin{align*}
-		SS_E &= \sum_i\big[(y_i-\bar y) - \hat\beta_1(x_i-\bar x)\big]^2 \\
+		\SSRes &= \sum_i\big[(y_i-\bar y) - \hat\beta_1(x_i-\bar x)\big]^2 \\
 		 &= \underbrace{\sum_i(y_i-\bar y)^2}_{S_{yy}} - 2\hat\beta_1\underbrace{\sum_i(x_i-\bar x)(y_i-\bar y)}_{S_{xy}} + \hat\beta_1^2\underbrace{\sum_i(x_i-\bar x)^2}_{S_{xx}} \\
-		 &= SS_E = S_{yy} - 2\hat\beta_1 S_{xy} + \hat\beta_1^2 S_{xx}
+		 &= \SSRes = S_{yy} - 2\hat\beta_1 S_{xy} + \hat\beta_1^2 S_{xx}
 	\end{align*}
 \end{frame}
 
 
-\begin{frame}{Simplifying $SS_E$}
+\begin{frame}{Simplifying $\SSRes$}
 	So far:
 	\[
-		SS_E = S_{yy} - 2\hat\beta_1 S_{xy} + \hat\beta_1^2 S_{xx}
+		\SSRes = S_{yy} - 2\hat\beta_1 S_{xy} + \hat\beta_1^2 S_{xx}
 	\]
 	\pause
 	Since $\hat\beta_1 = S_{xy}/S_{xx}$, we have $S_{xy} = \hat\beta_1 S_{xx}$, so
@@ -742,7 +742,7 @@
 	\]
 	\pause
 	\[
-		\boxed{SS_E = S_{yy} - \hat\beta_1 S_{xy}}
+		\boxed{\SSRes = S_{yy} - \hat\beta_1 S_{xy}}
 	\]
 \end{frame}
  
@@ -758,15 +758,15 @@
 		S_{yy} = \beta_1^2 S_{xx} + 2\beta_1\sum_i(x_i-\bar x)(\varepsilon_i-\bar\varepsilon) + \sum_i(\varepsilon_i-\bar\varepsilon)^2
 	\]
 	\pause
-	The $x_i$ are fixed constants and $E[\varepsilon_i-\bar\varepsilon]=0$, so the middle term vanishes in expectation. For the last term, using $E[\varepsilon_i^2]=\sigma^2$ and $\operatorname{Var}(\bar\varepsilon)=\sigma^2/n$:
+	The $x_i$ are fixed constants and $\E[\varepsilon_i-\bar\varepsilon]=0$, so the middle term vanishes in expectation. For the last term, using $\E[\varepsilon_i^2]=\sigma^2$ and $\Var(\bar\varepsilon)=\sigma^2/n$:
 	\[
 		\sum_i(\varepsilon_i-\bar\varepsilon)^2 = \sum_i\varepsilon_i^2 - n\bar\varepsilon^2
 		\;\Rightarrow\;
-		E\Big[\sum_i(\varepsilon_i-\bar\varepsilon)^2\Big] = n\sigma^2 - n\cdot\frac{\sigma^2}{n} = (n-1)\sigma^2
+		\E\Big[\sum_i(\varepsilon_i-\bar\varepsilon)^2\Big] = n\sigma^2 - n\cdot\frac{\sigma^2}{n} = (n-1)\sigma^2
 	\]
 	\pause
 	\[
-		\boxed{E[S_{yy}] = \beta_1^2 S_{xx} + (n-1)\sigma^2}
+		\boxed{\E[S_{yy}] = \beta_1^2 S_{xx} + (n-1)\sigma^2}
 	\]
 \end{frame}
  
@@ -777,13 +777,13 @@
 		\hat\beta_1 S_{xy} = \hat\beta_1^2 S_{xx}
 	\]
 	\pause
-	Since $E[\hat\beta_1] = \beta_1$ and $\operatorname{Var}(\hat\beta_1) = \sigma^2/S_{xx}$:
+	Since $\E[\hat\beta_1] = \beta_1$ and $\Var(\hat\beta_1) = \sigma^2/S_{xx}$:
 	\[
-		E[\hat\beta_1^2] = \operatorname{Var}(\hat\beta_1) + \big(E[\hat\beta_1]\big)^2 = \frac{\sigma^2}{S_{xx}} + \beta_1^2
+		\E[\hat\beta_1^2] = \Var(\hat\beta_1) + \big(\E[\hat\beta_1]\big)^2 = \frac{\sigma^2}{S_{xx}} + \beta_1^2
 	\]
 	\pause
 	\[
-		E[\hat\beta_1 S_{xy}] = S_{xx}\left(\frac{\sigma^2}{S_{xx}} + \beta_1^2\right) = \sigma^2 + \beta_1^2 S_{xx}
+		\E[\hat\beta_1 S_{xy}] = S_{xx}\left(\frac{\sigma^2}{S_{xx}} + \beta_1^2\right) = \sigma^2 + \beta_1^2 S_{xx}
 	\]
 \end{frame}
 
@@ -791,10 +791,10 @@
 \begin{frame}{The Final Result}
 	Combining with the previous page:
 	\[
-		E[SS_E] = E[S_{yy}] - E[\hat\beta_1 S_{xy}] = \big[\beta_1^2 S_{xx} + (n-1)\sigma^2\big] - \big[\sigma^2 + \beta_1^2 S_{xx}\big]
+		\E[\SSRes] = \E[S_{yy}] - \E[\hat\beta_1 S_{xy}] = \big[\beta_1^2 S_{xx} + (n-1)\sigma^2\big] - \big[\sigma^2 + \beta_1^2 S_{xx}\big]
 	\]
 	\[
-		\boxed{E[SS_E] = (n-2)\sigma^2}
+		\boxed{\E[\SSRes] = (n-2)\sigma^2}
 	\]
-	The $\beta_1^2 S_{xx}$ terms cancel exactly --- that cancellation is why $SS_E$ isolates leftover error variance rather than variance explained by the true slope.
+	The $\beta_1^2 S_{xx}$ terms cancel exactly --- that cancellation is why $\SSRes$ isolates leftover error variance rather than variance explained by the true slope.
 \end{frame}
