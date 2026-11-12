@@ -5,7 +5,8 @@
     \begin{itemize}
         \item Overall significance: $H_0:\beta_1=\cdots=\beta_k=0$ with $F_0=\MSR/\MSRes$.
         \item Individual coefficient: $H_0:\beta_j=0$ with $t_0=\hat\beta_j/\se(\hat\beta_j)$.
-        \item Delivery time data, $n=25$: $\hat y = 2.341 + 1.616\,x_1 + 0.0144\,x_2$, $R^2 = 0.9596$.
+        \item Group of terms (Lecture 8): partial $F$-test comparing a full and a reduced model.
+        \item Delivery time data, $n=25$, $x_1$ = number of cases, $x_2$ = distance (ft): $\hat y = 2.341 + 1.616\,x_1 + 0.0144\,x_2$, $R^2 = 0.9596$.
         \item Overall test: $F_0=261.24$ on $(2,22)$ degrees of freedom. Distance: $t_0=3.98$, $p=0.0006$.
     \end{itemize}
 \end{frame}
@@ -20,7 +21,7 @@
         \item Is a coefficient, or a combination of coefficients, equal to a specified value?
     \end{itemize}
     \svspace{0.5em}
-    All three are answered by comparing a \emph{reduced} model with a \emph{full} model.
+    All three are answered by comparing a \emph{reduced} model with a \emph{full} model. Lecture 8 used this comparison to test dummy variables and interactions; this lecture explains why the test works and extends it to all three questions.
 \end{frame}
 
 
@@ -36,21 +37,21 @@
     \[
     \bbeta =
     \begin{bmatrix}
-        \bbeta_1 \\ \bbeta_2
+        \bbeta_{(1)} \\ \bbeta_{(2)}
     \end{bmatrix},
     \qquad
     \bX = \begin{bmatrix} \bX_1 & \bX_2 \end{bmatrix}
     \]
     \begin{itemize}
-        \item $\bbeta_1$ is $(p-r)\times 1$ and contains the intercept.
-        \item $\bbeta_2$ is $r\times 1$: the $r$ coefficients under test.
+        \item $\bbeta_{(1)}$ is $(p-q)\times 1$ and contains the intercept.
+        \item $\bbeta_{(2)}$ is $q\times 1$: the $q$ coefficients under test.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{The Full Model}
     \[
-    \by = \bX\bbeta + \bvarepsilon = \bX_1\bbeta_1 + \bX_2\bbeta_2 + \bvarepsilon
+    \by = \bX\bbeta + \bvarepsilon = \bX_1\bbeta_{(1)} + \bX_2\bbeta_{(2)} + \bvarepsilon
     \]
     \begin{itemize}
         \item Uses all $p$ parameters.
@@ -63,24 +64,24 @@
 
 \begin{frame}{The Hypothesis and the Reduced Model}
     \[
-    H_0:\bbeta_2=\mathbf{0}
+    H_0:\bbeta_{(2)}=\mathbf{0}
     \qquad\text{versus}\qquad
-    H_1:\bbeta_2\neq\mathbf{0}
+    H_1:\bbeta_{(2)}\neq\mathbf{0}
     \]
     If $H_0$ is true, the regressors in $\bX_2$ drop out. The \emph{reduced model} is
     \[
-    \by = \bX_1\bbeta_1 + \bvarepsilon
+    \by = \bX_1\bbeta_{(1)} + \bvarepsilon
     \]
     \begin{itemize}
-        \item Least-squares fit: $\hat{\bbeta}_1=(\bX_1'\bX_1)^{-1}\bX_1'\by$.
-        \item Residual sum of squares $\SSRes(\RM)$ with $n-p+r$ degrees of freedom.
+        \item Least-squares fit: $\hat{\bbeta}_{(1)}=(\bX_1'\bX_1)^{-1}\bX_1'\by$.
+        \item Residual sum of squares $\SSRes(\RM)$ with $n-p+q$ degrees of freedom.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Nested Models}
     \begin{itemize}
-        \item The reduced model is the full model with $\bbeta_2$ forced to $\mathbf{0}$.
+        \item The reduced model is the full model with $\bbeta_{(2)}$ forced to $\mathbf{0}$.
         \item Every fit the reduced model can produce is also available to the full model.
         \item The full model can only match or improve on the reduced model's fit.
     \end{itemize}
@@ -100,7 +101,7 @@
     \end{itemize}
     % Answer:
     % - No. Adding even a pure-noise regressor lowers SSRes, so the difference is positive by construction.
-    % - The comparison must be scaled by the noise level (MSRes) and by the number of parameters added (r).
+    % - The comparison must be scaled by the noise level (MSRes) and by the number of parameters added (q).
     % - That is exactly what the partial F statistic does.
 \end{frame}
 
@@ -110,7 +111,7 @@
         \begin{column}{0.4\textwidth}
             \begin{itemize}
                 \item $\col(\bX_1)\subset\col(\bX)$.
-                \item $\hat{\by}_1=\mathbf{H}_1\by$ projects onto the smaller space, $\hat{\by}=\mathbf{H}\by$ onto the larger.
+                \item $\hat{\by}_1=\mathbf{H}_1\by$ projects onto the smaller space, $\hat{\by}=\mathbf{H}\by$ onto the larger. Here $\mathbf{H}_1=\bX_1(\bX_1'\bX_1)^{-1}\bX_1'$ is the hat matrix of the reduced model.
                 \item $\hat{\by}-\hat{\by}_1$ is the part of the fit due to $\bX_2$.
                 \item $\SSRes(\RM)=\|\by-\hat{\by}_1\|^2$ and $\SSRes(\FM)=\|\by-\hat{\by}\|^2$.
             \end{itemize}
@@ -158,7 +159,7 @@
         \end{tabular}
     \end{center}
     \begin{itemize}
-        \item Here $\bbeta_1=(\beta_0,\beta_1)'$ and $\bbeta_2=\beta_2$, so $r=1$.
+        \item Here $\bbeta_{(1)}=(\beta_0,\beta_1)'$ and $\bbeta_{(2)}=\beta_2$, so $q=1$.
         \item $\MSRes(\FM) = 233.73/22 = 10.62$.
     \end{itemize}
 \end{frame}
@@ -168,12 +169,15 @@
 
 
 \begin{frame}{Extra Sum of Squares: Definition}
-    Regression sum of squares of the full model, $\SSR(\bbeta)$ with $p-1$ df, and of the reduced model, $\SSR(\bbeta_1)$ with $p-r-1$ df. The \emph{extra sum of squares} due to $\bbeta_2$ given $\bbeta_1$ is
+    Regression sum of squares of the full model, $\SSR(\bbeta)$ with $p-1$ df, and of the reduced model, $\SSR(\bbeta_{(1)})$ with $p-q-1$ df. The \emph{extra sum of squares} due to $\bbeta_{(2)}$ given $\bbeta_{(1)}$ is
     \begin{align}
-        \SSR(\bbeta_2\mid\bbeta_1) = \SSR(\bbeta) - \SSR(\bbeta_1)
+        \SSR(\bbeta_{(2)}\mid\bbeta_{(1)}) = \SSR(\bbeta) - \SSR(\bbeta_{(1)})
         \label{eq:extra-ss}
     \end{align}
-    with $r$ degrees of freedom.
+    with $q$ degrees of freedom.
+    \svspace{0.5em}
+
+    Note: here $\SSR=\SST-\SSRes$ is corrected for the mean. MPV uses the uncorrected version, with one more df; the extra sum of squares is the same either way.
 \end{frame}
 
 
@@ -190,11 +194,11 @@
     Both models decompose the same total sum of squares:
     \begin{align*}
         \SST &= \SSR(\bbeta) + \SSRes(\FM) \\
-        \SST &= \SSR(\bbeta_1) + \SSRes(\RM)
+        \SST &= \SSR(\bbeta_{(1)}) + \SSRes(\RM)
     \end{align*}
     Subtracting the second line from the first and using \eqref{eq:extra-ss}:
     \begin{align}
-        \SSR(\bbeta_2\mid\bbeta_1) = \SSRes(\RM) - \SSRes(\FM)
+        \SSR(\bbeta_{(2)}\mid\bbeta_{(1)}) = \SSRes(\RM) - \SSRes(\FM)
         \label{eq:extra-ss-res}
     \end{align}
 \end{frame}
@@ -203,18 +207,18 @@
 \begin{frame}{Partitioning the Regression Sum of Squares}
     Rearranging \eqref{eq:extra-ss}:
     \[
-    \SSR(\bbeta) = \SSR(\bbeta_1) + \SSR(\bbeta_2\mid\bbeta_1)
+    \SSR(\bbeta) = \SSR(\bbeta_{(1)}) + \SSR(\bbeta_{(2)}\mid\bbeta_{(1)})
     \]
     \begin{itemize}
         \item The regression sum of squares splits into what $\bX_1$ explains and what $\bX_2$ adds.
-        \item Degrees of freedom split the same way: $p-1=(p-r-1)+r$.
+        \item Degrees of freedom split the same way: $p-1=(p-q-1)+q$.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Delivery Time Data: Extra Sum of Squares for Distance}
     \begin{align*}
-        \SSR(\beta_2\mid\beta_1,\beta_0) &= \SSR(\bbeta) - \SSR(\bbeta_1) = 5550.81 - 5382.41 = 168.40 \\
+        \SSR(\beta_2\mid\beta_1,\beta_0) &= \SSR(\bbeta) - \SSR(\bbeta_{(1)}) = 5550.81 - 5382.41 = 168.40 \\
         &= \SSRes(\RM) - \SSRes(\FM) = 402.13 - 233.73 = 168.40
     \end{align*}
     \begin{itemize}
@@ -225,9 +229,9 @@
 
 
 \begin{frame}{Distribution Under $H_0$}
-    Assume $\bvarepsilon\sim N(\mathbf{0},\sigma^2\mathbf{I})$. If $H_0:\bbeta_2=\mathbf{0}$ is true:
+    Assume $\bvarepsilon\sim N(\mathbf{0},\sigma^2\mathbf{I})$. If $H_0:\bbeta_{(2)}=\mathbf{0}$ is true:
     \begin{itemize}
-        \item $\SSR(\bbeta_2\mid\bbeta_1)/\sigma^2\sim\chi^2_r$.
+        \item $\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})/\sigma^2\sim\chi^2_q$.
         \item $\SSRes(\FM)/\sigma^2\sim\chi^2_{n-p}$.
         \item The two are independent.
     \end{itemize}
@@ -247,7 +251,7 @@
     \begin{align*}
         \SSRes(\FM) &= \by'(\mathbf{I}-\mathbf{H})\by \\
         \SSRes(\RM) &= \by'(\mathbf{I}-\mathbf{H}_1)\by \\
-        \SSR(\bbeta_2\mid\bbeta_1) &= \by'(\mathbf{H}-\mathbf{H}_1)\by
+        \SSR(\bbeta_{(2)}\mid\bbeta_{(1)}) &= \by'(\mathbf{H}-\mathbf{H}_1)\by
     \end{align*}
 \end{frame}
 
@@ -264,12 +268,12 @@
 \begin{frame}{Why $\mathbf{H}-\mathbf{H}_1$ Is a Projection: Step 2}
     \begin{align*}
         (\mathbf{H}-\mathbf{H}_1)^2 &= \mathbf{H} - \mathbf{H}\mathbf{H}_1 - \mathbf{H}_1\mathbf{H} + \mathbf{H}_1 = \mathbf{H}-\mathbf{H}_1 \\
-        \rank(\mathbf{H}-\mathbf{H}_1) &= \tr(\mathbf{H}-\mathbf{H}_1) = p-(p-r) = r
+        \rank(\mathbf{H}-\mathbf{H}_1) &= \tr(\mathbf{H}-\mathbf{H}_1) = p-(p-q) = q
     \end{align*}
     \begin{itemize}
-        \item $\mathbf{H}-\mathbf{H}_1$ is symmetric and idempotent of rank $r$: a projection onto an $r$-dimensional space.
+        \item $\mathbf{H}-\mathbf{H}_1$ is symmetric and idempotent of rank $q$: a projection onto a $q$-dimensional space.
         \item Also $(\mathbf{H}-\mathbf{H}_1)(\mathbf{I}-\mathbf{H})=\mathbf{0}$, so the two quadratic forms involve orthogonal pieces of $\by$ and are independent.
-        \item Under $H_0$, $\E[\by]=\bX_1\bbeta_1$ is annihilated (sent to $\mathbf{0}$) by $\mathbf{H}-\mathbf{H}_1$, so the form depends on $\bvarepsilon$ only and is $\sigma^2\chi^2_r$.
+        \item Under $H_0$, $\E[\by]=\bX_1\bbeta_{(1)}$ is annihilated (sent to $\mathbf{0}$) by $\mathbf{H}-\mathbf{H}_1$, so the form depends on $\bvarepsilon$ only and is $\sigma^2\chi^2_q$.
     \end{itemize}
 \end{frame}
 
@@ -283,18 +287,18 @@
         \item Nothing of $\mathbf{v}$ survives the multiplication.
         \item The set of all vectors that $\mathbf{A}$ annihilates is its \emph{null space}.
         \item Familiar case: $\mathbf{I}-\mathbf{H}$ annihilates every vector in $\col(\bX)$, since $(\mathbf{I}-\mathbf{H})\bX\bbeta=\bX\bbeta-\bX\bbeta=\mathbf{0}$. This is why the residuals $\mathbf{e}=(\mathbf{I}-\mathbf{H})\by=(\mathbf{I}-\mathbf{H})\bvarepsilon$ contain no trace of $\E[\by]$.
-        \item Here: $\mathbf{H}\bX_1=\bX_1=\mathbf{H}_1\bX_1$, so $\mathbf{H}-\mathbf{H}_1$ annihilates $\col(\bX_1)$, which contains $\E[\by]=\bX_1\bbeta_1$ under $H_0$.
+        \item Here: $\mathbf{H}\bX_1=\bX_1=\mathbf{H}_1\bX_1$, so $\mathbf{H}-\mathbf{H}_1$ annihilates $\col(\bX_1)$, which contains $\E[\by]=\bX_1\bbeta_{(1)}$ under $H_0$.
     \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Question: Why Does the Extra Sum of Squares Have $r$ Degrees of Freedom?}
+\begin{frame}{Question: Why Does the Extra Sum of Squares Have $q$ Degrees of Freedom?}
     \begin{itemize}
-        \item We added $r$ columns to the model. How does that show up in the projection picture?
+        \item We added $q$ columns to the model. How does that show up in the projection picture?
     \end{itemize}
     % Answer:
     % - The extra SS is the squared length of (H - H1)y, a projection onto the part of col(X) orthogonal to col(X1).
-    % - That space has dimension p - (p - r) = r, one dimension per added (linearly independent) column.
+    % - That space has dimension p - (p - q) = q, one dimension per added (linearly independent) column.
 \end{frame}
 
 
@@ -303,13 +307,13 @@
 
 \begin{frame}{The Partial $F$ Statistic}
     \begin{align}
-        F_0 = \frac{\SSR(\bbeta_2\mid\bbeta_1)/r}{\MSRes}
+        F_0 = \frac{\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})/q}{\MSRes}
         \label{eq:partial-F}
     \end{align}
     \begin{itemize}
         \item $\MSRes$ comes from the \emph{full} model.
-        \item Under $H_0:\bbeta_2=\mathbf{0}$, $F_0\sim F_{r,\,n-p}$.
-        \item Reject $H_0$ at level $\alpha$ if $F_0>F_{\alpha,\,r,\,n-p}$.
+        \item Under $H_0:\bbeta_{(2)}=\mathbf{0}$, $F_0\sim F_{q,\,n-p}$.
+        \item Reject $H_0$ at level $\alpha$ if $F_0>F_{\alpha,\,q,\,n-p}$.
     \end{itemize}
 \end{frame}
 
@@ -317,7 +321,7 @@
 \begin{frame}{Partial $F$ Statistic from the Residual Sums of Squares}
     Substituting \eqref{eq:extra-ss-res} into \eqref{eq:partial-F}:
     \begin{align}
-        F_0 = \frac{\bigl[\SSRes(\RM)-\SSRes(\FM)\bigr]/r}{\SSRes(\FM)/(n-p)}
+        F_0 = \frac{\bigl[\SSRes(\RM)-\SSRes(\FM)\bigr]/q}{\SSRes(\FM)/(n-p)}
         \label{eq:partial-F-res}
     \end{align}
     Only the two residual sums of squares and their degrees of freedom are needed.
@@ -342,8 +346,8 @@
             Source & SS & df & MS & $F_0$ \\
             \midrule
             Regression & $\SSR(\bbeta)$ & $p-1$ & $\MSR$ & $\MSR/\MSRes$ \\
-            \quad $\bbeta_1$ & $\SSR(\bbeta_1)$ & $p-r-1$ & & \\
-            \quad $\bbeta_2\mid\bbeta_1$ & $\SSR(\bbeta_2\mid\bbeta_1)$ & $r$ & $\SSR(\bbeta_2\mid\bbeta_1)/r$ & $\dfrac{\SSR(\bbeta_2\mid\bbeta_1)/r}{\MSRes}$ \\
+            \quad $\bbeta_{(1)}$ & $\SSR(\bbeta_{(1)})$ & $p-q-1$ & & \\
+            \quad $\bbeta_{(2)}\mid\bbeta_{(1)}$ & $\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})$ & $q$ & $\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})/q$ & $\dfrac{\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})/q}{\MSRes}$ \\
             Residual & $\SSRes$ & $n-p$ & $\MSRes$ & \\
             Total & $\SST$ & $n-1$ & & \\
             \bottomrule
@@ -353,7 +357,7 @@
 
 
 \begin{frame}{Special Case: The Overall $F$-Test}
-    Take $\bbeta_1=\beta_0$ and $\bbeta_2=(\beta_1,\dots,\beta_k)'$, so $r=p-1=k$.
+    Take $\bbeta_{(1)}=\beta_0$ and $\bbeta_{(2)}=(\beta_1,\dots,\beta_k)'$, so $q=p-1=k$.
     \begin{itemize}
         \item Reduced model: intercept only, $\hat y_i=\bar y$, so $\SSRes(\RM)=\SST$.
         \item Extra sum of squares: $\SST-\SSRes(\FM)=\SSR(\bbeta)$.
@@ -366,7 +370,7 @@
 
 
 \begin{frame}{Special Case: One Coefficient}
-    Take $r=1$, so $\bbeta_2=\beta_j$. With $C_{jj}=[(\bX'\bX)^{-1}]_{jj}$:
+    Take $q=1$, so $\bbeta_{(2)}=\beta_j$. With $C_{jj}=[(\bX'\bX)^{-1}]_{jj}$:
     \[
     \SSR(\beta_j\mid\text{all other }\beta\text{'s}) = \frac{\hat\beta_j^{\,2}}{C_{jj}}
     \]
@@ -467,7 +471,7 @@
 
 
 \begin{frame}{Gasoline Mileage: Testing a Group of Regressors}
-    $H_0:\beta_{\mathrm{hp}}=\beta_{\mathrm{tq}}=\beta_{\mathrm{wt}}=0$, so $r=3$: do the three engine-size and weight measures add anything beyond axle ratio and carburetor?
+    $H_0:\beta_{\mathrm{hp}}=\beta_{\mathrm{tq}}=\beta_{\mathrm{wt}}=0$, so $q=3$: do the three engine-size and weight measures add anything beyond axle ratio and carburetor?
     \svspace{0.5em}
     \begin{center}
         \small
@@ -509,7 +513,7 @@
 
 
 \begin{frame}{Gasoline Mileage: A Group That Does Not Help}
-    $H_0:\beta_{\mathrm{ax}}=\beta_{\mathrm{cb}}=0$, so $r=2$, with hp, tq, wt kept in the model.
+    $H_0:\beta_{\mathrm{ax}}=\beta_{\mathrm{cb}}=0$, so $q=2$, with hp, tq, wt kept in the model.
     \begin{align*}
         F_0 = \frac{15.03/2}{278.62/24} = \frac{7.514}{11.609} = 0.65
     \end{align*}
@@ -528,7 +532,8 @@
     % - Three tests at level alpha give a family-wise error rate above alpha.
     % - The three t statistics are correlated because the regressors are, so they are not separate pieces of evidence.
     % - Here all three t-tests fail to reject (p = 0.78, 0.65, 0.23) while the joint test rejects at p = 0.0004.
-    % - The joint confidence region is an ellipse, not a box (recall the joint ellipse from the last lecture).
+    % % (disabled until the joint-ellipse frame in Lecture 5 is restored)
+    % % - The joint confidence region is an ellipse, not a box (recall the joint ellipse from Lecture 5).
 \end{frame}
 
 
@@ -542,9 +547,9 @@
     H_1:\mathbf{T}\bbeta\neq\mathbf{0}
     \]
     \begin{itemize}
-        \item $\mathbf{T}$ is an $r\times p$ matrix of rank $r$.
+        \item $\mathbf{T}$ is a $q\times p$ matrix of rank $q$.
         \item Each row of $\mathbf{T}$ is one linear restriction on $\bbeta$.
-        \item Rank $r$ means the $r$ restrictions are independent: none is implied by the others.
+        \item Rank $q$ means the $q$ restrictions are independent: none is implied by the others.
     \end{itemize}
 \end{frame}
 
@@ -556,7 +561,7 @@
         \small
         \begin{tabular}{lcl}
             \toprule
-            Hypothesis & $r$ & $\mathbf{T}$ \\
+            Hypothesis & $q$ & $\mathbf{T}$ \\
             \midrule
             $\beta_{\mathrm{wt}}=0$ & 1 & $\begin{bmatrix}0&0&0&0&0&1\end{bmatrix}$ \\[1.2ex]
             $\beta_{\mathrm{hp}}=\beta_{\mathrm{tq}}=0$ & 2 & $\begin{bmatrix}0&1&0&0&0&0\\0&0&1&0&0&0\end{bmatrix}$ \\[2.4ex]
@@ -569,14 +574,14 @@
 
 
 \begin{frame}{Subset Tests Are a Special Case}
-    If the tested block $\bbeta_2$ is placed last:
+    If the tested block $\bbeta_{(2)}$ is placed last:
     \[
-    \mathbf{T}=\begin{bmatrix}\mathbf{0}_{r\times(p-r)} & \mathbf{I}_r\end{bmatrix}
+    \mathbf{T}=\begin{bmatrix}\mathbf{0}_{q\times(p-q)} & \mathbf{I}_q\end{bmatrix}
     \quad\Longrightarrow\quad
-    \mathbf{T}\bbeta=\bbeta_2
+    \mathbf{T}\bbeta=\bbeta_{(2)}
     \]
     \begin{itemize}
-        \item $H_0:\mathbf{T}\bbeta=\mathbf{0}$ is exactly $H_0:\bbeta_2=\mathbf{0}$.
+        \item $H_0:\mathbf{T}\bbeta=\mathbf{0}$ is exactly $H_0:\bbeta_{(2)}=\mathbf{0}$.
         \item Single-coefficient, subset and overall tests are all general linear hypotheses.
         \item The general form also covers restrictions that are not of the form ``coefficients equal zero''.
     \end{itemize}
@@ -592,19 +597,19 @@
     \]
     \begin{itemize}
         \item The two columns are replaced by their sum.
-        \item The reduced model has $p-r=5$ parameters and is fit by ordinary least squares.
+        \item The reduced model has $p-q=5$ parameters and is fit by ordinary least squares.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Test Statistic for the General Linear Hypothesis}
     \begin{align}
-        F_0 = \frac{\bigl[\SSRes(\RM)-\SSRes(\FM)\bigr]/r}{\SSRes(\FM)/(n-p)}
+        F_0 = \frac{\bigl[\SSRes(\RM)-\SSRes(\FM)\bigr]/q}{\SSRes(\FM)/(n-p)}
         \label{eq:glh-F}
     \end{align}
     \begin{itemize}
         \item Same form as \eqref{eq:partial-F-res}; $\SSRes(\RM)$ is now the residual sum of squares under the restrictions.
-        \item Under $H_0$, $F_0\sim F_{r,\,n-p}$. Reject if $F_0>F_{\alpha,\,r,\,n-p}$.
+        \item Under $H_0$, $F_0\sim F_{q,\,n-p}$. Reject if $F_0>F_{\alpha,\,q,\,n-p}$.
     \end{itemize}
 \end{frame}
 
@@ -616,7 +621,7 @@
         \label{eq:ssh}
     \end{align}
     \begin{itemize}
-        \item $F_0=(\SSH/r)/\MSRes$, the same statistic as \eqref{eq:glh-F}.
+        \item $F_0=(\SSH/q)/\MSRes$, the same statistic as \eqref{eq:glh-F}.
         \item No reduced model needs to be fit.
     \end{itemize}
 \end{frame}
@@ -625,14 +630,14 @@
 \begin{frame}{Why the Quadratic Form Works}
     \begin{itemize}
         \item $\Var(\mathbf{T}\hat{\bbeta})=\sigma^2\,\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'$.
-        \item Under $H_0$, $\mathbf{T}\hat{\bbeta}$ has mean $\mathbf{0}$, so $\SSH/\sigma^2$ is a standardized squared length of an $r$-dimensional normal vector: $\chi^2_r$.
-        \item For $r=1$, $\SSH/\MSRes$ reduces to $(\mathbf{T}\hat{\bbeta})^2/\bigl(\MSRes\,\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'\bigr)=t_0^2$.
+        \item Under $H_0$, $\mathbf{T}\hat{\bbeta}$ has mean $\mathbf{0}$, so $\SSH/\sigma^2$ is a standardized squared length of a $q$-dimensional normal vector: $\chi^2_q$.
+        \item For $q=1$, $\SSH/\MSRes$ reduces to $(\mathbf{T}\hat{\bbeta})^2/\bigl(\MSRes\,\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'\bigr)=t_0^2$.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Gasoline Mileage: $H_0:\beta_{\mathrm{hp}}=\beta_{\mathrm{tq}}$ by the Matrix Form}
-    $\mathbf{T}=\begin{bmatrix}0&1&-1&0&0&0\end{bmatrix}$, $r=1$.
+    $\mathbf{T}=\begin{bmatrix}0&1&-1&0&0&0\end{bmatrix}$, $q=1$.
     \begin{align*}
         \mathbf{T}\hat{\bbeta} &= \hat\beta_{\mathrm{hp}}-\hat\beta_{\mathrm{tq}} = -0.02039-(-0.02397) = 0.003582 \\
         \mathbf{T}(\bX'\bX)^{-1}\mathbf{T}' &= 0.001217 \\
@@ -658,7 +663,7 @@
 
 
 \begin{frame}{Gasoline Mileage: Two Restrictions at Once}
-    $H_0:\beta_{\mathrm{hp}}=\beta_{\mathrm{tq}}$ and $\beta_{\mathrm{ax}}=0$, so $r=2$. The reduced model has three predictor terms:
+    $H_0:\beta_{\mathrm{hp}}=\beta_{\mathrm{tq}}$ and $\beta_{\mathrm{ax}}=0$, so $q=2$. The reduced model has three predictor terms:
     \[
     y=\beta_0+\gamma\,(x_{\mathrm{hp}}+x_{\mathrm{tq}})+\beta_{\mathrm{cb}}x_{\mathrm{cb}}+\beta_{\mathrm{wt}}x_{\mathrm{wt}}+\varepsilon
     \]
@@ -690,17 +695,17 @@
         \small
         \begin{tabular}{llcl}
             \toprule
-            Hypothesis & $\mathbf{T}$ rows & $r$ & Reduced model \\
+            Hypothesis & $\mathbf{T}$ rows & $q$ & Reduced model \\
             \midrule
             Single coefficient & one unit row & 1 & Drop the regressor \\
-            Subset & $r$ unit rows & $r$ & Drop the subset \\
+            Subset & $q$ unit rows & $q$ & Drop the subset \\
             All slopes & $k$ unit rows & $k$ & Intercept only \\
             Equal coefficients & $(\dots,1,\dots,-1,\dots)$ & 1 & Sum the two columns \\
-            Several restrictions & $r$ independent rows & $r$ & Substitute all restrictions \\
+            Several restrictions & $q$ independent rows & $q$ & Substitute all restrictions \\
             \bottomrule
         \end{tabular}
     \end{center}
-    All use \eqref{eq:glh-F} with $F_{r,\,n-p}$.
+    All use \eqref{eq:glh-F} with $F_{q,\,n-p}$.
 \end{frame}
 
 
@@ -726,7 +731,7 @@
     \SSR(\beta_k\mid\beta_0,\dots,\beta_{k-1})
     \]
     \begin{itemize}
-        \item Each is an extra sum of squares with $r=1$.
+        \item Each is an extra sum of squares with $q=1$.
         \item Each regressor is adjusted only for those \emph{entered before it}.
         \item Software often calls these Type I sums of squares.
     \end{itemize}
@@ -752,7 +757,7 @@
     \]
     \begin{itemize}
         \item Each regressor is adjusted for \emph{all} the others, as if it entered last.
-        \item Equal to $t_0^2\,\MSRes$ for the individual $t$-test, hence the partial $F$-test with $r=1$.
+        \item Equal to $t_0^2\,\MSRes$ for the individual $t$-test, hence the partial $F$-test with $q=1$.
         \item Software often calls these Type III sums of squares.
         \item In general they do not add up to $\SSR(\bbeta)$.
     \end{itemize}
@@ -817,7 +822,7 @@
 
 
 \begin{frame}{When Sequential Equals Partial: Orthogonal Columns}
-    If $\bX_1'\bX_2=\mathbf{0}$, then $\SSR(\bbeta_2\mid\bbeta_1)=\SSR(\bbeta_2)$: the contribution of each block is unaffected by the other, in any order.
+    If $\bX_1'\bX_2=\mathbf{0}$, then $\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})=\SSR(\bbeta_{(2)})$: the contribution of each block is unaffected by the other, in any order. Here $\SSR(\bbeta_{(2)})$ is the regression sum of squares when $y$ is regressed on $\bX_2$ alone (plus an intercept).
     \begin{itemize}
         \item Delivery data: replace $x_2$ by $z=e(x_2\mid x_1)$, the part of distance not explained by cases (orthogonal to $\mathbf{1}$ and $x_1$).
         \item Regress $y$ on $x_1$ and $z$: sequential sums of squares are $5382.41$ for $x_1$ and $168.40$ for $z$ in either order.
@@ -1014,7 +1019,9 @@
     \Var(\hat\beta_j)=\frac{\sigma^2}{\sum_i e_i(x_j\mid\bX_{(j)})^2}
     \]
     \begin{itemize}
-        \item Delivery data: the variance of distance is $105{,}747$, but only $33{,}910$ remains after adjusting for cases, a fraction $0.321=1-0.824^2$.
+        \item $R_j^2$ is the $R^2$ from regressing $x_j$ on the other regressors.
+        \item Delivery data: $\sum_i(x_{i2}-\bar x_2)^2=2{,}537{,}935$ for distance falls to $\sum_i e_i(x_2\mid x_1)^2=813{,}838.7$ after adjusting for cases, a fraction $0.321=1-0.824^2$, where $0.824=\Corr(x_1,x_2)$.
+        \item $1/(1-R_j^2)$ is the variance inflation factor (VIF), covered next lecture; here $1/0.321=3.12$.
         \item Strong collinearity gives a narrow plot and an imprecise slope.
     \end{itemize}
 \end{frame}
@@ -1079,16 +1086,16 @@
         \small
         \begin{tabular}{llcl}
             \toprule
-            Test & Hypothesis & $r$ & Reduced model \\
+            Test & Hypothesis & $q$ & Reduced model \\
             \midrule
             Overall & $\beta_1=\cdots=\beta_k=0$ & $k$ & Intercept only \\
             Individual & $\beta_j=0$ & 1 & Drop $x_j$ \\
-            Subset (partial $F$) & $\bbeta_2=\mathbf{0}$ & $r$ & Drop $\bX_2$ \\
-            General linear & $\mathbf{T}\bbeta=\mathbf{0}$ & $r$ & Impose restrictions \\
+            Subset (partial $F$) & $\bbeta_{(2)}=\mathbf{0}$ & $q$ & Drop $\bX_2$ \\
+            General linear & $\mathbf{T}\bbeta=\mathbf{0}$ & $q$ & Impose restrictions \\
             \bottomrule
         \end{tabular}
     \end{center}
-    All use $F_0=\dfrac{[\SSRes(\RM)-\SSRes(\FM)]/r}{\SSRes(\FM)/(n-p)}\sim F_{r,\,n-p}$.
+    All use $F_0=\dfrac{[\SSRes(\RM)-\SSRes(\FM)]/q}{\SSRes(\FM)/(n-p)}\sim F_{q,\,n-p}$.
 \end{frame}
 
 
