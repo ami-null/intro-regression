@@ -117,28 +117,29 @@
             \end{itemize}
         \end{column}
         \begin{column}{0.6\textwidth}
-            \centering
-            \begin{tikzpicture}[scale=0.78, >=stealth, every node/.style={font=\footnotesize}]
-                \fill[gray!15] (0,0)--(6.6,0)--(8.1,2.2)--(1.5,2.2)--cycle;
-                \draw[gray] (0,0)--(6.6,0)--(8.1,2.2)--(1.5,2.2)--cycle;
-                \node[gray!70!black, anchor=west] at (7.75,1.2) {$\col(\bX)$};
-                \draw[very thick, teal!70!black] (0.5,0.7)--(6.6,0.7);
-                \node[teal!70!black, anchor=north west] at (0.75,0.62) {$\col(\bX_{(1)})$};
-                \coordinate (O) at (1.5,0.7);
-                \coordinate (P1) at (4.5,0.7);
-                \coordinate (P) at (5.4,1.9);
-                \coordinate (Y) at (5.4,4.2);
-                \draw[->, thick] (O)--(Y) node[above] {$\by$};
-                \draw[->, thick] (O)--(P);
-                \node[anchor=west] at (5.55,2.05) {$\hat{\by}$};
-                \draw[dashed] (Y)--(P) node[midway, right] {$\be$};
-                \draw[dashed] (P)--(P1);
-                \node[anchor=west] at (5.1,1.15) {$\hat{\by}-\hat{\by}_{(1)}$};
-                \fill (P1) circle (1.6pt);
-                \node[anchor=north] at (4.5,0.6) {$\hat{\by}_{(1)}$};
-                \draw (P1)++(-0.28,0)--++(0.18,0.24)--++(0.28,0);
-                \draw (P)++(-0.3,0)--++(0,0.3)--++(0.3,0);
-            \end{tikzpicture}
+            \begin{center}
+                \begin{tikzpicture}[scale=0.78, >=stealth, every node/.style={font=\footnotesize}]
+                    \fill[gray!15] (0,0)--(6.6,0)--(8.1,2.2)--(1.5,2.2)--cycle;
+                    \draw[gray] (0,0)--(6.6,0)--(8.1,2.2)--(1.5,2.2)--cycle;
+                    \node[gray!70!black, anchor=west] at (7.75,1.2) {$\col(\bX)$};
+                    \draw[very thick, teal!70!black] (0.5,0.7)--(6.6,0.7);
+                    \node[teal!70!black, anchor=north west] at (0.75,0.62) {$\col(\bX_{(1)})$};
+                    \coordinate (O) at (1.5,0.7);
+                    \coordinate (P1) at (4.5,0.7);
+                    \coordinate (P) at (5.4,1.9);
+                    \coordinate (Y) at (5.4,4.2);
+                    \draw[->, thick] (O)--(Y) node[above] {$\by$};
+                    \draw[->, thick] (O)--(P);
+                    \node[anchor=west] at (5.55,2.05) {$\hat{\by}$};
+                    \draw[dashed] (Y)--(P) node[midway, right] {$\be$};
+                    \draw[dashed] (P)--(P1);
+                    \node[anchor=west] at (5.1,1.15) {$\hat{\by}-\hat{\by}_{(1)}$};
+                    \fill (P1) circle (1.6pt);
+                    \node[anchor=north] at (4.5,0.6) {$\hat{\by}_{(1)}$};
+                    \draw (P1)++(-0.28,0)--++(0.18,0.24)--++(0.28,0);
+                    \draw (P)++(-0.3,0)--++(0,0.3)--++(0.3,0);
+                \end{tikzpicture}
+            \end{center}
         \end{column}
     \end{columns}
 \end{frame}
