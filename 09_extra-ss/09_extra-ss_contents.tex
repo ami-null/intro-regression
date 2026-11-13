@@ -448,16 +448,16 @@
             \toprule
             Term & Estimate & Std. error & $t_0$ & $p$-value \\
             \midrule
-            Intercept & 29.4244 & 7.0840 & 4.154 & 0.0004 \\
-            Horsepower & $-0.0204$ & 0.0714 & $-0.285$ & 0.778 \\
-            Torque & $-0.0240$ & 0.0525 & $-0.457$ & 0.652 \\
-            Rear axle ratio & 1.9610 & 2.0862 & 0.940 & 0.357 \\
-            Carburetor barrels & 0.4261 & 0.9560 & 0.446 & 0.660 \\
-            Weight & $-0.00235$ & 0.00192 & $-1.224$ & 0.233 \\
+            Intercept & 29.2464 & 7.2112 & 4.056 & 0.0005 \\
+            Horsepower & $-0.0115$ & 0.0767 & $-0.149$ & 0.882 \\
+            Torque & $-0.0223$ & 0.0526 & $-0.423$ & 0.676 \\
+            Rear axle ratio & 2.1197 & 2.1420 & 0.990 & 0.332 \\
+            Carburetor barrels & 0.0425 & 1.1541 & 0.037 & 0.971 \\
+            Weight & $-0.00261$ & 0.00200 & $-1.303$ & 0.205 \\
             \bottomrule
         \end{tabular}
     \end{center}
-    $\SSR=860.48$ (5 df), $\SSRes=278.62$ (24 df), $\MSRes=11.609$, $R^2=0.755$, overall $F_0=14.82$ ($p\approx10^{-6}$).
+    $\SSR=858.19$ (5 df), $\SSRes=280.91$ (24 df), $\MSRes=11.705$, $R^2=0.753$, overall $F_0=14.66$ ($p\approx10^{-6}$).
 \end{frame}
 
 
@@ -482,14 +482,14 @@
             \toprule
             & $\SSRes$ & df \\
             \midrule
-            Full: hp, tq, ax, cb, wt & 278.62 & 24 \\
-            Reduced: ax, cb & 592.96 & 27 \\
+            Full: hp, tq, ax, cb, wt & 280.91 & 24 \\
+            Reduced: ax, cb & 547.87 & 27 \\
             \midrule
-            Difference & 314.34 & 3 \\
+            Difference & 266.96 & 3 \\
             \bottomrule
         \end{tabular}
     \end{center}
-    Reduced fit: $\hat y = 3.768 + 6.718\,x_{\mathrm{ax}} - 1.713\,x_{\mathrm{cb}}$.
+    Reduced fit: $\hat y = 5.054 + 6.611\,x_{\mathrm{ax}} - 2.041\,x_{\mathrm{cb}}$.
 \end{frame}
 
 
@@ -497,11 +497,11 @@
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
             \[
-            F_0 = \frac{314.34/3}{278.62/24} = \frac{104.78}{11.609} = 9.03
+            F_0 = \frac{266.96/3}{280.91/24} = \frac{88.99}{11.705} = 7.60
             \]
             \begin{itemize}
                 \item $F_{0.05,3,24}=3.01$.
-                \item $p=0.0004$: reject $H_0$.
+                \item $p=0.001$: reject $H_0$.
                 \item The group matters even though each member has $p>0.2$ individually.
             \end{itemize}
         \end{column}
@@ -518,10 +518,10 @@
 \begin{frame}{Gasoline Mileage: A Group That Does Not Help}
     $H_0:\beta_{\mathrm{ax}}=\beta_{\mathrm{cb}}=0$, so $q=2$, with hp, tq, wt kept in the model.
     \begin{align*}
-        F_0 = \frac{15.03/2}{278.62/24} = \frac{7.514}{11.609} = 0.65
+        F_0 = \frac{12.74/2}{280.91/24} = \frac{6.368}{11.705} = 0.54
     \end{align*}
     \begin{itemize}
-        \item $F_{0.05,2,24}=3.40$ and $p=0.53$: do not reject $H_0$.
+        \item $F_{0.05,2,24}=3.40$ and $p=0.59$: do not reject $H_0$.
         \item Given horsepower, torque and weight, axle ratio and carburetor add nothing detectable.
     \end{itemize}
 \end{frame}
@@ -529,12 +529,12 @@
 
 \begin{frame}{Question: Why One Partial $F$ Instead of Several $t$-Tests?}
     \begin{itemize}
-        \item For $H_0:\beta_{\mathrm{hp}}=\beta_{\mathrm{tq}}=\beta_{\mathrm{wt}}=0$ we could run three $t$-tests. Why is that a poor substitute for $F_0=9.03$?
+        \item For $H_0:\beta_{\mathrm{hp}}=\beta_{\mathrm{tq}}=\beta_{\mathrm{wt}}=0$ we could run three $t$-tests. Why is that a poor substitute for $F_0=7.60$?
     \end{itemize}
     % Answer:
     % - Three tests at level alpha give a family-wise error rate above alpha.
     % - The three t statistics are correlated because the regressors are, so they are not separate pieces of evidence.
-    % - Here all three t-tests fail to reject (p = 0.78, 0.65, 0.23) while the joint test rejects at p = 0.0004.
+    % - Here all three t-tests fail to reject (p = 0.88, 0.68, 0.21) while the joint test rejects at p = 0.001.
     % % (disabled until the joint-ellipse frame in Lecture 5 is restored)
     % % - The joint confidence region is an ellipse, not a box (recall the joint ellipse from Lecture 5).
 \end{frame}
@@ -672,25 +672,25 @@
 \begin{frame}{Gasoline Mileage: $H_0:\beta_{\mathrm{hp}}=\beta_{\mathrm{tq}}$ by the Matrix Form}
     $\mathbf{T}=\begin{bmatrix}0&1&-1&0&0&0\end{bmatrix}$, $q=1$.
     \begin{align*}
-        \mathbf{T}\hat{\bbeta} &= \hat\beta_{\mathrm{hp}}-\hat\beta_{\mathrm{tq}} = -0.02039-(-0.02397) = 0.003582 \\
-        \mathbf{T}(\bX'\bX)^{-1}\mathbf{T}' &= 0.001217 \\
-        \SSH &= \frac{0.003582^2}{0.001217} = 0.0105 \\
-        F_0 &= \frac{0.0105/1}{11.609} = 0.0009
+        \mathbf{T}\hat{\bbeta} &= \hat\beta_{\mathrm{hp}}-\hat\beta_{\mathrm{tq}} = -0.01146-(-0.02228) = 0.01083 \\
+        \mathbf{T}(\bX'\bX)^{-1}\mathbf{T}' &= 0.001278 \\
+        \SSH &= \frac{0.01083^2}{0.001278} = 0.0917 \\
+        F_0 &= \frac{0.0917/1}{11.705} = 0.0078
     \end{align*}
-    $F_{0.05,1,24}=4.26$ and $p=0.976$: do not reject.
+    $F_{0.05,1,24}=4.26$ and $p=0.930$: do not reject.
 \end{frame}
 
 
 \begin{frame}{Gasoline Mileage: $H_0:\beta_{\mathrm{hp}}=\beta_{\mathrm{tq}}$ by the Reduced Model}
     Fit $y=\beta_0+\gamma(x_{\mathrm{hp}}+x_{\mathrm{tq}})+\beta_{\mathrm{ax}}x_{\mathrm{ax}}+\beta_{\mathrm{cb}}x_{\mathrm{cb}}+\beta_{\mathrm{wt}}x_{\mathrm{wt}}$:
     \begin{align*}
-        \hat y &= 29.352 - 0.02248\,(x_{\mathrm{hp}}+x_{\mathrm{tq}}) \\
-        &\quad + 1.999\,x_{\mathrm{ax}} + 0.4307\,x_{\mathrm{cb}} - 0.002374\,x_{\mathrm{wt}} \\
-        \SSRes(\RM) &= 278.634 \quad(25\ \df)
+        \hat y &= 29.061 - 0.01800\,(x_{\mathrm{hp}}+x_{\mathrm{tq}}) \\
+        &\quad + 2.219\,x_{\mathrm{ax}} + 0.0699\,x_{\mathrm{cb}} - 0.002673\,x_{\mathrm{wt}} \\
+        \SSRes(\RM) &= 281.005 \quad(25\ \df)
     \end{align*}
     \begin{itemize}
-        \item $\SSRes(\RM)-\SSRes(\FM)=278.634-278.623=0.0105$, matching $\SSH$.
-        \item We cannot reject equality, but that is weak evidence \emph{for} it. Horsepower and torque are correlated at $0.96$, so $\hat\beta_{\mathrm{hp}}-\hat\beta_{\mathrm{tq}}=0.0036$ has standard error $\sqrt{11.609\times0.001217}=0.119$ and 95\% interval $(-0.24,\,0.25)$, far wider than either coefficient. The test has little power.
+        \item $\SSRes(\RM)-\SSRes(\FM)=281.005-280.914=0.0917$, matching $\SSH$.
+        \item We cannot reject equality, but that is weak evidence \emph{for} it. Horsepower and torque are correlated at $0.96$, so $\hat\beta_{\mathrm{hp}}-\hat\beta_{\mathrm{tq}}=0.0108$ has standard error $\sqrt{11.705\times0.001278}=0.122$ and 95\% interval $(-0.24,\,0.26)$, far wider than either coefficient. The test has little power.
     \end{itemize}
 \end{frame}
 
@@ -701,10 +701,10 @@
     y=\beta_0+\gamma\,(x_{\mathrm{hp}}+x_{\mathrm{tq}})+\beta_{\mathrm{cb}}x_{\mathrm{cb}}+\beta_{\mathrm{wt}}x_{\mathrm{wt}}+\varepsilon
     \]
     \begin{align*}
-        \SSRes(\RM) &= 295.24\ (26\ \df) \\
-        F_0 &= \frac{(295.24-278.62)/2}{11.609} = \frac{8.308}{11.609} = 0.72
+        \SSRes(\RM) &= 298.35\ (26\ \df) \\
+        F_0 &= \frac{(298.35-280.91)/2}{11.705} = \frac{8.718}{11.705} = 0.74
     \end{align*}
-    $F_{0.05,2,24}=3.40$ and $p=0.50$: do not reject.
+    $F_{0.05,2,24}=3.40$ and $p=0.49$: do not reject.
 \end{frame}
 
 
@@ -716,9 +716,9 @@
     \]
     The derivation is the same as before, with $\mathbf{T}\hat{\bbeta}$ replaced by $\mathbf{T}\hat{\bbeta}-\mathbf{c}$. Reduced model: move the known part to the left-hand side.
     \begin{itemize}
-        \item Example: $H_0:\beta_{\mathrm{cb}}=1$. Regress $y-x_{\mathrm{cb}}$ on the other regressors: $\SSRes(\RM)=282.81$.
-        \item $F_0=(282.81-278.62)/11.609=0.36$ and $p=0.55$.
-        \item Check: $t_0=(0.4261-1)/0.9560=-0.600$ and $t_0^2=0.36$.
+        \item Example: $H_0:\beta_{\mathrm{cb}}=1$. Regress $y-x_{\mathrm{cb}}$ on the other regressors: $\SSRes(\RM)=288.97$.
+        \item $F_0=(288.97-280.91)/11.705=0.69$ and $p=0.41$.
+        \item Check: $t_0=(0.0425-1)/1.1541=-0.830$ and $t_0^2=0.69$.
     \end{itemize}
 \end{frame}
 
@@ -840,17 +840,17 @@
             \cmidrule(lr){2-3}
             & hp, tq, ax, cb, wt & wt, cb, ax, tq, hp & \\
             \midrule
-            Horsepower & 723.26 & 0.95 & 0.95 \\
-            Torque & 107.17 & 18.71 & 2.42 \\
-            Rear axle ratio & 2.78 & 56.81 & 10.26 \\
-            Carburetor & 9.87 & 4.71 & 2.31 \\
-            Weight & 17.39 & 779.31 & 17.39 \\
+            Horsepower & 723.26 & 0.26 & 0.26 \\
+            Torque & 107.17 & 8.79 & 2.10 \\
+            Rear axle ratio & 2.78 & 59.15 & 11.46 \\
+            Carburetor & 5.11 & 10.68 & 0.02 \\
+            Weight & 19.87 & 779.31 & 19.87 \\
             \midrule
-            Sum & 860.48 & 860.48 & 33.32 \\
+            Sum & 858.19 & 858.19 & 33.71 \\
             \bottomrule
         \end{tabular}
     \end{center}
-    Horsepower carries 723 when entered first and 0.95 when entered last: the regressors overlap heavily.
+    Horsepower carries 723 when entered first and 0.26 when entered last: the regressors overlap heavily.
 \end{frame}
 
 
