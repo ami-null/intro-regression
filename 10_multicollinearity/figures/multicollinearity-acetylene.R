@@ -133,7 +133,7 @@ trace  <- do.call(rbind, lapply(k_grid, function(k) {
 trace$type  <- factor(term_type[match(trace$term, colnames(W))], levels = names(type_col))
 trace$label <- term_lab[match(trace$term, colnames(W))]
 
-# Value of k read from the ridge trace (the coefficients have settled down)
+# Value of k read from the ridge trace (the coefficients have settled down); MPV also uses k = 0.032
 k_sel <- 0.032
 fit_k <- ridge(k_sel)
 round(cbind(LS = b_ls, ridge = fit_k$b), 4)            # x1x3: -2.034 -> -0.068
