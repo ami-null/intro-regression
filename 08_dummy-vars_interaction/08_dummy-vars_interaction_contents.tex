@@ -108,7 +108,7 @@
  
     \vspace{0.8em}
     \raggedright
-    $x_2 = 0$ for tool type A and $x_2 = 1$ for tool type B; $x_2$ is a new column of $\bX$ next to $\mathbf{1}$ and $x_1$.
+    $x_2 = 0$ for tool type A and $x_2 = 1$ for tool type B; $x_2$ is a new column of $\bX$ next to $\bone$ and $x_1$.
 \end{frame}
 
 
@@ -120,7 +120,7 @@
         y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \varepsilon_i, \qquad \varepsilon_i \sim N(0, \sigma^2).
     \]
     \begin{itemize}
-        \item This is an ordinary multiple linear regression; $\bX$ has columns $\mathbf{1}$, $\bx_1$, $\bx_2$, and OLS applies unchanged.
+        \item This is an ordinary multiple linear regression; $\bX$ has columns $\bone$, $\bx_1$, $\bx_2$, and OLS applies unchanged.
         \item Only the interpretation of the coefficient on $x_2$ is new.
     \end{itemize}
 \end{frame}
@@ -360,7 +360,7 @@
         \item Every observation belongs to exactly one type, so
     \end{itemize}
     \begin{align*}
-        \mathbf{1} &= \mathbf{d}_A + \mathbf{d}_B + \mathbf{d}_C, \\
+        \bone &= \mathbf{d}_A + \mathbf{d}_B + \mathbf{d}_C, \\
         \rank(\bX) &= 4 < 5 \text{ columns}.
     \end{align*}
     \begin{itemize}

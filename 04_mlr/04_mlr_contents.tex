@@ -177,8 +177,8 @@
 
 \begin{frame}{Model assumptions}
     \begin{align}
-        \E[\bvarepsilon] &= \mathbf{0}, \label{eq:assump-mean}\\
-        \Var(\bvarepsilon) &= \sigma^2\mathbf{I}_n. \label{eq:assump-var}
+        \E[\bvarepsilon] &= \bzero, \label{eq:assump-mean}\\
+        \Var(\bvarepsilon) &= \sigma^2\bI_n. \label{eq:assump-var}
     \end{align}
     \begin{itemize}
         \item $\bX$ is fixed (non-random) and has full column rank, i.e.\ $\rank(\bX)=p\le n$.
@@ -189,9 +189,9 @@
 \end{frame}
 
 
-\begin{frame}{What does $\Var(\bvarepsilon)=\sigma^2\mathbf{I}_n$ say?}
+\begin{frame}{What does $\Var(\bvarepsilon)=\sigma^2\bI_n$ say?}
     \[
-    \Var(\bvarepsilon) = \E[\bvarepsilon\bvarepsilon'] = \E[(\bvarepsilon - \mathbf{0}) (\bvarepsilon - \mathbf{0})'] = 
+    \Var(\bvarepsilon) = \E[\bvarepsilon\bvarepsilon'] = \E[(\bvarepsilon - \bzero) (\bvarepsilon - \bzero)'] = 
     \begin{pmatrix}
         \sigma^2 & 0 & \cdots & 0 \\
         0 & \sigma^2 & \cdots & 0 \\
@@ -263,7 +263,7 @@
 \begin{frame}{The normal equations}
     \begin{align}
         \frac{\partial S}{\partial\bbeta} &= -2\bX'\by + 2\bX'\bX\bbeta, \notag\\
-        \left.\frac{\partial S}{\partial\bbeta}\right|_{\bbeta = \hat{\bbeta}} &= -2\bX'\by + 2\bX'\bX\hat{\bbeta} =  \mathbf{0}, \notag\\
+        \left.\frac{\partial S}{\partial\bbeta}\right|_{\bbeta = \hat{\bbeta}} &= -2\bX'\by + 2\bX'\bX\hat{\bbeta} =  \bzero, \notag\\
         \Rightarrow \bX'\bX\hat{\bbeta} &= \bX'\by. \label{eq:normal}
     \end{align}
     This is a system of $p$ linear equations in the $p$ unknowns $\hat\beta_0,\dots,\hat\beta_k$.
@@ -292,7 +292,7 @@
     \frac{\partial^2 S}{\partial\bbeta\,\partial\bbeta'} = 2\bX'\bX.
     \]
     \begin{itemize}
-        \item For any $\mathbf{a}\neq\mathbf{0}$: $\mathbf{a}'\bX'\bX\mathbf{a} = (\bX\mathbf{a})'(\bX\mathbf{a}) = \|\bX\mathbf{a}\|^2 > 0$, because full column rank gives $\bX\mathbf{a}\neq\mathbf{0}$.
+        \item For any $\mathbf{a}\neq\bzero$: $\mathbf{a}'\bX'\bX\mathbf{a} = (\bX\mathbf{a})'(\bX\mathbf{a}) = \|\bX\mathbf{a}\|^2 > 0$, because full column rank gives $\bX\mathbf{a}\neq\bzero$.
         \item So $\bX'\bX$ is positive definite and $\hat{\bbeta}$ is the unique minimiser of \eqref{eq:ls-crit}.
     \end{itemize}
 \end{frame}
@@ -304,21 +304,21 @@
 \begin{frame}{Fitted values and residuals}
     \begin{align}
         \hat{\bbeta} &= (\bX'\bX)^{-1}\bX' \by \notag\\ 
-        \hat{\by} &= \bX\hat{\bbeta} = \bX (\bX'\bX)^{-1}\bX' \by = \mathbf{H}\by, \notag\\
-        \mathbf{H} &= \bX(\bX'\bX)^{-1}\bX', \label{eq:H-def}\\
-        \mathbf{e} &= \by - \hat{\by} = (\mathbf{I}-\mathbf{H})\by. \label{eq:resid}
+        \hat{\by} &= \bX\hat{\bbeta} = \bX (\bX'\bX)^{-1}\bX' \by = \bH\by, \notag\\
+        \bH &= \bX(\bX'\bX)^{-1}\bX', \label{eq:H-def}\\
+        \be &= \by - \hat{\by} = (\bI-\bH)\by. \label{eq:resid}
     \end{align}
-    $\mathbf{H}$ is the $n\times n$ hat matrix: it puts the hat on $\by$.
+    $\bH$ is the $n\times n$ hat matrix: it puts the hat on $\by$.
 \end{frame}
 
 
 \begin{frame}{Properties of the hat matrix}
     \begin{align}
-        \mathbf{H}' &= \mathbf{H}, \label{eq:H-sym}\\
-        \mathbf{H}^2 &= \mathbf{H}, \label{eq:H-idem}\\
-        \mathbf{H}\bX &= \bX. \label{eq:HX}
+        \bH' &= \bH, \label{eq:H-sym}\\
+        \bH^2 &= \bH, \label{eq:H-idem}\\
+        \bH\bX &= \bX. \label{eq:HX}
     \end{align}
-    That is, $\mathbf{H}$ is symmetric and idempotent.
+    That is, $\bH$ is symmetric and idempotent.
 
     \svspace{1em}
 
@@ -329,24 +329,24 @@
 \end{frame}
 
 
-\begin{frame}{Properties of $\mathbf{I}-\mathbf{H}$}
+\begin{frame}{Properties of $\bI-\bH$}
     From \eqref{eq:H-sym}, \eqref{eq:H-idem} and \eqref{eq:HX}:
     \begin{align}
-        (\mathbf{I}-\mathbf{H})' &= \mathbf{I}-\mathbf{H}, \label{eq:IH-sym}\\
-        (\mathbf{I}-\mathbf{H})^2 &= \mathbf{I}-\mathbf{H}, \label{eq:IH-idem}\\
-        (\mathbf{I}-\mathbf{H})\bX &= \mathbf{0}. \label{eq:IHX}
+        (\bI-\bH)' &= \bI-\bH, \label{eq:IH-sym}\\
+        (\bI-\bH)^2 &= \bI-\bH, \label{eq:IH-idem}\\
+        (\bI-\bH)\bX &= \bzero. \label{eq:IHX}
     \end{align}
 \end{frame}
 
 
 \begin{frame}{Geometry of least squares}
-    \(\mathbf{H}\) is symmetric and idempotent and \(\hat{\by} = \mathbf{H}\by\), therefore, \(\hat{\by}\) is the orthogonal projection of \(\by\) onto \(\bX\).
+    \(\bH\) is symmetric and idempotent and \(\hat{\by} = \bH\by\), therefore, \(\hat{\by}\) is the orthogonal projection of \(\by\) onto \(\bX\).
     \begin{columns}[T]
         \begin{column}{0.48\textwidth}
             \begin{itemize}
                 \item The columns of $\bX$ span a $p$-dimensional subspace $\col(\bX)$ of $\mathbb R^n$.
-                \item $\hat{\by}=\mathbf{H}\by$ is the orthogonal projection of $\by$ onto $\col(\bX)$.
-                \item $\mathbf{e}$ is perpendicular to $\col(\bX)$.
+                \item $\hat{\by}=\bH\by$ is the orthogonal projection of $\by$ onto $\col(\bX)$.
+                \item $\be$ is perpendicular to $\col(\bX)$.
                 \item $\hat{\by}$ is the point of $\col(\bX)$ closest to $\by$, so $\hat{\bbeta}$ minimises $\|\by-\bX\bbeta\|^2$.
             \end{itemize}
         \end{column}
@@ -361,7 +361,7 @@
                     \node[gray] at (2.9,0.15) {$\col(\bX)$};
                     \draw[->,thick] (1.4,0.35) -- (3.6,2.9) node[above] {$\by$};
                     \draw[->,thick] (1.4,0.35) -- (3.6,0.9) node[below right] {$\hat{\by}$};
-                    \draw[dashed,thick] (3.6,0.9) -- (3.6,2.9) node[midway,right] {$\mathbf{e}$};
+                    \draw[dashed,thick] (3.6,0.9) -- (3.6,2.9) node[midway,right] {$\be$};
                     \draw (3.3,0.825) -- (3.3,1.125) -- (3.6,1.2);
                 \end{tikzpicture}%
                 }
@@ -373,13 +373,13 @@
 
 \begin{frame}{Orthogonality of residuals and regressors}
     \begin{align}
-        \bX'\mathbf{e} = \bX'(\by-\bX\hat{\bbeta}) = \bX'\by - \bX'\bX\hat{\bbeta} = \mathbf{0}, \label{eq:orth}
+        \bX'\be = \bX'(\by-\bX\hat{\bbeta}) = \bX'\by - \bX'\bX\hat{\bbeta} = \bzero, \label{eq:orth}
     \end{align}
     by the normal equations \eqref{eq:normal}. Consequences:
     \begin{itemize}
         \item First row of $\bX'$ is a row of ones, so $\sum_i e_i = 0$.
         \item Row $j$ gives $\sum_i x_{ij}e_i = 0$ for each regressor.
-        \item $\hat{\by}'\mathbf{e} = \hat{\bbeta}'\bX'\mathbf{e} = 0$.
+        \item $\hat{\by}'\be = \hat{\bbeta}'\bX'\be = 0$.
     \end{itemize}
 \end{frame}
 
@@ -440,7 +440,7 @@ coef(lm(time ~ cases + distance,
         data = delivery))
 \end{verbatim}
     \begin{itemize}
-        \item \texttt{solve(A, b)} solves $\mathbf{A}\bx=\mathbf{b}$ directly; it is numerically preferable to forming $\mathbf{A}^{-1}$ explicitly.
+        \item \texttt{solve(A, b)} solves $\mathbf{A}\bx=\bb$ directly; it is numerically preferable to forming $\mathbf{A}^{-1}$ explicitly.
     \end{itemize}
 \end{frame}
 
@@ -478,16 +478,16 @@ coef(lm(time ~ cases + distance,
 
 \begin{frame}{The covariance matrix of a random vector}
     % \[
-    % \mathrm{Var}(\hat{\symbfit{\beta}}) = E\big[(\hat{\symbfit{\beta}}-E[\hat{\symbfit{\beta}}])(\hat{\symbfit{\beta}}-E[\hat{\symbfit{\beta}}])'\big]
+    % \Var(\hat{\bbeta}) = E\big[(\hat{\bbeta}-E[\hat{\bbeta}])(\hat{\bbeta}-E[\hat{\bbeta}])'\big]
     % \]
     \(\hat{\bbeta}\) is \(p\) dimensional random vector. Therefore, \(\Var(\hat{\bbeta})\) is a $p\times p$ symmetric matrix:
     \begin{itemize}
         \item diagonal entries: $\Var(\hat\beta_j)$;
         \item off-diagonal entries: $\Cov(\hat\beta_i,\hat\beta_j)$.
     \end{itemize}
-    For a constant matrix $\mathbf{B}$ and a random vector $\mathbf{z}$, directly from the definition,
+    For a constant matrix $\mathbf{B}$ and a random vector $\bz$, directly from the definition,
     \begin{align}
-        \Var(\mathbf{B}\mathbf{z}) = \mathbf{B}\,\Var(\mathbf{z})\,\mathbf{B}'. \label{eq:var-rule}
+        \Var(\mathbf{B}\bz) = \mathbf{B}\,\Var(\bz)\,\mathbf{B}'. \label{eq:var-rule}
     \end{align}
 \end{frame}
 
@@ -505,7 +505,7 @@ coef(lm(time ~ cases + distance,
 
 
 \begin{frame}{Reading the covariance matrix}
-    Let $\mathbf{C} = (\bX'\bX)^{-1}$, with entries $C_{ij}$, $i,j=0,\dots,k$.
+    Let $\bC = (\bX'\bX)^{-1}$, with entries $C_{ij}$, $i,j=0,\dots,k$.
     \begin{align}
         \Var(\hat\beta_j) &= \sigma^2 C_{jj}, \label{eq:var-bj}\\
         \Cov(\hat\beta_i,\hat\beta_j) &= \sigma^2 C_{ij}, \quad i\neq j. \notag
@@ -533,7 +533,7 @@ coef(lm(time ~ cases + distance,
 
 
 \begin{frame}{Distribution of $\hat{\bbeta}$}
-    Add the assumption $\bvarepsilon\sim N_n(\mathbf{0},\sigma^2\mathbf{I}_n)$. By \eqref{eq:decomp}, $\hat{\bbeta}$ is a linear function of a normal vector, hence normal:
+    Add the assumption $\bvarepsilon\sim N_n(\bzero,\sigma^2\bI_n)$. By \eqref{eq:decomp}, $\hat{\bbeta}$ is a linear function of a normal vector, hence normal:
     \begin{align}
         \hat{\bbeta} \sim N_p\big(\bbeta,\ \sigma^2(\bX'\bX)^{-1}\big). \label{eq:beta-dist}
     \end{align}
@@ -587,27 +587,27 @@ coef(lm(time ~ cases + distance,
 % \begin{frame}{Residual sum of squares in matrix form}
 %     The sum square error is given by:
 %     \begin{align}
-%         \mathrm{SSE} = \sum_{i=1}^{n} e_i^2 &= \mathbf e'\mathbf e \notag \\
-%         &= \mathbf y'(\mathbf I-\mathbf H)'(\mathbf I-\mathbf H)\mathbf y \notag\\
-%         &= \mathbf y'(\mathbf I-\mathbf H)\mathbf y. \label{eq:sse}
+%         \mathrm{SSE} = \sum_{i=1}^{n} e_i^2 &= \be'\be \notag \\
+%         &= \by'(\bI-\bH)'(\bI-\bH)\by \notag\\
+%         &= \by'(\bI-\bH)\by. \label{eq:sse}
 %     \end{align}
-%     We saw in equation \eqref{eq:resid} that \(\mathbf e = \mathbf y - \hat{\mathbf y} = (\mathbf I-\mathbf H)\mathbf y\); and in equations \eqref{eq:IH-sym} and \eqref{eq:IH-idem}, we saw that \((\mathbf I-\mathbf H)\) is symmetric and idempotent.
+%     We saw in equation \eqref{eq:resid} that \(\be = \by - \hat{\by} = (\bI-\bH)\by\); and in equations \eqref{eq:IH-sym} and \eqref{eq:IH-idem}, we saw that \((\bI-\bH)\) is symmetric and idempotent.
 % \end{frame}
 
 
 \begin{frame}{Residuals as a function of the errors}
     The residual vector can also be written as:
     \begin{align}
-        \mathbf{e} = \by - \hat{\by} = \by - \mathbf{H} \by &= (\mathbf{I}-\mathbf{H})\by \notag \\
-        &= (\mathbf{I}-\mathbf{H})(\bX\bbeta+\bvarepsilon) = (\mathbf{I}-\mathbf{H})\bvarepsilon, \label{eq:e-eps}.
+        \be = \by - \hat{\by} = \by - \bH \by &= (\bI-\bH)\by \notag \\
+        &= (\bI-\bH)(\bX\bbeta+\bvarepsilon) = (\bI-\bH)\bvarepsilon, \label{eq:e-eps}.
     \end{align}
-    Equation \eqref{eq:e-eps} holds because \((\mathbf{I}-\mathbf{H}) \bX = 0\) as per \eqref{eq:IHX}.
+    Equation \eqref{eq:e-eps} holds because \((\bI-\bH) \bX = 0\) as per \eqref{eq:IHX}.
     Then the residual sum of squares:
     \begin{align}
-        \SSRes = \sum_{i=1}^{n} e_i^2 &= \mathbf{e}'\mathbf{e} \notag \notag \\
-        &= \bvarepsilon' (\mathbf{I}-\mathbf{H})' (\mathbf{I}-\mathbf{H}) \bvarepsilon = \bvarepsilon' (\mathbf{I}-\mathbf{H}) \bvarepsilon. \label{eq:sse-eps}
+        \SSRes = \sum_{i=1}^{n} e_i^2 &= \be'\be \notag \notag \\
+        &= \bvarepsilon' (\bI-\bH)' (\bI-\bH) \bvarepsilon = \bvarepsilon' (\bI-\bH) \bvarepsilon. \label{eq:sse-eps}
     \end{align}
-    Equation \eqref{eq:sse-eps} holds because \((\mathbf{I}-\mathbf{H})\) is symmetric and idempotent as per equations \eqref{eq:IH-sym} and \eqref{eq:IH-idem}.
+    Equation \eqref{eq:sse-eps} holds because \((\bI-\bH)\) is symmetric and idempotent as per equations \eqref{eq:IH-sym} and \eqref{eq:IH-idem}.
 \end{frame}
 
 
@@ -620,22 +620,22 @@ coef(lm(time ~ cases + distance,
     \begin{itemize}
         \item A scalar equals its trace.
         \item $\tr(\mathbf{M}\mathbf{N})=\tr(\mathbf{N}\mathbf{M})$, and expectation ($\E$) commutes with $\tr$.
-        \item $\E[\bvarepsilon\bvarepsilon']=\sigma^2\mathbf{I}_n$ becuase \(\E[\bvarepsilon] = \mathbf{0}\) as mentioned in \eqref{eq:assump-mean} and \(\Var(\bvarepsilon) = \sigma^2\mathbf{I}_n\) as in \eqref{eq:assump-var}, therefore, \(\E[\bvarepsilon\bvarepsilon] = \E[(\bvarepsilon - \mathbf{0}) (\bvarepsilon - \mathbf{0})'] = \Var(\bvarepsilon) = \sigma^2\mathbf{I}_n\).
+        \item $\E[\bvarepsilon\bvarepsilon']=\sigma^2\bI_n$ becuase \(\E[\bvarepsilon] = \bzero\) as mentioned in \eqref{eq:assump-mean} and \(\Var(\bvarepsilon) = \sigma^2\bI_n\) as in \eqref{eq:assump-var}, therefore, \(\E[\bvarepsilon\bvarepsilon] = \E[(\bvarepsilon - \bzero) (\bvarepsilon - \bzero)'] = \Var(\bvarepsilon) = \sigma^2\bI_n\).
     \end{itemize}
 \end{frame}
 
 
-\begin{frame}{The trace of $\mathbf{I}-\mathbf{H}$}
+\begin{frame}{The trace of $\bI-\bH$}
     \begin{align}
-        \tr(\mathbf{H}) &= \tr\big(\bX(\bX'\bX)^{-1}\bX'\big) = \tr\big((\bX'\bX)^{-1}\bX'\bX\big) \notag\\
-        &= \tr(\mathbf{I}_p) = p, \notag\\
-        \tr(\mathbf{I}_n-\mathbf{H}) &= n-p. \label{eq:tr-IH}
+        \tr(\bH) &= \tr\big(\bX(\bX'\bX)^{-1}\bX'\big) = \tr\big((\bX'\bX)^{-1}\bX'\bX\big) \notag\\
+        &= \tr(\bI_p) = p, \notag\\
+        \tr(\bI_n-\bH) &= n-p. \label{eq:tr-IH}
     \end{align}
 \end{frame}
 
 
 \begin{frame}{$\E[\SSRes]$ and an unbiased estimator of $\sigma^2$}
-    Applying \eqref{eq:quad-form} with $\mathbf{B}=\mathbf{I}-\mathbf{H}$ to \eqref{eq:sse-eps}, and using \eqref{eq:tr-IH}:
+    Applying \eqref{eq:quad-form} with $\mathbf{B}=\bI-\bH$ to \eqref{eq:sse-eps}, and using \eqref{eq:tr-IH}:
     \begin{align}
         \E[\SSRes] &= \sigma^2(n-p), \label{eq:E-sse}\\
         \hat\sigma^2 &= \MSRes = \frac{\SSRes}{n-p}. \label{eq:mse}
@@ -653,7 +653,7 @@ coef(lm(time ~ cases + distance,
     \pause
 
     \begin{itemize}
-        \item The residuals satisfy the $p$ linear constraints \(\bX' \mathbf{e} = \mathbf{0}\) (as seen in euqation \ref{eq:orth}), so only $n-p$ of them are free, therefore, $n-p$ degrees of freedom
+        \item The residuals satisfy the $p$ linear constraints \(\bX' \be = \bzero\) (as seen in euqation \ref{eq:orth}), so only $n-p$ of them are free, therefore, $n-p$ degrees of freedom
         \item \(\E[\SSRes/n] = \sigma^2 (n-p)/n\) which is smaller than \(\sigma^2\)
         \item So the ML estimator of the variance term, \(\hat{\sigma}^2_{\ML} = \SSRes/n\) underestimates \(\sigma^2\)
     \end{itemize}
@@ -835,7 +835,7 @@ coef(lm(time ~ cases + distance,
 
 
 \begin{frame}[allowframebreaks]{SLR as a special Case of MLR}
-    For SLR, $\bX = [\mathbf{1}\;\; \bx]$ and
+    For SLR, $\bX = [\bone\;\; \bx]$ and
     \begin{align*}
         \bX'\bX &= \begin{pmatrix} n & \sum x_i \\ \sum x_i & \sum x_i^2 \end{pmatrix}, &
         \bX'\by &= \begin{pmatrix} \sum y_i \\ \sum x_i y_i \end{pmatrix}.
@@ -875,8 +875,8 @@ coef(lm(time ~ cases + distance,
 
 \begin{frame}{Summary}
     \begin{itemize}
-        \item Model: $\by=\bX\bbeta+\bvarepsilon$, with $\E[\bvarepsilon]=\mathbf{0}$ and $\Var(\bvarepsilon)=\sigma^2\mathbf{I}_n$ \eqref{eq:mlr-matrix}.
-        \item OLS: $\hat{\bbeta}=(\bX'\bX)^{-1}\bX'\by$ \eqref{eq:ols}; $\hat{\by}=\mathbf{H}\by$ is a projection onto $\col(\bX)$.
+        \item Model: $\by=\bX\bbeta+\bvarepsilon$, with $\E[\bvarepsilon]=\bzero$ and $\Var(\bvarepsilon)=\sigma^2\bI_n$ \eqref{eq:mlr-matrix}.
+        \item OLS: $\hat{\bbeta}=(\bX'\bX)^{-1}\bX'\by$ \eqref{eq:ols}; $\hat{\by}=\bH\by$ is a projection onto $\col(\bX)$.
         \item $\hat{\bbeta}$ is unbiased with $\Var(\hat{\bbeta})=\sigma^2(\bX'\bX)^{-1}$ \eqref{eq:cov-beta}, and is BLUE.
         \item $\hat\sigma^2=\SSRes/(n-p)$ is unbiased for $\sigma^2$ \eqref{eq:mse}.
         \item $R^2$ never decreases when regressors are added; $\Radj$ \eqref{eq:adj-r2} penalises the loss of degrees of freedom.
@@ -906,7 +906,7 @@ coef(lm(time ~ cases + distance,
     \]
     for some $p\times n$ matrix $\mathbf{D}$. Its expectation is $\bbeta + \mathbf{D}\bX\bbeta$, so unbiasedness for every $\bbeta$ requires
     \begin{align}
-        \mathbf{D}\bX = \mathbf{0}. \label{eq:DX}
+        \mathbf{D}\bX = \bzero. \label{eq:DX}
     \end{align}
 \end{frame}
 
@@ -926,6 +926,6 @@ coef(lm(time ~ cases + distance,
     \begin{itemize}
         \item $\mathbf{a}'\mathbf{D}\mathbf{D}'\mathbf{a} = \|\mathbf{D}'\mathbf{a}\|^2\ge 0$ for every $\mathbf{a}$, so $\mathbf{D}\mathbf{D}'$ is positive semidefinite.
         \item Hence $\Var(\tilde{\bbeta}) - \Var(\hat{\bbeta})$ is positive semidefinite, and $\Var(\mathbf{c}'\tilde{\bbeta})\ge\Var(\mathbf{c}'\hat{\bbeta})$ for every $\mathbf{c}$.
-        \item Equality holds only for $\mathbf{D}=\mathbf{0}$, i.e.\ $\tilde{\bbeta}=\hat{\bbeta}$.
+        \item Equality holds only for $\mathbf{D}=\bzero$, i.e.\ $\tilde{\bbeta}=\hat{\bbeta}$.
     \end{itemize}
 \end{frame}

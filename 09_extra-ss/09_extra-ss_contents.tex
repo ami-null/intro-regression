@@ -64,9 +64,9 @@
 
 \begin{frame}{The Hypothesis and the Reduced Model}
     \[
-    H_0:\bbeta_{(2)}=\mathbf{0}
+    H_0:\bbeta_{(2)}=\bzero
     \qquad\text{versus}\qquad
-    H_1:\bbeta_{(2)}\neq\mathbf{0}
+    H_1:\bbeta_{(2)}\neq\bzero
     \]
     If $H_0$ is true, the regressors in $\bX_{(2)}$ drop out. The \emph{reduced model} is
     \[
@@ -81,7 +81,7 @@
 
 \begin{frame}{Nested Models}
     \begin{itemize}
-        \item The reduced model is the full model with $\bbeta_{(2)}$ forced to $\mathbf{0}$.
+        \item The reduced model is the full model with $\bbeta_{(2)}$ forced to $\bzero$.
         \item Every fit the reduced model can produce is also available to the full model.
         \item The full model can only match or improve on the reduced model's fit.
     \end{itemize}
@@ -111,7 +111,7 @@
         \begin{column}{0.4\textwidth}
             \begin{itemize}
                 \item $\col(\bX_{(1)})\subset\col(\bX)$.
-                \item $\hat{\by}_{(1)}=\mathbf{H}_{(1)}\by$ projects onto the smaller space, $\hat{\by}=\mathbf{H}\by$ onto the larger. Here $\mathbf{H}_{(1)}=\bX_{(1)}(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}'$ is the hat matrix of the reduced model.
+                \item $\hat{\by}_{(1)}=\bH_{(1)}\by$ projects onto the smaller space, $\hat{\by}=\bH\by$ onto the larger. Here $\bH_{(1)}=\bX_{(1)}(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}'$ is the hat matrix of the reduced model.
                 \item $\hat{\by}-\hat{\by}_{(1)}$ is the part of the fit due to $\bX_{(2)}$.
                 \item $\SSRes(\RM)=\|\by-\hat{\by}_{(1)}\|^2$ and $\SSRes(\FM)=\|\by-\hat{\by}\|^2$.
             \end{itemize}
@@ -131,7 +131,7 @@
                 \draw[->, thick] (O)--(Y) node[above] {$\by$};
                 \draw[->, thick] (O)--(P);
                 \node[anchor=west] at (5.55,2.05) {$\hat{\by}$};
-                \draw[dashed] (Y)--(P) node[midway, right] {$\mathbf{e}$};
+                \draw[dashed] (Y)--(P) node[midway, right] {$\be$};
                 \draw[dashed] (P)--(P1);
                 \node[anchor=west] at (5.1,1.15) {$\hat{\by}-\hat{\by}_{(1)}$};
                 \fill (P1) circle (1.6pt);
@@ -229,7 +229,7 @@
 
 
 \begin{frame}{Distribution Under $H_0$}
-    Assume $\bvarepsilon\sim N(\mathbf{0},\sigma^2\mathbf{I})$. If $H_0:\bbeta_{(2)}=\mathbf{0}$ is true:
+    Assume $\bvarepsilon\sim N(\bzero,\sigma^2\bI)$. If $H_0:\bbeta_{(2)}=\bzero$ is true:
     \begin{itemize}
         \item $\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})/\sigma^2\sim\chi^2_q$.
         \item $\SSRes(\FM)/\sigma^2\sim\chi^2_{n-p}$.
@@ -243,51 +243,51 @@
 \begin{frame}{Projection Form of the Extra Sum of Squares}
     Hat matrices of the full and reduced models:
     \[
-    \mathbf{H}=\bX(\bX'\bX)^{-1}\bX',
+    \bH=\bX(\bX'\bX)^{-1}\bX',
     \qquad
-    \mathbf{H}_{(1)}=\bX_{(1)}(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}'
+    \bH_{(1)}=\bX_{(1)}(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}'
     \]
     Residual sums of squares are quadratic forms in $\by$:
     \begin{align*}
-        \SSRes(\FM) &= \by'(\mathbf{I}-\mathbf{H})\by \\
-        \SSRes(\RM) &= \by'(\mathbf{I}-\mathbf{H}_{(1)})\by \\
-        \SSR(\bbeta_{(2)}\mid\bbeta_{(1)}) &= \by'(\mathbf{H}-\mathbf{H}_{(1)})\by
+        \SSRes(\FM) &= \by'(\bI-\bH)\by \\
+        \SSRes(\RM) &= \by'(\bI-\bH_{(1)})\by \\
+        \SSR(\bbeta_{(2)}\mid\bbeta_{(1)}) &= \by'(\bH-\bH_{(1)})\by
     \end{align*}
 \end{frame}
 
 
-\begin{frame}{Why $\mathbf{H}-\mathbf{H}_{(1)}$ Is a Projection: Step 1}
-    $\col(\bX_{(1)})\subset\col(\bX)$, so projecting a vector already in $\col(\bX_{(1)})$ onto $\col(\bX)$ leaves it unchanged: $\mathbf{H}\bX_{(1)}=\bX_{(1)}$. Hence
+\begin{frame}{Why $\bH-\bH_{(1)}$ Is a Projection: Step 1}
+    $\col(\bX_{(1)})\subset\col(\bX)$, so projecting a vector already in $\col(\bX_{(1)})$ onto $\col(\bX)$ leaves it unchanged: $\bH\bX_{(1)}=\bX_{(1)}$. Hence
     \begin{align*}
-        \mathbf{H}\mathbf{H}_{(1)} &= \mathbf{H}\bX_{(1)}(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}' = \bX_{(1)}(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}' = \mathbf{H}_{(1)} \\
-        \mathbf{H}_{(1)}\mathbf{H} &= (\mathbf{H}\mathbf{H}_{(1)})' = \mathbf{H}_{(1)}
+        \bH\bH_{(1)} &= \bH\bX_{(1)}(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}' = \bX_{(1)}(\bX_{(1)}'\bX_{(1)})^{-1}\bX_{(1)}' = \bH_{(1)} \\
+        \bH_{(1)}\bH &= (\bH\bH_{(1)})' = \bH_{(1)}
     \end{align*}
 \end{frame}
 
 
-\begin{frame}{Why $\mathbf{H}-\mathbf{H}_{(1)}$ Is a Projection: Step 2}
+\begin{frame}{Why $\bH-\bH_{(1)}$ Is a Projection: Step 2}
     \begin{align*}
-        (\mathbf{H}-\mathbf{H}_{(1)})^2 &= \mathbf{H} - \mathbf{H}\mathbf{H}_{(1)} - \mathbf{H}_{(1)}\mathbf{H} + \mathbf{H}_{(1)} = \mathbf{H}-\mathbf{H}_{(1)} \\
-        \rank(\mathbf{H}-\mathbf{H}_{(1)}) &= \tr(\mathbf{H}-\mathbf{H}_{(1)}) = p-(p-q) = q
+        (\bH-\bH_{(1)})^2 &= \bH - \bH\bH_{(1)} - \bH_{(1)}\bH + \bH_{(1)} = \bH-\bH_{(1)} \\
+        \rank(\bH-\bH_{(1)}) &= \tr(\bH-\bH_{(1)}) = p-(p-q) = q
     \end{align*}
     \begin{itemize}
-        \item $\mathbf{H}-\mathbf{H}_{(1)}$ is symmetric and idempotent of rank $q$: a projection onto a $q$-dimensional space.
-        \item Also $(\mathbf{H}-\mathbf{H}_{(1)})(\mathbf{I}-\mathbf{H})=\mathbf{0}$, so the two quadratic forms involve orthogonal pieces of $\by$ and are independent.
-        \item Under $H_0$, $\E[\by]=\bX_{(1)}\bbeta_{(1)}$ is annihilated (sent to $\mathbf{0}$) by $\mathbf{H}-\mathbf{H}_{(1)}$, so the form depends on $\bvarepsilon$ only and is $\sigma^2\chi^2_q$.
+        \item $\bH-\bH_{(1)}$ is symmetric and idempotent of rank $q$: a projection onto a $q$-dimensional space.
+        \item Also $(\bH-\bH_{(1)})(\bI-\bH)=\bzero$, so the two quadratic forms involve orthogonal pieces of $\by$ and are independent.
+        \item Under $H_0$, $\E[\by]=\bX_{(1)}\bbeta_{(1)}$ is annihilated (sent to $\bzero$) by $\bH-\bH_{(1)}$, so the form depends on $\bvarepsilon$ only and is $\sigma^2\chi^2_q$.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Background: What Does ``Annihilate'' Mean?}
-    A matrix $\mathbf{A}$ \emph{annihilates} a vector $\mathbf{v}$ if
+    A matrix $\mathbf{A}$ \emph{annihilates} a vector $\bv$ if
     \[
-        \mathbf{A}\mathbf{v}=\mathbf{0}
+        \mathbf{A}\bv=\bzero
     \]
     \begin{itemize}
-        \item Nothing of $\mathbf{v}$ survives the multiplication.
+        \item Nothing of $\bv$ survives the multiplication.
         \item The set of all vectors that $\mathbf{A}$ annihilates is its \emph{null space}.
-        \item Familiar case: $\mathbf{I}-\mathbf{H}$ annihilates every vector in $\col(\bX)$, since $(\mathbf{I}-\mathbf{H})\bX\bbeta=\bX\bbeta-\bX\bbeta=\mathbf{0}$. This is why the residuals $\mathbf{e}=(\mathbf{I}-\mathbf{H})\by=(\mathbf{I}-\mathbf{H})\bvarepsilon$ contain no trace of $\E[\by]$.
-        \item Here: $\mathbf{H}\bX_{(1)}=\bX_{(1)}=\mathbf{H}_{(1)}\bX_{(1)}$, so $\mathbf{H}-\mathbf{H}_{(1)}$ annihilates $\col(\bX_{(1)})$, which contains $\E[\by]=\bX_{(1)}\bbeta_{(1)}$ under $H_0$.
+        \item Familiar case: $\bI-\bH$ annihilates every vector in $\col(\bX)$, since $(\bI-\bH)\bX\bbeta=\bX\bbeta-\bX\bbeta=\bzero$. This is why the residuals $\be=(\bI-\bH)\by=(\bI-\bH)\bvarepsilon$ contain no trace of $\E[\by]$.
+        \item Here: $\bH\bX_{(1)}=\bX_{(1)}=\bH_{(1)}\bX_{(1)}$, so $\bH-\bH_{(1)}$ annihilates $\col(\bX_{(1)})$, which contains $\E[\by]=\bX_{(1)}\bbeta_{(1)}$ under $H_0$.
     \end{itemize}
 \end{frame}
 
@@ -312,7 +312,7 @@
     \end{align}
     \begin{itemize}
         \item $\MSRes$ comes from the \emph{full} model. It estimates $\sigma^2$ without bias whether or not $H_0$ is true; the reduced model's $\MSRes$ overestimates $\sigma^2$ when $H_0$ is false, which would shrink $F_0$ exactly when we want to reject.
-        \item Under $H_0:\bbeta_{(2)}=\mathbf{0}$, $F_0\sim F_{q,\,n-p}$.
+        \item Under $H_0:\bbeta_{(2)}=\bzero$, $F_0\sim F_{q,\,n-p}$.
         \item Reject $H_0$ at level $\alpha$ if $F_0>F_{\alpha,\,q,\,n-p}$.
     \end{itemize}
 \end{frame}
@@ -380,7 +380,7 @@
     The partial $F$-test for a single coefficient is the two-sided $t$-test, since $F_{1,\nu}=t_\nu^2$.
     \svspace{0.5em}
 
-    Why $\hat\beta_j^{\,2}/C_{jj}$: this is the matrix form \eqref{eq:ssh} of the general linear hypothesis (later in this lecture) with $\mathbf{T}$ the row that has $1$ in the position of $\beta_j$ and $0$ elsewhere, so $\mathbf{T}\hat{\bbeta}=\hat\beta_j$ and $\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'=C_{jj}$.
+    Why $\hat\beta_j^{\,2}/C_{jj}$: this is the matrix form \eqref{eq:ssh} of the general linear hypothesis (later in this lecture) with $\bT$ the row that has $1$ in the position of $\beta_j$ and $0$ elsewhere, so $\bT\hat{\bbeta}=\hat\beta_j$ and $\bT(\bX'\bX)^{-1}\bT'=C_{jj}$.
 \end{frame}
 
 
@@ -545,26 +545,26 @@
 
 \begin{frame}{Linear Restrictions on the Coefficients}
     \[
-    H_0:\mathbf{T}\bbeta=\mathbf{0}
+    H_0:\bT\bbeta=\bzero
     \qquad\text{versus}\qquad
-    H_1:\mathbf{T}\bbeta\neq\mathbf{0}
+    H_1:\bT\bbeta\neq\bzero
     \]
     \begin{itemize}
-        \item $\mathbf{T}$ is a $q\times p$ matrix of rank $q$.
-        \item Each row of $\mathbf{T}$ is one linear restriction on $\bbeta$.
+        \item $\bT$ is a $q\times p$ matrix of rank $q$.
+        \item Each row of $\bT$ is one linear restriction on $\bbeta$.
         \item Rank $q$ means the $q$ restrictions are independent: none is implied by the others.
     \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Examples of $\mathbf{T}$ for the Gasoline Model}
+\begin{frame}{Examples of $\bT$ for the Gasoline Model}
     Parameter order $(\beta_0,\beta_{\mathrm{hp}},\beta_{\mathrm{tq}},\beta_{\mathrm{ax}},\beta_{\mathrm{cb}},\beta_{\mathrm{wt}})'$.
     \svspace{0.5em}
     \begin{center}
         \small
         \begin{tabular}{lcl}
             \toprule
-            Hypothesis & $q$ & $\mathbf{T}$ \\
+            Hypothesis & $q$ & $\bT$ \\
             \midrule
             $\beta_{\mathrm{wt}}=0$ & 1 & $\begin{bmatrix}0&0&0&0&0&1\end{bmatrix}$ \\[1.2ex]
             $\beta_{\mathrm{hp}}=\beta_{\mathrm{tq}}=0$ & 2 & $\begin{bmatrix}0&1&0&0&0&0\\0&0&1&0&0&0\end{bmatrix}$ \\[2.4ex]
@@ -579,12 +579,12 @@
 \begin{frame}{Subset Tests Are a Special Case}
     If the tested block $\bbeta_{(2)}$ is placed last:
     \[
-    \mathbf{T}=\begin{bmatrix}\mathbf{0}_{q\times(p-q)} & \mathbf{I}_q\end{bmatrix}
+    \bT=\begin{bmatrix}\bzero_{q\times(p-q)} & \bI_q\end{bmatrix}
     \quad\Longrightarrow\quad
-    \mathbf{T}\bbeta=\bbeta_{(2)}
+    \bT\bbeta=\bbeta_{(2)}
     \]
     \begin{itemize}
-        \item $H_0:\mathbf{T}\bbeta=\mathbf{0}$ is exactly $H_0:\bbeta_{(2)}=\mathbf{0}$.
+        \item $H_0:\bT\bbeta=\bzero$ is exactly $H_0:\bbeta_{(2)}=\bzero$.
         \item Single-coefficient, subset and overall tests are all general linear hypotheses.
         \item The general form also covers restrictions that are not of the form ``coefficients equal zero''.
     \end{itemize}
@@ -620,7 +620,7 @@
 \begin{frame}{Matrix Form of the Test}
     The difference in residual sums of squares can be computed from the full-model fit alone:
     \begin{align}
-        \SSRes(\RM)-\SSRes(\FM) = \SSH = (\mathbf{T}\hat{\bbeta})'\bigl[\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'\bigr]^{-1}(\mathbf{T}\hat{\bbeta})
+        \SSRes(\RM)-\SSRes(\FM) = \SSH = (\bT\hat{\bbeta})'\bigl[\bT(\bX'\bX)^{-1}\bT'\bigr]^{-1}(\bT\hat{\bbeta})
         \label{eq:ssh}
     \end{align}
     \begin{itemize}
@@ -633,47 +633,47 @@
 
 
 \begin{frame}{Deriving $\SSH$, Step 1: Restricted Least Squares}
-    The reduced-model fit $\tilde{\bbeta}$ minimizes $(\by-\bX\bbeta)'(\by-\bX\bbeta)$ subject to $\mathbf{T}\bbeta=\mathbf{0}$. With a Lagrange multiplier vector $\boldsymbol{\lambda}$ ($q\times1$), set the derivative of
+    The reduced-model fit $\tilde{\bbeta}$ minimizes $(\by-\bX\bbeta)'(\by-\bX\bbeta)$ subject to $\bT\bbeta=\bzero$. With a Lagrange multiplier vector $\boldsymbol{\lambda}$ ($q\times1$), set the derivative of
     \[
-    (\by-\bX\bbeta)'(\by-\bX\bbeta) + 2\boldsymbol{\lambda}'\mathbf{T}\bbeta
+    (\by-\bX\bbeta)'(\by-\bX\bbeta) + 2\boldsymbol{\lambda}'\bT\bbeta
     \]
-    to zero: $\bX'\bX\tilde{\bbeta}=\bX'\by-\mathbf{T}'\boldsymbol{\lambda}$, so $\tilde{\bbeta}=\hat{\bbeta}-(\bX'\bX)^{-1}\mathbf{T}'\boldsymbol{\lambda}$. Imposing $\mathbf{T}\tilde{\bbeta}=\mathbf{0}$ gives $\boldsymbol{\lambda}=\bigl[\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'\bigr]^{-1}\mathbf{T}\hat{\bbeta}$, hence
+    to zero: $\bX'\bX\tilde{\bbeta}=\bX'\by-\bT'\boldsymbol{\lambda}$, so $\tilde{\bbeta}=\hat{\bbeta}-(\bX'\bX)^{-1}\bT'\boldsymbol{\lambda}$. Imposing $\bT\tilde{\bbeta}=\bzero$ gives $\boldsymbol{\lambda}=\bigl[\bT(\bX'\bX)^{-1}\bT'\bigr]^{-1}\bT\hat{\bbeta}$, hence
     \begin{align}
-        \tilde{\bbeta} = \hat{\bbeta} - (\bX'\bX)^{-1}\mathbf{T}'\bigl[\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'\bigr]^{-1}\mathbf{T}\hat{\bbeta}
+        \tilde{\bbeta} = \hat{\bbeta} - (\bX'\bX)^{-1}\bT'\bigl[\bT(\bX'\bX)^{-1}\bT'\bigr]^{-1}\bT\hat{\bbeta}
         \label{eq:restricted-ls}
     \end{align}
 \end{frame}
 
 
 \begin{frame}{Deriving $\SSH$, Step 2: The Residual Sum of Squares}
-    Write the reduced-model residuals as $\by-\bX\tilde{\bbeta}=\mathbf{e}+\bX(\hat{\bbeta}-\tilde{\bbeta})$. The cross term vanishes because $\bX'\mathbf{e}=\mathbf{0}$:
+    Write the reduced-model residuals as $\by-\bX\tilde{\bbeta}=\be+\bX(\hat{\bbeta}-\tilde{\bbeta})$. The cross term vanishes because $\bX'\be=\bzero$:
     \[
-    \SSRes(\RM) = \mathbf{e}'\mathbf{e} + (\hat{\bbeta}-\tilde{\bbeta})'\bX'\bX(\hat{\bbeta}-\tilde{\bbeta})
+    \SSRes(\RM) = \be'\be + (\hat{\bbeta}-\tilde{\bbeta})'\bX'\bX(\hat{\bbeta}-\tilde{\bbeta})
     \]
-    Let $\mathbf{M}=\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'$. By \eqref{eq:restricted-ls}, $\hat{\bbeta}-\tilde{\bbeta}=(\bX'\bX)^{-1}\mathbf{T}'\mathbf{M}^{-1}\mathbf{T}\hat{\bbeta}$, so
+    Let $\mathbf{M}=\bT(\bX'\bX)^{-1}\bT'$. By \eqref{eq:restricted-ls}, $\hat{\bbeta}-\tilde{\bbeta}=(\bX'\bX)^{-1}\bT'\mathbf{M}^{-1}\bT\hat{\bbeta}$, so
     \begin{align*}
         \SSRes(\RM)-\SSRes(\FM)
-        &= (\mathbf{T}\hat{\bbeta})'\mathbf{M}^{-1}\,\mathbf{T}(\bX'\bX)^{-1}\bX'\bX(\bX'\bX)^{-1}\mathbf{T}'\,\mathbf{M}^{-1}(\mathbf{T}\hat{\bbeta}) \\
-        &= (\mathbf{T}\hat{\bbeta})'\mathbf{M}^{-1}\mathbf{M}\mathbf{M}^{-1}(\mathbf{T}\hat{\bbeta}) = (\mathbf{T}\hat{\bbeta})'\mathbf{M}^{-1}(\mathbf{T}\hat{\bbeta}) = \SSH
+        &= (\bT\hat{\bbeta})'\mathbf{M}^{-1}\,\bT(\bX'\bX)^{-1}\bX'\bX(\bX'\bX)^{-1}\bT'\,\mathbf{M}^{-1}(\bT\hat{\bbeta}) \\
+        &= (\bT\hat{\bbeta})'\mathbf{M}^{-1}\mathbf{M}\mathbf{M}^{-1}(\bT\hat{\bbeta}) = (\bT\hat{\bbeta})'\mathbf{M}^{-1}(\bT\hat{\bbeta}) = \SSH
     \end{align*}
 \end{frame}
 
 
 \begin{frame}{Why the Quadratic Form Works}
     \begin{itemize}
-        \item $\Var(\mathbf{T}\hat{\bbeta})=\sigma^2\,\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'$.
-        \item Under $H_0$, $\mathbf{T}\hat{\bbeta}$ has mean $\mathbf{0}$, so $\SSH/\sigma^2$ is a standardized squared length of a $q$-dimensional normal vector: $\chi^2_q$.
+        \item $\Var(\bT\hat{\bbeta})=\sigma^2\,\bT(\bX'\bX)^{-1}\bT'$.
+        \item Under $H_0$, $\bT\hat{\bbeta}$ has mean $\bzero$, so $\SSH/\sigma^2$ is a standardized squared length of a $q$-dimensional normal vector: $\chi^2_q$.
         \item $\SSH$ depends on the data only through $\hat{\bbeta}$, and $\hat{\bbeta}$ is independent of $\MSRes$ (Lecture 5). So $F_0=(\SSH/q)/\MSRes\sim F_{q,\,n-p}$ under $H_0$.
-        \item For $q=1$, $\SSH/\MSRes$ reduces to $(\mathbf{T}\hat{\bbeta})^2/\bigl(\MSRes\,\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'\bigr)=t_0^2$.
+        \item For $q=1$, $\SSH/\MSRes$ reduces to $(\bT\hat{\bbeta})^2/\bigl(\MSRes\,\bT(\bX'\bX)^{-1}\bT'\bigr)=t_0^2$.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Gasoline Mileage: $H_0:\beta_{\mathrm{hp}}=\beta_{\mathrm{tq}}$ by the Matrix Form}
-    $\mathbf{T}=\begin{bmatrix}0&1&-1&0&0&0\end{bmatrix}$, $q=1$.
+    $\bT=\begin{bmatrix}0&1&-1&0&0&0\end{bmatrix}$, $q=1$.
     \begin{align*}
-        \mathbf{T}\hat{\bbeta} &= \hat\beta_{\mathrm{hp}}-\hat\beta_{\mathrm{tq}} = -0.01146-(-0.02228) = 0.01083 \\
-        \mathbf{T}(\bX'\bX)^{-1}\mathbf{T}' &= 0.001278 \\
+        \bT\hat{\bbeta} &= \hat\beta_{\mathrm{hp}}-\hat\beta_{\mathrm{tq}} = -0.01146-(-0.02228) = 0.01083 \\
+        \bT(\bX'\bX)^{-1}\bT' &= 0.001278 \\
         \SSH &= \frac{0.01083^2}{0.001278} = 0.0917 \\
         F_0 &= \frac{0.0917/1}{11.705} = 0.0078
     \end{align*}
@@ -708,13 +708,13 @@
 \end{frame}
 
 
-\begin{frame}{Nonzero Right-Hand Side: $\mathbf{T}\bbeta=\mathbf{c}$}
+\begin{frame}{Nonzero Right-Hand Side: $\bT\bbeta=\mathbf{c}$}
     \[
-    H_0:\mathbf{T}\bbeta=\mathbf{c}
+    H_0:\bT\bbeta=\mathbf{c}
     \qquad\Longrightarrow\qquad
-    \SSH=(\mathbf{T}\hat{\bbeta}-\mathbf{c})'\bigl[\mathbf{T}(\bX'\bX)^{-1}\mathbf{T}'\bigr]^{-1}(\mathbf{T}\hat{\bbeta}-\mathbf{c})
+    \SSH=(\bT\hat{\bbeta}-\mathbf{c})'\bigl[\bT(\bX'\bX)^{-1}\bT'\bigr]^{-1}(\bT\hat{\bbeta}-\mathbf{c})
     \]
-    The derivation is the same as before, with $\mathbf{T}\hat{\bbeta}$ replaced by $\mathbf{T}\hat{\bbeta}-\mathbf{c}$. Reduced model: move the known part to the left-hand side.
+    The derivation is the same as before, with $\bT\hat{\bbeta}$ replaced by $\bT\hat{\bbeta}-\mathbf{c}$. Reduced model: move the known part to the left-hand side.
     \begin{itemize}
         \item Example: $H_0:\beta_{\mathrm{cb}}=1$. Regress $y-x_{\mathrm{cb}}$ on the other regressors: $\SSRes(\RM)=288.97$.
         \item $F_0=(288.97-280.91)/11.705=0.69$ and $p=0.41$.
@@ -728,7 +728,7 @@
         \small
         \begin{tabular}{llcl}
             \toprule
-            Hypothesis & $\mathbf{T}$ rows & $q$ & Reduced model \\
+            Hypothesis & $\bT$ rows & $q$ & Reduced model \\
             \midrule
             Single coefficient & one unit row & 1 & Drop the regressor \\
             Subset & $q$ unit rows & $q$ & Drop the subset \\
@@ -855,9 +855,9 @@
 
 
 \begin{frame}{When Sequential Equals Partial: Orthogonal Columns}
-    If $\bX_{(1)}'\bX_{(2)}=\mathbf{0}$, then $\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})=\SSR(\bbeta_{(2)})$: the contribution of each block is unaffected by the other, in any order. Here $\SSR(\bbeta_{(2)})$ is the regression sum of squares when $y$ is regressed on $\bX_{(2)}$ alone (plus an intercept). Since $\bX_{(1)}$ contains the column of ones, $\bX_{(1)}'\bX_{(2)}=\mathbf{0}$ also requires every column of $\bX_{(2)}$ to have mean zero.
+    If $\bX_{(1)}'\bX_{(2)}=\bzero$, then $\SSR(\bbeta_{(2)}\mid\bbeta_{(1)})=\SSR(\bbeta_{(2)})$: the contribution of each block is unaffected by the other, in any order. Here $\SSR(\bbeta_{(2)})$ is the regression sum of squares when $y$ is regressed on $\bX_{(2)}$ alone (plus an intercept). Since $\bX_{(1)}$ contains the column of ones, $\bX_{(1)}'\bX_{(2)}=\bzero$ also requires every column of $\bX_{(2)}$ to have mean zero.
     \begin{itemize}
-        \item Delivery data: replace $x_2$ by $z=e(x_2\mid x_1)$, the part of distance not explained by cases (orthogonal to $\mathbf{1}$ and $x_1$).
+        \item Delivery data: replace $x_2$ by $z=e(x_2\mid x_1)$, the part of distance not explained by cases (orthogonal to $\bone$ and $x_1$).
         \item Regress $y$ on $x_1$ and $z$: sequential sums of squares are $5382.41$ for $x_1$ and $168.40$ for $z$ in either order.
         \item $168.40$ is exactly $\SSR(\beta_2\mid\beta_1,\beta_0)$ from the original fit.
     \end{itemize}
@@ -936,10 +936,10 @@
 
 
 \begin{frame}{Residuals as Adjusted Variables}
-    With $\mathbf{H}_{(-j)}=\bX_{(-j)}(\bX_{(-j)}'\bX_{(-j)})^{-1}\bX_{(-j)}'$:
+    With $\bH_{(-j)}=\bX_{(-j)}(\bX_{(-j)}'\bX_{(-j)})^{-1}\bX_{(-j)}'$:
     \begin{align*}
-        e(y\mid\bX_{(-j)}) &= (\mathbf{I}-\mathbf{H}_{(-j)})\by \\
-        e(x_j\mid\bX_{(-j)}) &= (\mathbf{I}-\mathbf{H}_{(-j)})\bx_j
+        e(y\mid\bX_{(-j)}) &= (\bI-\bH_{(-j)})\by \\
+        e(x_j\mid\bX_{(-j)}) &= (\bI-\bH_{(-j)})\bx_j
     \end{align*}
     \begin{itemize}
         \item The first is the part of $y$ not explained by the other regressors.
@@ -972,7 +972,7 @@
     \begin{itemize}
         \item Slope $\hat\beta_j$, the coefficient from the full model.
         \item Intercept $0$.
-        \item Residuals equal to the full-model residuals $\mathbf{e}$.
+        \item Residuals equal to the full-model residuals $\be$.
     \end{itemize}
     \svspace{0.5em}
     The next two frames show why.
@@ -982,11 +982,11 @@
 \begin{frame}{Derivation, Step 1: Decompose $y$}
     The full-model fit separates $x_j$ from the other regressors:
     \[
-    \by = \bX_{(-j)}\hat{\bbeta}_{(-j)} + \bx_j\hat\beta_j + \mathbf{e}
+    \by = \bX_{(-j)}\hat{\bbeta}_{(-j)} + \bx_j\hat\beta_j + \be
     \]
-    Apply $\mathbf{I}-\mathbf{H}_{(-j)}$. It annihilates $\bX_{(-j)}$, and $(\mathbf{I}-\mathbf{H}_{(-j)})\mathbf{e}=\mathbf{e}$ because $\mathbf{e}\perp\col(\bX)\supset\col(\bX_{(-j)})$:
+    Apply $\bI-\bH_{(-j)}$. It annihilates $\bX_{(-j)}$, and $(\bI-\bH_{(-j)})\be=\be$ because $\be\perp\col(\bX)\supset\col(\bX_{(-j)})$:
     \begin{align}
-        e(y\mid\bX_{(-j)}) = \hat\beta_j\,e(x_j\mid\bX_{(-j)}) + \mathbf{e}
+        e(y\mid\bX_{(-j)}) = \hat\beta_j\,e(x_j\mid\bX_{(-j)}) + \be
         \label{eq:av-decomp}
     \end{align}
 \end{frame}
@@ -996,18 +996,18 @@
     Both adjusted variables have mean zero, so the line through the plot has no intercept. Its slope is
     \begin{align*}
         \frac{e(x_j\mid\bX_{(-j)})'\,e(y\mid\bX_{(-j)})}{e(x_j\mid\bX_{(-j)})'\,e(x_j\mid\bX_{(-j)})}
-        = \hat\beta_j + \frac{e(x_j\mid\bX_{(-j)})'\,\mathbf{e}}{e(x_j\mid\bX_{(-j)})'\,e(x_j\mid\bX_{(-j)})}
+        = \hat\beta_j + \frac{e(x_j\mid\bX_{(-j)})'\,\be}{e(x_j\mid\bX_{(-j)})'\,e(x_j\mid\bX_{(-j)})}
     \end{align*}
-    The numerator of the last term is $\bx_j'(\mathbf{I}-\mathbf{H}_{(-j)})\mathbf{e}=\bx_j'\mathbf{e}=0$. So the slope is $\hat\beta_j$ and, by \eqref{eq:av-decomp}, the residuals about the line are $\mathbf{e}$.
+    The numerator of the last term is $\bx_j'(\bI-\bH_{(-j)})\be=\bx_j'\be=0$. So the slope is $\hat\beta_j$ and, by \eqref{eq:av-decomp}, the residuals about the line are $\be$.
 \end{frame}
 
 
 \begin{frame}{Consequences}
     \begin{itemize}
         \item The plot has the same residuals, hence the same residual sum of squares, as the full model.
-        \item The sum of squares explained by the line is $\hat\beta_j^{\,2}\sum_i e_i(x_j\mid\bX_{(-j)})^2=\SSR(\beta_j\mid\text{others})$. Why: square both sides of \eqref{eq:av-decomp}; the cross term is $0$ because $e(x_j\mid\bX_{(-j)})'\mathbf{e}=0$, so
+        \item The sum of squares explained by the line is $\hat\beta_j^{\,2}\sum_i e_i(x_j\mid\bX_{(-j)})^2=\SSR(\beta_j\mid\text{others})$. Why: square both sides of \eqref{eq:av-decomp}; the cross term is $0$ because $e(x_j\mid\bX_{(-j)})'\be=0$, so
         \[
-        \underbrace{\textstyle\sum e(y\mid\bX_{(-j)})^2}_{\SSRes(\text{without }x_j)} = \hat\beta_j^{\,2}\textstyle\sum e(x_j\mid\bX_{(-j)})^2 + \underbrace{\mathbf{e}'\mathbf{e}}_{\SSRes(\FM)},
+        \underbrace{\textstyle\sum e(y\mid\bX_{(-j)})^2}_{\SSRes(\text{without }x_j)} = \hat\beta_j^{\,2}\textstyle\sum e(x_j\mid\bX_{(-j)})^2 + \underbrace{\be'\be}_{\SSRes(\FM)},
         \]
         and the difference of the two residual sums of squares is the extra sum of squares \eqref{eq:extra-ss-res}.
         \item Delivery data, distance: $0.014385^2\times813{,}838.7=168.40$.
@@ -1142,8 +1142,8 @@
             \midrule
             Overall & $\beta_1=\cdots=\beta_k=0$ & $k$ & Intercept only \\
             Individual & $\beta_j=0$ & 1 & Drop $x_j$ \\
-            Subset (partial $F$) & $\bbeta_{(2)}=\mathbf{0}$ & $q$ & Drop $\bX_{(2)}$ \\
-            General linear & $\mathbf{T}\bbeta=\mathbf{0}$ & $q$ & Impose restrictions \\
+            Subset (partial $F$) & $\bbeta_{(2)}=\bzero$ & $q$ & Drop $\bX_{(2)}$ \\
+            General linear & $\bT\bbeta=\bzero$ & $q$ & Impose restrictions \\
             \bottomrule
         \end{tabular}
     \end{center}

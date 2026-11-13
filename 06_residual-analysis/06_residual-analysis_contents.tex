@@ -27,16 +27,16 @@
 \begin{frame}{Raw Residuals}
     The $i$th residual is $e_i=y_i-\hat y_i$. In matrix form
     \begin{align*}
-        \mathbf{e} = \by-\hat{\by} = \by - \mathbf{H} \by &= (\mathbf{I}-\mathbf{H})\by \\
-        &= (\mathbf{I}-\mathbf{H})(\bX \bbeta + \bvarepsilon) \\
-        &= (\mathbf{I}-\mathbf{H})\bvarepsilon ,
+        \be = \by-\hat{\by} = \by - \bH \by &= (\bI-\bH)\by \\
+        &= (\bI-\bH)(\bX \bbeta + \bvarepsilon) \\
+        &= (\bI-\bH)\bvarepsilon ,
     \end{align*}
-    where the last step uses $(\mathbf{I}-\mathbf{H})\bX=\mathbf{0}$.
+    where the last step uses $(\bI-\bH)\bX=\bzero$.
 \end{frame}
 
 
 \begin{frame}{Leverage}
-    The hat matrix is $\mathbf{H}=\bX(\bX'\bX)^{-1}\bX'$ with diagonal elements
+    The hat matrix is $\bH=\bX(\bX'\bX)^{-1}\bX'$ with diagonal elements
     \[
         h_{ii}=\bx_i'(\bX'\bX)^{-1}\bx_i .
     \]
@@ -80,8 +80,8 @@
 
 \begin{frame}{Mean and Covariance of the Residuals}
     \begin{align}
-        \E[\mathbf{e}] &= \mathbf{0} \notag \\
-        \Var(\mathbf{e}) &= \sigma^2(\mathbf{I}-\mathbf{H}) \label{eq:var-e}
+        \E[\be] &= \bzero \notag \\
+        \Var(\be) &= \sigma^2(\bI-\bH) \label{eq:var-e}
     \end{align}
     Element by element
     \begin{align*}
@@ -98,7 +98,7 @@
 
     \svspace{1em}
 
-    No. $\Var(e_i)=\sigma^2(1-h_{ii})$ differs across $i$ whenever the $h_{ii}$ differ, $\Cov(e_i,e_j)=-\sigma^2h_{ij}\neq 0$, and the residuals satisfy the $p$ linear constraints $\bX'\mathbf{e}=\mathbf{0}$ (in particular $\sum_i e_i=0$ when the model has an intercept).
+    No. $\Var(e_i)=\sigma^2(1-h_{ii})$ differs across $i$ whenever the $h_{ii}$ differ, $\Cov(e_i,e_j)=-\sigma^2h_{ij}\neq 0$, and the residuals satisfy the $p$ linear constraints $\bX'\be=\bzero$ (in particular $\sum_i e_i=0$ when the model has an intercept).
 \end{frame}
 
 
@@ -350,7 +350,7 @@
     \end{itemize}
     % Why $\hat y_i$ and not $y_i$?
 
-    % $\mathrm{Cov}(\mathbf e,\hat{\mathbf y})=\mathbf 0$, but $\mathrm{Cov}(\mathbf e,\mathbf y)=\sigma^2(\mathbf I-\mathbf H)\neq\mathbf 0$. Plotting against $y_i$ builds in a spurious positive relation between residual and abscissa.
+    % $\Cov(\be,\hat{\by})=\bzero$, but $\Cov(\be,\by)=\sigma^2(\bI-\bH)\neq\bzero$. Plotting against $y_i$ builds in a spurious positive relation between residual and abscissa.
 \end{frame}
 
 

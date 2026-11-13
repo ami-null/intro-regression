@@ -9,7 +9,7 @@
 
     In matrix form, with $p = k+1$ parameters,
     \[
-        \by = \bX\bbeta + \bvarepsilon, \qquad \bvarepsilon \sim N(\mathbf{0}, \sigma^2 \mathbf{I})
+        \by = \bX\bbeta + \bvarepsilon, \qquad \bvarepsilon \sim N(\bzero, \sigma^2 \bI)
     \]
 
     \begin{itemize}
@@ -358,7 +358,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 %     Can the overall $F$ test be significant while every individual $t$ test is insignificant?
 %     % \begin{itemize}
 %     %     \item Yes. Each $t$ test is conditional on the other regressors, so if $x_1$ and $x_2$ carry nearly the same information, each looks unnecessary given the other
-%     %     \item This is a symptom of collinearity, covered later. Here $r(x_1,x_2) = 0.82$ and both are still significant, but $\operatorname{corr}(\hat\beta_1,\hat\beta_2) = -0.82$
+%     %     \item This is a symptom of collinearity, covered later. Here $r(x_1,x_2) = 0.82$ and both are still significant, but $\Corr(\hat\beta_1,\hat\beta_2) = -0.82$
 %     %     \item Conversely, testing many coefficients at level $\alpha$ each inflates the chance of at least one false rejection
 %     % \end{itemize}
 % \end{frame}
@@ -446,7 +446,7 @@ F-statistic: 261.2 on 2 and 22 DF,     p-value: 4.687e-16
 %             \item Solid ellipse: exact joint 95\% region
 %             \item Dashed box: two separate 95\% intervals
 %             \item Dotted box: Bonferroni intervals
-%             \item The ellipse is tilted because $\operatorname{corr}(\hat\beta_1,\hat\beta_2) = -0.82$
+%             \item The ellipse is tilted because $\Corr(\hat\beta_1,\hat\beta_2) = -0.82$
 %         \end{itemize}
 %         \column{0.64\textwidth}
 %         \begin{tikzpicture}
