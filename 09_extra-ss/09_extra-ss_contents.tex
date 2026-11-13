@@ -633,11 +633,11 @@
 
 
 \begin{frame}{Deriving $\SSH$, Step 1: Restricted Least Squares}
-    The reduced-model fit $\tilde{\bbeta}$ minimizes $(\by-\bX\bbeta)'(\by-\bX\bbeta)$ subject to $\bT\bbeta=\bzero$. With a Lagrange multiplier vector $\boldsymbol{\lambda}$ ($q\times1$), set the derivative of
+    The reduced-model fit $\tilde{\bbeta}$ minimizes $(\by-\bX\bbeta)'(\by-\bX\bbeta)$ subject to $\bT\bbeta=\bzero$. With a Lagrange multiplier vector $\blambda$ ($q\times1$), set the derivative of
     \[
-    (\by-\bX\bbeta)'(\by-\bX\bbeta) + 2\boldsymbol{\lambda}'\bT\bbeta
+    (\by-\bX\bbeta)'(\by-\bX\bbeta) + 2\blambda'\bT\bbeta
     \]
-    to zero: $\bX'\bX\tilde{\bbeta}=\bX'\by-\bT'\boldsymbol{\lambda}$, so $\tilde{\bbeta}=\hat{\bbeta}-(\bX'\bX)^{-1}\bT'\boldsymbol{\lambda}$. Imposing $\bT\tilde{\bbeta}=\bzero$ gives $\boldsymbol{\lambda}=\bigl[\bT(\bX'\bX)^{-1}\bT'\bigr]^{-1}\bT\hat{\bbeta}$, hence
+    to zero: $\bX'\bX\tilde{\bbeta}=\bX'\by-\bT'\blambda$, so $\tilde{\bbeta}=\hat{\bbeta}-(\bX'\bX)^{-1}\bT'\blambda$. Imposing $\bT\tilde{\bbeta}=\bzero$ gives $\blambda=\bigl[\bT(\bX'\bX)^{-1}\bT'\bigr]^{-1}\bT\hat{\bbeta}$, hence
     \begin{align}
         \tilde{\bbeta} = \hat{\bbeta} - (\bX'\bX)^{-1}\bT'\bigl[\bT(\bX'\bX)^{-1}\bT'\bigr]^{-1}\bT\hat{\bbeta}
         \label{eq:restricted-ls}
