@@ -108,7 +108,9 @@ ggsave("acetylene_x1_x3.pdf", p_x1x3, bg = "transparent", device = cairo_pdf,
        width = fig_w, height = fig_h)
 
 # ---- Ridge regression in the unit-length scale --------------------------------
-# b_R(k) = (W'W + kI)^{-1} W'y,   k >= 0
+# b_R = (W'W + theta I)^{-1} W'y,   theta >= 0
+# The slides call the biasing parameter theta (k is the number of regressors there);
+# in this script it is the function argument k.
 ridge <- function(k) {
     A   <- WtW + k * diag(p)
     Ai  <- solve(A)
@@ -161,7 +163,7 @@ p_trace <- ggplot(trace, aes(x = k, y = b, group = term, colour = type)) +
     scale_x_sqrt(breaks = c(0, 0.001, 0.005, 0.01, 0.02, 0.032, 0.05),
                  labels = c("0", "0.001", "0.005", "0.01", "0.02", "0.032", "0.05"),
                  expand = expansion(mult = c(0.12, 0.02))) +
-    labs(x = "Biasing parameter k (square-root scale)", y = "Standardized coefficient") +
+    labs(x = expression("Biasing parameter " * theta * " (square-root scale)"), y = "Standardized coefficient") +
     theme_lecture() +
     theme(legend.position = "top")
 
