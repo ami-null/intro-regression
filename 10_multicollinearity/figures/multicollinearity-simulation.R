@@ -98,3 +98,77 @@ p_vif <- ggplot(vif_curve, aes(x = r, y = vif)) +
 
 p_vif
 ggsave("sim_vif_curve.pdf", p_vif, bg = "transparent", device = cairo_pdf, width = fig_w, height = fig_h)
+
+# ---- Figure: eigenvalues as the spread of the regressor cloud in a direction -----
+# Standardized regressors (sd 1). The sample correlation matrix is [[1, r], [r, 1]], with
+# eigenvectors v1 = (1, 1)/sqrt(2), v2 = (1, -1)/sqrt(2) and eigenvalues 1 + r, 1 - r.
+# The variance of the data along a unit vector v is v' R v, so along v_j it is lambda_j:
+# each segment below runs from -2 sd to +2 sd of the data in that direction.
+cloud <- rbind(cbind(make_design(0), rho = 0), cbind(make_design(0.95), rho = 0.95))
+sapply(split(cloud, cloud$rho), function(d) eigen(cor(d[, c("x1", "x2")]))$values)
+# rho = 0: 1, 1;  rho = 0.95: 1.95, 0.05
+
+eig_dirs <- do.call(rbind, lapply(c(0, 0.95), function(rho) {
+    lam <- c(1 + rho, 1 - rho)
+    vx  <- c(1, 1) / sqrt(2)                     # x-components of v1, v2
+    vy  <- c(1, -1) / sqrt(2)                    # y-components of v1, v2
+    data.frame(rho = rho, lam = lam,
+               x = -2 * sqrt(lam) * vx, y = -2 * sqrt(lam) * vy,
+               xend = 2 * sqrt(lam) * vx, yend = 2 * sqrt(lam) * vy,
+               lab = sprintf("lambda[%d] == %s", 1:2, format(lam, nsmall = 2)))
+}))
+# label position: at the segment end, pushed below the cloud for a very short segment
+eig_dirs$lx <- eig_dirs$xend + 0.1
+eig_dirs$ly <- eig_dirs$yend - ifelse(eig_dirs$lam < 0.5, 0.55, 0)
+panel_lab <- function(rho) factor(rho, levels = c(0, 0.95), labels = c("r[12] == 0", "r[12] == 0.95"))
+cloud$panel    <- panel_lab(cloud$rho)
+eig_dirs$panel <- panel_lab(eig_dirs$rho)
+
+p_eig <- ggplot(cloud, aes(x = x1, y = x2)) +
+    geom_point(size = 0.9, alpha = 0.6, colour = pt_col) +
+    geom_segment(data = eig_dirs, aes(x = x, y = y, xend = xend, yend = yend),
+                 colour = line_col, linewidth = 0.9) +
+    geom_text(data = eig_dirs, aes(x = lx, y = ly, label = lab), parse = TRUE,
+              size = 2.6, hjust = 0, colour = "grey15") +
+    facet_wrap(~ panel, labeller = label_parsed) +
+    coord_equal(xlim = c(-3.2, 4.2), ylim = c(-3.2, 3.2)) +
+    labs(x = expression("Standardized " * x[1]), y = expression("Standardized " * x[2])) +
+    theme_lecture()
+
+p_eig
+ggsave("sim_eigen_directions.pdf", p_eig, bg = "transparent", device = cairo_pdf,
+       width = 2 * fig_w, height = 1.2 * fig_h)
+
+# ---- Figure: bias-variance trade-off of shrinking one coefficient --------------
+# Illustration (not data): one eigen-direction with true coefficient alpha = 1 and a
+# least-squares estimate with sd 1. Ridge reports c * alpha_hat with c = 0.5:
+# mean c * alpha = 0.5 (bias -0.5), sd c * 1 = 0.5.
+# MSE = variance + bias^2: least squares 1 + 0 = 1, ridge 0.25 + 0.25 = 0.5.
+alpha_true <- 1
+sd_ls      <- 1
+c_shrink   <- 0.5
+bv <- data.frame(a = seq(-2.6, 4.2, length.out = 600))
+bv <- rbind(
+    data.frame(a = bv$a, dens = dnorm(bv$a, alpha_true, sd_ls), est = "Least squares"),
+    data.frame(a = bv$a, dens = dnorm(bv$a, c_shrink * alpha_true, c_shrink * sd_ls), est = "Ridge")
+)
+bv$est <- factor(bv$est, levels = c("Least squares", "Ridge"))
+est_col <- c("Least squares" = pt_col, "Ridge" = line_col)
+mse <- c(sd_ls^2, (c_shrink * sd_ls)^2 + ((c_shrink - 1) * alpha_true)^2)    # 1, 0.5
+
+p_bv <- ggplot(bv, aes(x = a, y = dens, colour = est)) +
+    geom_vline(xintercept = alpha_true, linetype = "dashed", colour = "grey45") +
+    geom_line(linewidth = 0.9) +
+    annotate("text", x = alpha_true + 0.08, y = 0.83, hjust = 0, size = 2.8, colour = "grey30",
+             label = "true value") +
+    annotate("text", x = 2.25, y = 0.30, hjust = 0, size = 2.7, colour = pt_col,
+             label = sprintf("least squares\nno bias, sd 1\nMSE = %.2f", mse[1]), lineheight = 0.9) +
+    annotate("text", x = -0.55, y = 0.62, hjust = 1, size = 2.7, colour = line_col,
+             label = sprintf("ridge\nbias -0.5, sd 0.5\nMSE = %.2f", mse[2]), lineheight = 0.9) +
+    scale_colour_manual(values = est_col, guide = "none") +
+    labs(x = "Estimate of the coefficient in one direction", y = "Density") +
+    theme_lecture()
+
+p_bv
+ggsave("ridge_bias_variance.pdf", p_bv, bg = "transparent", device = cairo_pdf,
+       width = fig_w, height = fig_h)

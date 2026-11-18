@@ -64,34 +64,69 @@
 \section{What Multicollinearity Is}
 
 
+\subsection{Linear Dependence}
+
+
 \begin{frame}{Linear Dependence Among the Regressors}
     Write the regressor columns (without the intercept) as $\bx_1,\dots,\bx_k$.
     \svspace{0.5em}
     \begin{itemize}
-        \item \textbf{Exact dependence}: constants $t_1,\dots,t_k$, not all zero, with
+        \item \textbf{Exact dependence}: some combination of the centered columns is exactly zero,
         \[
-        \sum_{j=1}^k t_j(\bx_j-\bar x_j\bone)=\bzero.
+        \sum_{j=1}^k t_j(\bx_j-\bar x_j\bone)=\bzero\quad\text{for constants }t_1,\dots,t_k\text{ not all zero.}
         \]
-        Then $\bX'\bX$ is singular and $\bbeta$ has no unique least-squares estimate.
-        \item \textbf{Near dependence}: the same combination is close to $\bzero$. $\bX'\bX$ is invertible but nearly singular.
+        Example: $x_3=x_1+x_2$ in every row. Then $\bX'\bX$ is singular and $\bbeta$ has no unique least-squares estimate.
+        \item \textbf{Near dependence}: the same kind of combination is \emph{close} to zero. $\bX'\bX$ can be inverted, but only just.
         \item \textbf{Multicollinearity} means a near dependence among the regressors. Exact dependence is rare in practice and is usually a coding error (for example, a dummy for every level of a factor).
     \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Unit-Length Scaling}
-    To compare regressors measured in different units, center and scale each column:
+\begin{frame}{Why Dependence Confuses Least Squares}
+    Suppose $x_3=x_1+x_2$ exactly. For any number $c$,
     \[
-    w_{ij}=\frac{x_{ij}-\bar x_j}{\sqrt{S_{jj}}},\qquad S_{jj}=\sum_{i=1}^n(x_{ij}-\bar x_j)^2 .
+    \beta_1x_1+\beta_2x_2+\beta_3x_3=(\beta_1+c)\,x_1+(\beta_2+c)\,x_2+(\beta_3-c)\,x_3 .
     \]
     \begin{itemize}
-        \item Each column $\bw_j$ has mean $0$ and length $1$: $\bw_j'\bw_j=1$.
+        \item Every choice of $c$ gives the same fitted values, so the data cannot prefer one set of coefficients over another.
+        \item With a \emph{near} dependence, $x_3\approx x_1+x_2$, the fitted values change only slightly with $c$. The data do prefer one value of $c$, but only weakly: a little noise in $y$ moves the preferred value a lot.
+        \item That is the whole problem in one sentence: the data cannot separate the effects of regressors that move together.
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Unit-Length Scaling}
+
+
+\begin{frame}{Unit-Length Scaling}
+    Regressors come in different units (degrees, seconds, mole ratios). To compare them, put every column on the same footing. For regressor $x_j$, let $S_{jj}$ be its corrected sum of squares, that is, its total variation about its mean. Then center and scale:
+    \[
+    S_{jj}=\sum_{i=1}^n(x_{ij}-\bar x_j)^2,
+    \qquad
+    w_{ij}=\frac{x_{ij}-\bar x_j}{\sqrt{S_{jj}}} .
+    \]
+    \begin{itemize}
+        \item This is the familiar ``subtract the mean, divide by the standard deviation'', except that we divide by $\sqrt{S_{jj}}=\sqrt{n-1}\,s_j$. Each column $\bw_j$ then has mean $0$ and \emph{length} 1: $\bw_j'\bw_j=1$.
         \item $\bw_j'\bw_l=r_{jl}$, the correlation between regressors $x_j$ and $x_l$, so $\bW'\bW$ is the \textbf{correlation matrix} of the regressors.
-        \item Scaling $y$ the same way gives the model $\by^*=\bW\bb+\bvarepsilon^*$ with no intercept. The fitted coefficients $\hat b_j=\hat\beta_j\sqrt{S_{jj}/\SST}$ are unit-free.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{The Model in Unit-Length Form}
+    Scale $y$ the same way: $y_i^*=(y_i-\bar y)/\sqrt{\SST}$. The model becomes
+    \[
+    \by^*=\bW\bb+\bvarepsilon^*\qquad\text{(no intercept, since everything is centered).}
+    \]
+    \begin{itemize}
+        \item The coefficients are related by $\hat b_j=\hat\beta_j\sqrt{S_{jj}/\SST}$, the standardized regression coefficients. They have no units, so they can be compared across regressors.
         \item The errors are scaled too: $\bvarepsilon^*=\bvarepsilon/\sqrt{\SST}$ has variance $\sigma_w^2=\sigma^2/\SST$.
+        \item Example, delivery data: $r_{12}=0.824$, so $\bW'\bW=\begin{bmatrix}1&0.824\\0.824&1\end{bmatrix}$.
     \end{itemize}
     All diagnostics in this lecture use $\bW'\bW$, so they do not depend on the units of the regressors.
 \end{frame}
+
+
+\subsection{Sources and an Example}
 
 
 \begin{frame}{Sources of Multicollinearity}
@@ -153,20 +188,42 @@
 \section{Effects of Multicollinearity}
 
 
-\begin{frame}{Two Regressors}
-    In unit-length form with two regressors,
+\subsection{Two Regressors}
+
+
+\begin{frame}{Why Correlation Hurts: The Idea}
+    \begin{itemize}
+        \item $\beta_1$ is the change in $\E(y)$ when $x_1$ increases by one unit \emph{and $x_2$ stays fixed}.
+        \item To estimate it, the data must contain observations in which $x_1$ changes while $x_2$ does not.
+        \item If $x_1$ and $x_2$ almost always move together, such observations are rare. Only the small part of $x_1$ that varies on its own carries information about $\beta_1$.
+        \item Less information means a less precise estimate: a larger variance of $\hat\beta_1$.
+    \end{itemize}
+    \svspace{0.5em}
+    Lecture 9 showed this part of $x_1$ directly: it is the horizontal axis of the added-variable plot, $e(x_1\mid x_2)$, the residual from regressing $x_1$ on $x_2$.
+\end{frame}
+
+
+\begin{frame}{Two Regressors: The Formulas}
+    In unit-length form, using the $2\times2$ inverse $\begin{bmatrix}a&b\\b&a\end{bmatrix}^{-1}=\dfrac{1}{a^2-b^2}\begin{bmatrix}a&-b\\-b&a\end{bmatrix}$,
     \[
     \bW'\bW=\begin{bmatrix}1&r_{12}\\r_{12}&1\end{bmatrix},
     \qquad
     \bC=(\bW'\bW)^{-1}=\frac{1}{1-r_{12}^2}\begin{bmatrix}1&-r_{12}\\-r_{12}&1\end{bmatrix}.
     \]
     \begin{itemize}
-        \item $\Var(\hat b_1)=\Var(\hat b_2)=\sigma_w^2/(1-r_{12}^2)$.
-        \item $\Cov(\hat b_1,\hat b_2)=-r_{12}\,\sigma_w^2/(1-r_{12}^2)$, so $\Corr(\hat b_1,\hat b_2)=-r_{12}$.
-        \item As $|r_{12}|\to1$ both variances grow without bound, and the estimates become strongly correlated, with the opposite sign to $r_{12}$.
+        \item $\Var(\hat b_1)=\Var(\hat b_2)=\sigma_w^2/(1-r_{12}^2)$ and $\Cov(\hat b_1,\hat b_2)=-r_{12}\,\sigma_w^2/(1-r_{12}^2)$, so $\Corr(\hat b_1,\hat b_2)=-r_{12}$.
+        \item How fast the variance grows with $|r_{12}|$:
+        \begin{center}
+            \footnotesize
+            \begin{tabular}{lccccc}
+                \toprule
+                $|r_{12}|$ & 0 & 0.5 & 0.824 (delivery) & 0.95 & 0.99 \\
+                $1/(1-r_{12}^2)$ & 1 & 1.33 & 3.12 & 10.3 & 50.3 \\
+                \bottomrule
+            \end{tabular}
+        \end{center}
     \end{itemize}
-    \svspace{0.5em}
-    From here on $\bC$ means $(\bW'\bW)^{-1}$, not Lecture 4's $(\bX'\bX)^{-1}$. For a slope coefficient the two are related by $[(\bX'\bX)^{-1}]_{jj}=C_{jj}/S_{jj}$.
+    From here on $\bC$ means $(\bW'\bW)^{-1}$, not Lecture 4's $(\bX'\bX)^{-1}$; for a slope, $[(\bX'\bX)^{-1}]_{jj}=C_{jj}/S_{jj}$.
 \end{frame}
 
 
@@ -174,66 +231,74 @@
     $y=1+2x_1+2x_2+\varepsilon$, $\sigma=1$, $n=30$, the same $\bX$ in 2000 replicates; $x_1,x_2$ have sample standard deviation 1.
     \begin{center}
         % Figure: sim_beta_scatter.pdf (see multicollinearity-simulation.R)
-        \mode<presentation>{\includegraphics[width=0.75\linewidth]{figures/sim_beta_scatter.pdf}}
+        \mode<presentation>{\includegraphics[width=0.66\linewidth]{figures/sim_beta_scatter.pdf}}
         \mode<article>{\includegraphics[width=0.9\linewidth]{figures/sim_beta_scatter.pdf}}
     \end{center}
     \vspace{-0.5em}
-    $r_{12}=0$: $\operatorname{sd}(\hat\beta_1)=0.18$. $r_{12}=0.95$: $\operatorname{sd}(\hat\beta_1)=0.60$ (theory $0.595$) and $\Corr(\hat\beta_1,\hat\beta_2)=-0.95$.
+    Each point is one replicate's pair of estimates. With $r_{12}=0.95$, $\operatorname{sd}(\hat\beta_1)$ grows from $0.18$ to $0.60$, and $\Corr(\hat\beta_1,\hat\beta_2)=-0.95$: a sample that overestimates $\beta_1$ tends to underestimate $\beta_2$, like a seesaw.
 \end{frame}
 
 
 \begin{frame}{Some Combinations Are Still Well Estimated}
-    With $\bC$ from the two-regressor case,
+    The seesaw suggests looking at the sum and the difference. Using $\Var(U\pm V)=\Var(U)+\Var(V)\pm2\Cov(U,V)$ and the formulas of the two-regressor case,
     \begin{align*}
-        \Var(\hat b_1+\hat b_2) &= \sigma_w^2\,\frac{2-2r_{12}}{1-r_{12}^2}=\frac{2\sigma_w^2}{1+r_{12}}, \\
-        \Var(\hat b_1-\hat b_2) &= \sigma_w^2\,\frac{2+2r_{12}}{1-r_{12}^2}=\frac{2\sigma_w^2}{1-r_{12}}.
+        \Var(\hat b_1+\hat b_2) &= \frac{\sigma_w^2\,(2-2r_{12})}{1-r_{12}^2}=\frac{2\sigma_w^2}{1+r_{12}}, &
+        \Var(\hat b_1-\hat b_2) &= \frac{\sigma_w^2\,(2+2r_{12})}{1-r_{12}^2}=\frac{2\sigma_w^2}{1-r_{12}}.
     \end{align*}
     \begin{itemize}
         \item For $r_{12}=0.95$: the sum has variance $1.03\sigma_w^2$, the difference $40\sigma_w^2$.
-        \item In the scatter plot, the cloud stretches along the line $\hat\beta_1+\hat\beta_2=4$ and is narrow across it.
+        \item In the sum, the seesaw errors cancel; in the difference, they add up. In the scatter plot, the cloud stretches along the line $\hat\beta_1+\hat\beta_2=4$ and is narrow across it.
         \item The data say a lot about the combined effect of $x_1$ and $x_2$, and little about how to split it between them.
     \end{itemize}
 \end{frame}
 
 
+\subsection{Many Regressors}
+
+
 \begin{frame}{The General Case}
-    For $k$ regressors in unit-length form, $\bC=(\bW'\bW)^{-1}$ and
-    \[
-    C_{jj}=\frac{1}{1-R_j^2},
-    \qquad
-    \Var(\hat b_j)=\frac{\sigma_w^2}{1-R_j^2},
-    \]
-    where $R_j^2$ is the coefficient of determination from regressing $x_j$ on the other $k-1$ regressors (derived in the VIF section). Since $\hat\beta_j=\hat b_j\sqrt{\SST/S_{jj}}$ and $\sigma_w^2=\sigma^2/\SST$, in original units
-    \[
-    \Var(\hat\beta_j)=\frac{\sigma^2}{S_{jj}}\cdot\frac{1}{1-R_j^2},
-    \]
-    the same formula as in the added-variable plot of Lecture 9.
-\end{frame}
-
-
-\begin{frame}{The Estimates Are Too Long on Average}
-    Let $L^2=(\hat{\bb}-\bb)'(\hat{\bb}-\bb)$ be the squared distance from the estimate to the true coefficients. With eigenvalues $\lambda_1,\dots,\lambda_k$ of $\bW'\bW$,
-    \begin{align*}
-        \E(L^2) &= \sum_{j=1}^k\Var(\hat b_j)=\sigma_w^2\tr(\bW'\bW)^{-1}=\sigma_w^2\sum_{j=1}^k\frac{1}{\lambda_j}, \\
-        \E(\hat{\bb}'\hat{\bb}) &= \bb'\bb+\sigma_w^2\sum_{j=1}^k\frac{1}{\lambda_j}.
-    \end{align*}
+    Start from simple linear regression (Lecture 2): $\Var(\hat\beta_1)=\sigma^2/S_{xx}$. The more $x$ varies, the more precisely its slope is estimated.
     \begin{itemize}
-        \item The trace of a matrix is the sum of its eigenvalues, and the eigenvalues of $(\bW'\bW)^{-1}$ are $1/\lambda_j$.
-        \item One small $\lambda_j$ is enough to make $\E(L^2)$ large. Orthogonal regressors have all $\lambda_j=1$ and $\E(L^2)=k\sigma_w^2$.
+        \item With several regressors, only the part of $x_j$ that the others cannot predict helps estimate $\beta_j$ (the idea at the start of this section).
+        \item That part is the residual from regressing $x_j$ on the other regressors. Its sum of squares is $(1-R_j^2)\,S_{jj}$, where $R_j^2$ is the $R^2$ of that regression (Lecture 9, added-variable plot).
+        \item Replace $S_{xx}$ by this smaller amount:
+        \[
+        \Var(\hat\beta_j)=\frac{\sigma^2}{(1-R_j^2)\,S_{jj}}=\frac{\sigma^2}{S_{jj}}\cdot\frac{1}{1-R_j^2},
+        \qquad
+        \Var(\hat b_j)=\frac{\sigma_w^2}{1-R_j^2}=\sigma_w^2\,C_{jj}.
+        \]
+        \item Two regressors: $R_1^2=r_{12}^2$, which gives back the formulas above.
     \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Acetylene Data: Length of the Estimate}
-    \begin{itemize}
-        \item $\sum_j1/\lambda_j=10{,}610$, against $9$ for orthogonal regressors.
-        \item In the unit-length scale, $\hat\sigma_w^2=\MSRes/\SST=0.8126/2123.7=0.000383$.
-        \item Least squares: $\hat{\bb}'\hat{\bb}=6.77$.
-        \item Expected inflation from noise alone: $\hat\sigma_w^2\sum_j1/\lambda_j=0.000383\times10{,}610=4.06$.
-    \end{itemize}
-    \svspace{0.5em}
-    More than half of the squared length of the least-squares coefficient vector can be accounted for by the variance, not by the true coefficients.
-\end{frame}
+% --- frame commented out (kept for reference) ---
+% \begin{frame}{The Estimates Are Too Long on Average}
+%     Measure how far the estimate is from the truth by the squared distance $L^2=\sum_j(\hat b_j-b_j)^2$. Since each $\hat b_j$ is unbiased, $\E(\hat b_j-b_j)^2=\Var(\hat b_j)$, and
+%     \[
+%     \E(L^2)=\sum_{j=1}^k\Var(\hat b_j)=\sigma_w^2\sum_{j=1}^k\frac{1}{1-R_j^2},
+%     \qquad
+%     \E\Bigl(\sum_j\hat b_j^{\,2}\Bigr)=\sum_jb_j^2+\E(L^2).
+%     \]
+%     \begin{itemize}
+%         \item The second identity holds because $\E(\hat b_j^{\,2})=b_j^2+\Var(\hat b_j)$: noise always adds to the squared size of a coefficient on average.
+%         \item So with large variances, least-squares coefficients tend to be too large in magnitude, often with offsetting signs.
+%         \item Uncorrelated regressors have all $R_j^2=0$ and $\E(L^2)=k\sigma_w^2$. One badly predicted coefficient is enough to make $\E(L^2)$ large.
+%     \end{itemize}
+% \end{frame}
+
+
+% --- frame commented out (kept for reference) ---
+% \begin{frame}{Acetylene Data: Length of the Estimate}
+%     \begin{itemize}
+%         \item $\sum_j1/(1-R_j^2)=10{,}610$, against $9$ for uncorrelated regressors.
+%         \item In the unit-length scale, $\hat\sigma_w^2=\MSRes/\SST=0.8126/2123.7=0.000383$.
+%         \item Least squares: $\sum_j\hat b_j^{\,2}=6.77$.
+%         \item Expected inflation from noise alone: $\hat\sigma_w^2\sum_j1/(1-R_j^2)=0.000383\times10{,}610=4.06$.
+%     \end{itemize}
+%     \svspace{0.5em}
+%     More than half of the squared length of the least-squares coefficient vector can be accounted for by noise, not by the true coefficients.
+% \end{frame}
 
 
 \begin{frame}{Symptoms in a Fitted Model}
@@ -248,39 +313,44 @@
 \end{frame}
 
 
+\subsection{Prediction}
+
+
 \begin{frame}{Prediction Is Not Always Hurt}
+    A prediction uses the coefficients only in combination. With two regressors in unit-length form, the part of the prediction error at a new point $(w_{01},w_{02})$ that comes from the slopes is
     \[
-    \Var(\hat y_0)=\sigma^2\,\bx_0'(\bX'\bX)^{-1}\bx_0
+    w_{01}(\hat b_1-b_1)+w_{02}(\hat b_2-b_2).
     \]
     \begin{itemize}
-        \item If $\bx_0$ follows the same pattern as the data (acetylene: high temperature with short contact time), $\hat y_0$ is precise: the errors in the correlated $\hat\beta_j$ cancel through their covariances (next slide).
-        \item If $\bx_0$ breaks the pattern (high temperature with long contact time), the prediction depends on exactly those directions the data cannot estimate, and $\Var(\hat y_0)$ is large.
-        \item Multicollinearity is mainly a problem for \emph{interpreting} coefficients and for \emph{extrapolating} outside the region of the data.
+        \item If the new point follows the same pattern as the data (acetylene: high temperature with short contact time), this is a combination the data estimate well, and the prediction is precise (next slide).
+        \item If the new point breaks the pattern (high temperature with long contact time), it needs exactly the combination the data cannot estimate, and the prediction is poor.
+        \item So multicollinearity is mainly a problem for \emph{interpreting} coefficients and for \emph{extrapolating} outside the region of the data.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Why the Errors Cancel: Two Regressors}
-    In unit-length form, a new point $(w_{01},w_{02})$ has
-    \[
-    \Var(w_{01}\hat b_1+w_{02}\hat b_2)=\sigma_w^2\,\frac{w_{01}^2+w_{02}^2-2r_{12}\,w_{01}w_{02}}{1-r_{12}^2}.
-    \]
-    \begin{center}
-        \footnotesize
-        \begin{tabular}{lcc}
-            \toprule
-            & $r_{12}>0$ & $r_{12}<0$ (acetylene) \\
-            \midrule
-            Data pattern & rise together & one up, one down \\
-            $\Cov(\hat b_1,\hat b_2)$ & $<0$: errors opposite & $>0$: errors alike \\
-            Point along the pattern & $w_{02}=w_{01}$ & $w_{02}=-w_{01}$ \\
-            Weights on the errors & same sign & opposite signs \\
-            Variance along the pattern (small) & $2w_{01}^2\sigma_w^2/(1+|r_{12}|)$ & $2w_{01}^2\sigma_w^2/(1+|r_{12}|)$ \\
-            Variance against it (large) & $2w_{01}^2\sigma_w^2/(1-|r_{12}|)$ & $2w_{01}^2\sigma_w^2/(1-|r_{12}|)$ \\
-            \bottomrule
-        \end{tabular}
-    \end{center}
-    Whatever the sign of $r_{12}$, the errors cancel when the new point lies along the pattern of the data.
+    \footnotesize
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{$r_{12}>0$: $x_1$ and $x_2$ rise together.}
+            \begin{itemize}
+                \item $\Corr(\hat b_1,\hat b_2)=-r_{12}<0$: the errors tend to have opposite signs (the seesaw).
+                \item A typical new point has both regressors up together: $w_{01}=w_{02}=w$.
+                \item Its error is $w\,[(\hat b_1-b_1)+(\hat b_2-b_2)]$, the \emph{sum}: opposite errors cancel. Variance $2w^2\sigma_w^2/(1+r_{12})$: small.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \textbf{$r_{12}<0$: one rises as the other falls (acetylene).}
+            \begin{itemize}
+                \item $\Corr(\hat b_1,\hat b_2)=-r_{12}>0$: the errors tend to have the \emph{same} sign.
+                \item A typical new point has one regressor up, the other down: $w_{02}=-w_{01}$.
+                \item Its error is $w_{01}[(\hat b_1-b_1)-(\hat b_2-b_2)]$, the \emph{difference}: like errors cancel. Variance $2w_{01}^2\sigma_w^2/(1-r_{12})$: small, since $r_{12}<0$.
+            \end{itemize}
+        \end{column}
+    \end{columns}
+    \svspace{0.5em}
+    Both variances come from $\Var(\hat b_1\pm\hat b_2)$ on ``Some Combinations Are Still Well Estimated''. With $|r_{12}|=0.95$: $1.03\,w^2\sigma_w^2$ along the pattern, $40\,w^2\sigma_w^2$ against it.
 \end{frame}
 
 
@@ -396,31 +466,38 @@
 \section{Detection: Variance Inflation Factors}
 
 
+\subsection{Definition and Guidelines}
+
+
 \begin{frame}{Variance Inflation Factor}
+    The factor $1/(1-R_j^2)$ from ``The General Case'' gets a name:
     \[
-    \VIF_j=C_{jj}=\bigl[(\bW'\bW)^{-1}\bigr]_{jj}=\frac{1}{1-R_j^2}
+    \VIF_j=\frac{1}{1-R_j^2}=C_{jj}=\bigl[(\bW'\bW)^{-1}\bigr]_{jj},
+    \qquad
+    \Var(\hat\beta_j)=\frac{\sigma^2}{S_{jj}}\,\VIF_j .
     \]
     \begin{itemize}
-        \item $R_j^2$: coefficient of determination from regressing $x_j$ on the other regressors.
-        \item $\Var(\hat\beta_j)=\dfrac{\sigma^2}{S_{jj}}\,\VIF_j$: the factor by which the variance is inflated compared with regressors that are uncorrelated with $x_j$.
+        \item $R_j^2$: the $R^2$ from regressing $x_j$ on the other regressors, i.e.\ how well the others predict $x_j$.
+        \item Only the fraction $1-R_j^2$ of the variation in $x_j$ is free to estimate $\beta_j$. The VIF is its reciprocal: how many times larger $\Var(\hat\beta_j)$ is than if $x_j$ were uncorrelated with the other regressors.
         \item Standard errors and confidence intervals are inflated by $\sqrt{\VIF_j}$.
         \item $\VIF_j\ge1$, with equality when $x_j$ is uncorrelated with every other regressor.
     \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Why $C_{jj}=1/(1-R_j^2)$}
-    Put $\bw_j$ first: $\bW=[\bw_j\ \ \bW_{(-j)}]$. By the formula for the inverse of a partitioned matrix,
-    \[
-    C_{jj}=\Bigl[\bw_j'\bw_j-\bw_j'\bW_{(-j)}\bigl(\bW_{(-j)}'\bW_{(-j)}\bigr)^{-1}\bW_{(-j)}'\bw_j\Bigr]^{-1}
-    =\Bigl[\bw_j'(\bI-\bH_{(-j)})\bw_j\Bigr]^{-1}.
-    \]
-    \begin{itemize}
-        \item $\bw_j'(\bI-\bH_{(-j)})\bw_j$ is the residual sum of squares from regressing $\bw_j$ on $\bW_{(-j)}$.
-        \item $\bw_j$ has mean 0 and $\bw_j'\bw_j=1$, so its total sum of squares is 1 and this residual sum of squares equals $1-R_j^2$.
-        \item The same quantity appeared in Lecture 9 as the horizontal spread of the added-variable plot.
-    \end{itemize}
-\end{frame}
+% --- frame commented out (kept for reference) ---
+% \begin{frame}{Why $C_{jj}=1/(1-R_j^2)$}
+%     Put $\bw_j$ first: $\bW=[\bw_j\ \ \bW_{(-j)}]$. By the formula for the inverse of a partitioned matrix,
+%     \[
+%     C_{jj}=\Bigl[\bw_j'\bw_j-\bw_j'\bW_{(-j)}\bigl(\bW_{(-j)}'\bW_{(-j)}\bigr)^{-1}\bW_{(-j)}'\bw_j\Bigr]^{-1}
+%     =\Bigl[\bw_j'(\bI-\bH_{(-j)})\bw_j\Bigr]^{-1}.
+%     \]
+%     \begin{itemize}
+%         \item $\bw_j'(\bI-\bH_{(-j)})\bw_j$ is the residual sum of squares from regressing $\bw_j$ on $\bW_{(-j)}$.
+%         \item $\bw_j$ has mean 0 and $\bw_j'\bw_j=1$, so its total sum of squares is 1 and this residual sum of squares equals $1-R_j^2$.
+%         \item The same quantity appeared in Lecture 9 as the horizontal spread of the added-variable plot.
+%     \end{itemize}
+% \end{frame}
 
 
 \begin{frame}{How Large Is Too Large?}
@@ -440,6 +517,9 @@
         \end{column}
     \end{columns}
 \end{frame}
+
+
+\subsection{Examples and Limits}
 
 
 \begin{frame}{Acetylene Data: VIFs}
@@ -549,24 +629,73 @@
 \section{Detection: Eigensystem Analysis}
 
 
-\begin{frame}{Eigenvalues of $\bW'\bW$}
-    \[
-    \bW'\bW=\bV\bLambda\bV',\qquad \bLambda=\operatorname{diag}(\lambda_1,\dots,\lambda_k),\quad\lambda_1\ge\cdots\ge\lambda_k>0
-    \]
+\subsection{Eigenvalues as Spreads}
+
+
+\begin{frame}{Looking for Thin Directions}
+    VIFs say \emph{which} coefficients suffer, but not \emph{which combination} of regressors is nearly constant. To find it, look at the cloud of regressor values from every direction and ask where it is thin.
+    \svspace{0.5em}
     \begin{itemize}
-        \item $\bV=[\bv_1,\dots,\bv_k]$ is orthogonal: the eigenvectors are orthonormal.
-        \item $\sum_j\lambda_j=\tr(\bW'\bW)=k$, since each diagonal element is 1.
-        \item Orthogonal regressors: all $\lambda_j=1$.
-        \item A near dependence shows up as a small eigenvalue:
+        \item A direction is a unit vector $\bv=(v_1,\dots,v_k)'$ with $\bv'\bv=1$.
+        \item The position of observation $i$ along $\bv$ is the combination $\sum_lv_lw_{il}$; for all observations together, $\bW\bv$.
+        \item The spread of the cloud along $\bv$ is the sum of squares of these positions:
         \[
-        (\bW\bv_j)'(\bW\bv_j)=\bv_j'\bW'\bW\bv_j=\lambda_j .
+        (\bW\bv)'(\bW\bv)=\bv'\bW'\bW\bv .
         \]
-        If $\lambda_j\approx0$, the combination $\bW\bv_j=\sum_l v_{lj}\bw_l$ is close to $\bzero$ for every observation.
+        \item A thin direction, with spread near 0, means $\sum_lv_lw_{il}\approx0$ for \emph{every} observation: a near dependence among the regressors with weights $v_l$.
     \end{itemize}
 \end{frame}
 
 
+\begin{frame}{Two Regressors: The Spread in Each Direction}
+    \begin{center}
+        % Figure: sim_eigen_directions.pdf (see multicollinearity-simulation.R)
+        \mode<presentation>{\includegraphics[width=0.72\linewidth]{figures/sim_eigen_directions.pdf}}
+        \mode<article>{\includegraphics[width=0.9\linewidth]{figures/sim_eigen_directions.pdf}}
+    \end{center}
+    \vspace{-0.5em}
+    \small
+    With $\bW'\bW=\begin{bmatrix}1&r\\r&1\end{bmatrix}$: along $\bv_1=(1,1)'/\sqrt2$ the spread is $\tfrac12(1+1+2r)=1+r$; across it, along $\bv_2=(1,-1)'/\sqrt2$, it is $1-r$. With $r=0.95$ the cloud is $1.95$ wide one way and only $0.05$ the other: $w_1-w_2\approx0$, so $x_1$ and $x_2$ move together.
+\end{frame}
+
+
+\begin{frame}{Eigenvalues Are the Spreads}
+    The directions of largest and smallest spread are the \textbf{eigenvectors} of $\bW'\bW$, and the spreads are the \textbf{eigenvalues}:
+    \[
+    \bW'\bW\bv_j=\lambda_j\bv_j,\ \ \bv_j'\bv_j=1
+    \quad\Longrightarrow\quad
+    \bv_j'\bW'\bW\bv_j=\lambda_j .
+    \]
+    \begin{itemize}
+        \item With $k$ regressors there are $k$ perpendicular directions $\bv_1,\dots,\bv_k$, with spreads $\lambda_1\ge\cdots\ge\lambda_k>0$. In matrix form, $\bW'\bW=\bV\bLambda\bV'$.
+        \item The total spread is fixed: $\sum_j\lambda_j=k$, because each column has length 1.
+        \item Uncorrelated regressors: a round cloud, all $\lambda_j=1$.
+        \item A small $\lambda_j$ is a thin direction: a near dependence, and the entries of $\bv_j$ show which regressors take part.
+        \item Delivery data: $\lambda=1.824,\ 0.176$; acetylene: the smallest is $0.000097$.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Thin Directions Are Poorly Estimated}
+    \small
+    The combination of coefficients along a direction, $\bv_j'\hat{\bb}$, has
+    \[
+    \Var(\bv_j'\hat{\bb})=\frac{\sigma_w^2}{\lambda_j} .
+    \]
+    \begin{itemize}
+        \item Little spread in a direction means little information about the coefficients in that direction, exactly as $\Var(\hat\beta_1)=\sigma^2/S_{xx}$ in simple regression.
+        \item Check with two regressors: $\bv_2'\hat{\bb}=(\hat b_1-\hat b_2)/\sqrt2$ has variance $\tfrac12\cdot2\sigma_w^2/(1-r)=\sigma_w^2/(1-r)=\sigma_w^2/\lambda_2$, as on the slide ``Some Combinations Are Still Well Estimated''.
+        \item Adding over all directions gives $\sum_j\VIF_j=\sum_j1/\lambda_j$: one tiny eigenvalue is enough to make the total variance of the coefficients huge. Acetylene: $\sum_j1/\lambda_j=10{,}610$, against $9$ for uncorrelated regressors.
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Condition Number}
+
+
 \begin{frame}{Condition Number and Condition Indices}
+    \small
+    How elongated is the cloud? Compare the widest direction with each of the others:
     \[
     \kappa=\frac{\lambda_{\max}}{\lambda_{\min}},
     \qquad
@@ -574,19 +703,16 @@
     \]
     \begin{center}
         \small
-        \begin{tabular}{ll}
+        \begin{tabular}{lccc}
             \toprule
-            Condition number & Multicollinearity \\
-            \midrule
-            $\kappa<100$ & no serious problem \\
-            $100\le\kappa\le1000$ & moderate to strong \\
-            $\kappa>1000$ & severe \\
+            Condition number & $\kappa<100$ & $100\le\kappa\le1000$ & $\kappa>1000$ \\
+            Multicollinearity & no serious problem & moderate to strong & severe \\
             \bottomrule
         \end{tabular}
     \end{center}
     \begin{itemize}
-        \item The number of condition indices $\kappa_j$ above 1000 counts the near dependencies that are severe.
-        \item $\det(\bW'\bW)=\prod_j\lambda_j$ lies between 0 and 1 and is close to 0 under multicollinearity, but it does not say how many dependencies there are.
+        \item $\kappa$ describes the whole cloud. Each condition index $\kappa_j$ belongs to one direction, so the number of $\kappa_j$ above 1000 counts the severe near dependencies.
+        \item $\det(\bW'\bW)=\prod_j\lambda_j$ lies between 0 and 1 and is close to 0 if any direction is thin, but it does not say how many thin directions there are.
     \end{itemize}
 \end{frame}
 
@@ -614,8 +740,11 @@
 \end{frame}
 
 
+\subsection{Finding the Dependency}
+
+
 \begin{frame}{Acetylene Data: Which Terms Are Involved?}
-    Eigenvector for $\lambda_9=0.000097$:
+    The thinnest direction: eigenvector for $\lambda_9=0.000097$.
     \begin{center}
         \small
         \begin{tabular}{ccccccccc}
@@ -678,43 +807,45 @@
 \end{frame}
 
 
-\begin{frame}{Variance-Decomposition Proportions}
-    Belsley, Kuh and Welsch (1980) split each variance by eigenvalue. From $\bC=\bV\bLambda^{-1}\bV'$,
-    \[
-    \VIF_j=C_{jj}=\sum_{s=1}^k\frac{v_{js}^2}{\lambda_s},
-    \qquad
-    \pi_{sj}=\frac{v_{js}^2/\lambda_s}{\VIF_j}.
-    \]
-    \begin{itemize}
-        \item $\pi_{sj}$ is the share of $\Var(\hat b_j)$ that comes from eigenvalue $s$; each column of proportions sums to 1.
-        \item Condition index $\eta_s=\sqrt{\lambda_{\max}/\lambda_s}$ (the square root of $\kappa_s$).
-        \item Rule: a row with $\eta_s>30$ and two or more $\pi_{sj}>0.5$ marks a dependency among those regressors.
-        \item Belsley, Kuh and Welsch use $\bX$ scaled to unit length but not centered, with the intercept column; here we use $\bW$ to match the rest of the lecture.
-    \end{itemize}
-\end{frame}
+% --- frame commented out (kept for reference) ---
+% \begin{frame}{Variance-Decomposition Proportions}
+%     Belsley, Kuh and Welsch (1980) split each variance by eigenvalue. From $\bC=\bV\bLambda^{-1}\bV'$,
+%     \[
+%     \VIF_j=C_{jj}=\sum_{s=1}^k\frac{v_{js}^2}{\lambda_s},
+%     \qquad
+%     \pi_{sj}=\frac{v_{js}^2/\lambda_s}{\VIF_j}.
+%     \]
+%     \begin{itemize}
+%         \item $\pi_{sj}$ is the share of $\Var(\hat b_j)$ that comes from eigenvalue $s$; each column of proportions sums to 1.
+%         \item Condition index $\eta_s=\sqrt{\lambda_{\max}/\lambda_s}$ (the square root of $\kappa_s$).
+%         \item Rule: a row with $\eta_s>30$ and two or more $\pi_{sj}>0.5$ marks a dependency among those regressors.
+%         \item Belsley, Kuh and Welsch use $\bX$ scaled to unit length but not centered, with the intercept column; here we use $\bW$ to match the rest of the lecture.
+%     \end{itemize}
+% \end{frame}
 
 
-\begin{frame}{Acetylene Data: Variance-Decomposition Proportions}
-    \begin{center}
-        \small
-        \begin{tabular}{rrccccccccc}
-            \toprule
-            $s$ & $\eta_s$ & $x_1$ & $x_2$ & $x_3$ & $x_1x_2$ & $x_1x_3$ & $x_2x_3$ & $x_1^2$ & $x_2^2$ & $x_3^2$ \\
-            \midrule
-            5 & 3.3 & .000 & .508 & .000 & .002 & .000 & .003 & .000 & .442 & .000 \\
-            6 & 9.2 & .003 & .005 & .000 & .087 & .000 & .056 & .003 & .032 & .007 \\
-            7 & 17.6 & .010 & .005 & .003 & \textbf{.822} & .000 & \textbf{.793} & .004 & .000 & .005 \\
-            8 & 28.6 & .151 & .093 & .146 & .077 & .001 & .121 & .000 & .353 & .023 \\
-            9 & 208.3 & \textbf{.835} & .065 & \textbf{.851} & .002 & \textbf{.999} & .020 & \textbf{.992} & .082 & \textbf{.965} \\
-            \bottomrule
-        \end{tabular}
-    \end{center}
-    Rows 1--4 are omitted (all proportions small except $x_2$: $0.290$ in row 4).
-    \begin{itemize}
-        \item Row 9: the temperature and contact time terms, as the eigenvector showed.
-        \item Row 7 ($\eta=17.6$, below 30 but clear): $x_1x_2$ and $x_2x_3$, which are nearly opposite because $x_1\approx-x_3$.
-    \end{itemize}
-\end{frame}
+% --- frame commented out (kept for reference) ---
+% \begin{frame}{Acetylene Data: Variance-Decomposition Proportions}
+%     \begin{center}
+%         \small
+%         \begin{tabular}{rrccccccccc}
+%             \toprule
+%             $s$ & $\eta_s$ & $x_1$ & $x_2$ & $x_3$ & $x_1x_2$ & $x_1x_3$ & $x_2x_3$ & $x_1^2$ & $x_2^2$ & $x_3^2$ \\
+%             \midrule
+%             5 & 3.3 & .000 & .508 & .000 & .002 & .000 & .003 & .000 & .442 & .000 \\
+%             6 & 9.2 & .003 & .005 & .000 & .087 & .000 & .056 & .003 & .032 & .007 \\
+%             7 & 17.6 & .010 & .005 & .003 & \textbf{.822} & .000 & \textbf{.793} & .004 & .000 & .005 \\
+%             8 & 28.6 & .151 & .093 & .146 & .077 & .001 & .121 & .000 & .353 & .023 \\
+%             9 & 208.3 & \textbf{.835} & .065 & \textbf{.851} & .002 & \textbf{.999} & .020 & \textbf{.992} & .082 & \textbf{.965} \\
+%             \bottomrule
+%         \end{tabular}
+%     \end{center}
+%     Rows 1--4 are omitted (all proportions small except $x_2$: $0.290$ in row 4).
+%     \begin{itemize}
+%         \item Row 9: the temperature and contact time terms, as the eigenvector showed.
+%         \item Row 7 ($\eta=17.6$, below 30 but clear): $x_1x_2$ and $x_2x_3$, which are nearly opposite because $x_1\approx-x_3$.
+%     \end{itemize}
+% \end{frame}
 
 
 \begin{frame}{Question: Why Must Some Eigenvalue Be Small?}
@@ -741,6 +872,9 @@
     \svspace{0.5em}
     Which one fits depends on the source of the problem and on whether the goal is interpreting coefficients or predicting.
 \end{frame}
+
+
+\subsection{Better Data or a Better Model}
 
 
 \begin{frame}{Collecting Additional Data}
@@ -812,54 +946,117 @@
 \end{frame}
 
 
-\begin{frame}{Ridge Regression}
-    In unit-length form, for a constant $\theta\ge0$,
-    \[
-    \hat{\bb}_R=(\bW'\bW+\theta\bI)^{-1}\bW'\by^*.
-    \]
+\subsection{Ridge Regression}
+
+
+\begin{frame}{Ridge Regression: The Idea}
     \begin{itemize}
-        \item $\theta=0$ gives least squares.
-        \item Adding $\theta\bI$ adds $\theta$ to every eigenvalue: $\lambda_j\to\lambda_j+\theta$. The smallest eigenvalues, which caused the trouble, change the most in relative terms.
-        \item Equivalently, $\hat{\bb}_R$ minimizes the penalized residual sum of squares
+        \item Along a thin direction the data carry almost no information, so least squares fits the noise there. The result is large coefficients that offset one another: acetylene, $x_1x_3$: $-2.03$, $x_1^2$: $-0.83$, $x_3^2$: $-1.00$.
+        \item Ridge regression adds a penalty for large coefficients. In unit-length form, it minimizes
         \[
-        (\by^*-\bW\bb)'(\by^*-\bW\bb)+\theta\,\bb'\bb .
+        \underbrace{(\by^*-\bW\bb)'(\by^*-\bW\bb)}_{\text{lack of fit}}+\underbrace{\theta\,\bb'\bb}_{\text{size of the coefficients}},\qquad\theta\ge0 .
         \]
-        Setting the gradient $-2\bW'\by^*+2\bW'\bW\bb+2\theta\bb$ to zero gives $\hat{\bb}_R$. Large coefficients are penalized, so $\hat{\bb}_R$ is shorter than $\hat{\bb}$.
+        \item Setting the gradient $-2\bW'\by^*+2\bW'\bW\bb+2\theta\bb$ to zero gives
+        \[
+        \hat{\bb}_R=(\bW'\bW+\theta\bI)^{-1}\bW'\by^* .
+        \]
+        \item $\theta=0$ gives least squares; a larger $\theta$ gives shorter coefficient vectors.
     \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Ridge as Least Squares on Augmented Data}
-    Append $k$ pseudo-observations: rows $\sqrt{\theta}\,\bI$ to $\bW$ and zeros to $\by^*$:
-    \[
-    \bW_A=\begin{bmatrix}\bW\\\sqrt{\theta}\,\bI\end{bmatrix},
-    \qquad
-    \by_A=\begin{bmatrix}\by^*\\\bzero\end{bmatrix}.
-    \]
-    \begin{itemize}
-        \item $\bW_A'\bW_A=\bW'\bW+\theta\bI$ and $\bW_A'\by_A=\bW'\by^*$, so least squares on the augmented data gives $\hat{\bb}_R$.
-        \item The pseudo-observations fill in the missing directions of the regressor space, with responses that pull the coefficients toward 0.
-        \item Ridge regression can be fit with any least-squares routine.
-    \end{itemize}
+% --- frame commented out (kept for reference) ---
+% \begin{frame}{Ridge as Least Squares on Augmented Data}
+%     Append $k$ pseudo-observations: rows $\sqrt{\theta}\,\bI$ to $\bW$ and zeros to $\by^*$:
+%     \[
+%     \bW_A=\begin{bmatrix}\bW\\\sqrt{\theta}\,\bI\end{bmatrix},
+%     \qquad
+%     \by_A=\begin{bmatrix}\by^*\\\bzero\end{bmatrix}.
+%     \]
+%     \begin{itemize}
+%         \item $\bW_A'\bW_A=\bW'\bW+\theta\bI$ and $\bW_A'\by_A=\bW'\by^*$, so least squares on the augmented data gives $\hat{\bb}_R$.
+%         \item The pseudo-observations fill in the missing directions of the regressor space, with responses that pull the coefficients toward 0.
+%         \item Ridge regression can be fit with any least-squares routine.
+%     \end{itemize}
+% \end{frame}
+
+
+% --- frame commented out (kept for reference) ---
+% \begin{frame}{What Ridge Does in Each Direction}
+%     Look at the coefficients along each eigen-direction: $\alpha_j=\bv_j'\bb$ (true), $\hat\alpha_j=\bv_j'\hat{\bb}$ (least squares), and $\bv_j'\hat{\bb}_R$ (ridge).
+%     \begin{itemize}
+%         \item $\bW'\bW+\theta\bI$ has the same eigenvectors as $\bW'\bW$, with eigenvalues $\lambda_j+\theta$: ridge adds $\theta$ to the spread of every direction.
+%         \item Therefore $\bv_j'\hat{\bb}_R=\dfrac{\bv_j'\bW'\by^*}{\lambda_j+\theta}$, while $\hat\alpha_j=\dfrac{\bv_j'\bW'\by^*}{\lambda_j}$, so
+%         \[
+%         \bv_j'\hat{\bb}_R=\frac{\lambda_j}{\lambda_j+\theta}\,\hat\alpha_j .
+%         \]
+%         \item Wide directions ($\lambda_j\gg\theta$) are left almost alone; thin directions ($\lambda_j\ll\theta$), where $\hat\alpha_j$ is mostly noise, are shrunk toward 0.
+%         \item Acetylene with $\theta=0.032$: the factor is $0.99$ for $\lambda_1=4.21$, $0.61$ for $\lambda_6=0.050$, and $0.003$ for $\lambda_9=0.0001$.
+%     \end{itemize}
+% \end{frame}
+
+
+% --- frame commented out (kept for reference) ---
+% \begin{frame}{Bias and Variance of the Ridge Estimator}
+%     \small
+%     In direction $j$ the ridge estimate is $c_j\hat\alpha_j$ with $c_j=\lambda_j/(\lambda_j+\theta)$, and $\Var(\hat\alpha_j)=\sigma_w^2/\lambda_j$.
+%     \begin{itemize}
+%         \item Variance $c_j^2\,\sigma_w^2/\lambda_j=\sigma_w^2\lambda_j/(\lambda_j+\theta)^2$, smaller than $\sigma_w^2/\lambda_j$; bias $c_j\alpha_j-\alpha_j=-\theta\,\alpha_j/(\lambda_j+\theta)$, toward 0.
+%         \item The directions are perpendicular, so the squared errors add over directions:
+%         \[
+%         \E\bigl[(\hat{\bb}_R-\bb)'(\hat{\bb}_R-\bb)\bigr]
+%         =\underbrace{\sigma_w^2\sum_{j=1}^k\frac{\lambda_j}{(\lambda_j+\theta)^2}}_{\text{total variance}}
+%         +\underbrace{\theta^2\sum_{j=1}^k\frac{\alpha_j^2}{(\lambda_j+\theta)^2}}_{\text{squared bias}}.
+%         \]
+%         \item As $\theta$ grows, the variance falls and the bias rises. In a thin direction $\sigma_w^2/\lambda_j$ is huge, so a little bias buys a large drop in variance. Hoerl and Kennard (1970): some $\theta>0$ always beats least squares, whose mean squared error is $\sigma_w^2\sum_j1/\lambda_j$.
+%     \end{itemize}
+% \end{frame}
+
+
+\begin{frame}{How Ridge Treats Each Direction}
+    \begin{columns}[T]
+        \begin{column}{0.54\textwidth}
+            \footnotesize
+            \begin{itemize}
+                \setlength{\itemsep}{0.3em}
+                \item Ridge uses $\bW'\bW+\theta\bI$ in place of $\bW'\bW$: it pretends every direction of the data cloud has $\theta$ more spread than it really has, $\lambda_j\to\lambda_j+\theta$.
+                \item Least squares estimates the coefficient along direction $j$, $\alpha_j=\bv_j'\bb$, by $\hat\alpha_j=\bv_j'\bW'\by^*/\lambda_j$. Ridge divides by the padded spread instead, so it reports $c_j\hat\alpha_j$ with $c_j=\lambda_j/(\lambda_j+\theta)$: real spread over padded spread.
+                \item Wide directions hardly notice the padding ($c_j\approx1$); in thin ones it dominates ($c_j\approx0$).
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.46\textwidth}
+            \centering
+            % Figure: acetylene_shrink_factors.pdf (see multicollinearity-acetylene.R)
+            \mode<presentation>{\includegraphics[width=\linewidth]{figures/acetylene_shrink_factors.pdf}}
+            \mode<article>{\includegraphics[width=0.8\linewidth]{figures/acetylene_shrink_factors.pdf}}
+
+            \footnotesize Acetylene, $\theta=0.032$.
+        \end{column}
+    \end{columns}
 \end{frame}
 
 
-\begin{frame}{Bias and Variance of the Ridge Estimator}
-    $\hat{\bb}_R=\bZ_\theta\hat{\bb}$ with $\bZ_\theta=(\bW'\bW+\theta\bI)^{-1}\bW'\bW$, so
-    \begin{align*}
-        \E(\hat{\bb}_R) &= \bZ_\theta\bb\neq\bb\quad(\theta>0), \\
-        \Var(\hat{\bb}_R) &= \sigma_w^2(\bW'\bW+\theta\bI)^{-1}\bW'\bW(\bW'\bW+\theta\bI)^{-1}.
-    \end{align*}
-    With $\balpha=\bV'\bb$ (coefficients along the eigenvectors), the mean squared error is
-    \[
-    \E\bigl[(\hat{\bb}_R-\bb)'(\hat{\bb}_R-\bb)\bigr]
-    =\underbrace{\sigma_w^2\sum_{j=1}^k\frac{\lambda_j}{(\lambda_j+\theta)^2}}_{\text{total variance}}
-    +\underbrace{\theta^2\sum_{j=1}^k\frac{\alpha_j^2}{(\lambda_j+\theta)^2}}_{\text{squared bias}}.
-    \]
-    \begin{itemize}
-        \item The variance falls and the squared bias rises as $\theta$ increases.
-        \item Hoerl and Kennard (1970): there is always some $\theta>0$ for which the ridge MSE is smaller than the least-squares MSE $\sigma_w^2\sum_j1/\lambda_j$.
-    \end{itemize}
+\begin{frame}{Shrinking Trades a Little Bias for Less Noise}
+    \begin{columns}[T]
+        \begin{column}{0.56\textwidth}
+            \footnotesize
+            In each direction ridge reports $c_j\hat\alpha_j$ instead of $\hat\alpha_j$, with $c_j=\lambda_j/(\lambda_j+\theta)<1$.
+            \begin{itemize}
+                \setlength{\itemsep}{0.2em}
+                \item \textbf{Less noise}: the spread of the estimate shrinks by the factor $c_j$.
+                \item \textbf{Some bias}: on average the estimate is $c_j\alpha_j$, pulled toward 0.
+                \item What matters is the distance from the truth, $\text{MSE}=\text{variance}+\text{bias}^2$. In the picture ($c=0.5$) it halves.
+                \item Shrinking pays most where the noise is largest: the thin directions, exactly where ridge shrinks most (acetylene: $\operatorname{sd}(\hat\alpha_9)=1.99$, factor $0.003$).
+                \item Hoerl and Kennard (1970): some $\theta>0$ always beats least squares in total MSE.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.44\textwidth}
+            \centering
+            % Figure: ridge_bias_variance.pdf (see multicollinearity-simulation.R)
+            \mode<presentation>{\includegraphics[width=\linewidth]{figures/ridge_bias_variance.pdf}}
+            \mode<article>{\includegraphics[width=0.8\linewidth]{figures/ridge_bias_variance.pdf}}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 
@@ -950,21 +1147,87 @@
 \end{frame}
 
 
-\begin{frame}{Principal-Component Regression}
-    Rotate the regressors onto the eigenvectors: $\bZ=\bW\bV$, $\balpha=\bV'\bb$.
-    \[
-    \by^*=\bW\bb+\bvarepsilon^*=\bZ\balpha+\bvarepsilon^*,
-    \qquad
-    \bZ'\bZ=\bV'\bW'\bW\bV=\bLambda.
-    \]
+% --- frame commented out (kept for reference) ---
+% \begin{frame}{Principal-Component Regression: The Idea}
+%     Ridge shrinks every direction a little, by the factor $\lambda_j/(\lambda_j+\theta)$. Principal-component regression (PCR) makes the choice all or nothing:
+%     \begin{itemize}
+%         \item keep the least-squares estimate $\hat\alpha_j$ (factor 1) in the $m$ widest directions;
+%         \item set it to 0 (factor 0) in the thin directions, where it is mostly noise.
+%     \end{itemize}
+%     \svspace{0.5em}
+%     The new regressors are the positions of the observations along each direction, $\bz_j=\bW\bv_j$, called the \textbf{principal components}.
+%     \begin{itemize}
+%         \item They are uncorrelated: $\bZ'\bZ=\bV'\bW'\bW\bV=\bLambda$ for $\bZ=\bW\bV$.
+%         \item The model is the same, only rewritten: $\by^*=\bW\bb+\bvarepsilon^*=\bZ\balpha+\bvarepsilon^*$ with $\balpha=\bV'\bb$.
+%     \end{itemize}
+% \end{frame}
+
+
+% --- frame commented out (kept for reference) ---
+% \begin{frame}{Principal-Component Regression: The Estimator}
+%     \begin{itemize}
+%         \item Because the components are uncorrelated, each coefficient is estimated as in a simple regression: $\hat\alpha_j=\bz_j'\by^*/\lambda_j$, with $\Var(\hat\alpha_j)=\sigma_w^2/\lambda_j$ (the spread of $\bz_j$ is $\lambda_j$).
+%         \item Keep the first $m$ components and translate back to the original coefficients:
+%         \[
+%         \hat{\bb}_{PC}=\sum_{j=1}^m\hat\alpha_j\bv_j .
+%         \]
+%         \item Variance $\sigma_w^2\sum_{j\le m}1/\lambda_j$: the huge terms from the thin directions are gone.
+%         \item Bias: the dropped $\alpha_j$ are set to 0, which is wrong unless they really are 0.
+%     \end{itemize}
+% \end{frame}
+
+
+\subsection{Principal-Component Regression}
+
+
+\begin{frame}{Background: Principal Component Analysis}
+    Principal component analysis (PCA) replaces $k$ correlated variables by $k$ new variables that are \textbf{combinations} of the originals, \textbf{uncorrelated} with one another, and \textbf{ordered} from the one that varies most to the one that varies least.
+    \svspace{0.5em}
+
+    They are the eigen-directions of the eigenvalue section. The $j$th \textbf{principal component} is each observation's position along $\bv_j$, $\bz_j=\bW\bv_j=\sum_lv_{lj}\bw_l$, and its spread is $\lambda_j$. Since $\sum_j\lambda_j=k$, component $j$ carries the share $\lambda_j/k$ of the total spread.
     \begin{itemize}
-        \item The columns of $\bZ$ (the principal components) are orthogonal, so $\hat\alpha_j=\bz_j'\by^*/\lambda_j$ and $\Var(\hat\alpha_j)=\sigma_w^2/\lambda_j$.
-        \item Components with small $\lambda_j$ have huge variance. PCR sets their $\alpha_j$ to 0 and keeps the first $m$:
-        \[
-        \hat{\bb}_{PC}=\sum_{j=1}^m\hat\alpha_j\bv_j .
-        \]
-        \item Variance $\sigma_w^2\sum_{j\le m}1/\lambda_j$; bias from the dropped components, unless their true $\alpha_j$ are 0.
+        \item Two regressors, $r=0.95$: $\bz_1\propto\bw_1+\bw_2$, the overall level (97.5\% of the spread), and $\bz_2\propto\bw_1-\bw_2$, the difference (2.5\%): the long and short lines of the earlier figure.
+        \item Acetylene: the first five components carry 99.2\% of the spread, the last three 0.2\%.
     \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Principal-Component Regression: The Idea}
+    \begin{itemize}
+        \item Regress $y$ on the principal components instead of on the original regressors. The model is the same, only rewritten: with $\bZ=\bW\bV$ and $\balpha=\bV'\bb$,
+        \[
+        \by^*=\bW\bb+\bvarepsilon^*=\bZ\balpha+\bvarepsilon^* .
+        \]
+        \item The components are uncorrelated, so each coefficient is estimated on its own, as in simple regression:
+        \[
+        \hat\alpha_j=\frac{\bz_j'\by^*}{\lambda_j},\qquad \Var(\hat\alpha_j)=\frac{\sigma_w^2}{\lambda_j}\qquad\Bigl(\text{compare }\frac{\sigma^2}{S_{xx}}\text{: the spread of }\bz_j\text{ is }\lambda_j\Bigr).
+        \]
+        \item A component with almost no spread gives a hopelessly noisy coefficient. PCR keeps the first $m$ components and drops the rest.
+        \item Translate back to the regressors ($\bb=\bV\balpha$): $\hat{\bb}_{PC}=\sum_{j=1}^m\hat\alpha_j\bv_j$.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Ridge vs.\ PCR}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \footnotesize
+            \begin{itemize}
+                \setlength{\itemsep}{0.3em}
+                \item Both work direction by direction and keep a share of each least-squares estimate $\hat\alpha_j$.
+                \item Ridge: a smooth share $c_j=\lambda_j/(\lambda_j+\theta)$.
+                \item PCR: all or nothing, 1 for the $m$ widest directions and 0 for the rest.
+                \item PCR's variance is $\sigma_w^2\sum_{j\le m}1/\lambda_j$: the huge terms from the thin directions are gone.
+                \item The price is bias: a dropped direction's coefficient is set to 0, which is wrong unless its true $\alpha_j$ is 0.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \centering
+            % Figure: acetylene_ridge_vs_pcr.pdf (see multicollinearity-acetylene.R)
+            \mode<presentation>{\includegraphics[width=\linewidth]{figures/acetylene_ridge_vs_pcr.pdf}}
+            \mode<article>{\includegraphics[width=0.8\linewidth]{figures/acetylene_ridge_vs_pcr.pdf}}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 
@@ -1008,6 +1271,9 @@
         \end{column}
     \end{columns}
 \end{frame}
+
+
+\subsection{Comparing the Remedies}
 
 
 \begin{frame}{Acetylene Data: Three Estimates Side by Side}
@@ -1085,7 +1351,7 @@
             $\kappa=\lambda_{\max}/\lambda_{\min}$ & 100--1000; above 1000 severe & overall severity \\
             $\kappa_j$ & above 1000 & how many dependencies \\
             Eigenvector $\bv_j$ & large loadings & which regressors are involved \\
-            Proportions $\pi_{sj}$ & two or more above 0.5 & which coefficients each affects \\
+            % Proportions $\pi_{sj}$ & two or more above 0.5 & which coefficients each affects \\
             \bottomrule
         \end{tabular}
     \end{center}
@@ -1116,7 +1382,8 @@
         \item Multicollinearity is a near linear dependence among the regressors. Least squares stays unbiased, but its variances can be enormous.
         \item The data pin down combinations of correlated coefficients well and the individual coefficients poorly; prediction inside the data region is often fine.
         \item Pairwise correlations can miss a dependency; VIFs and the eigenvalues of $\bW'\bW$ do not.
-        \item Eigenvectors and variance-decomposition proportions show which regressors are involved.
+        \item Small eigenvalues of $\bW'\bW$ mark thin directions of the data; their eigenvectors show which regressors are involved.
+        % \item Eigenvectors and variance-decomposition proportions show which regressors are involved.
         \item Remedies: better data, a better parameterization, or a biased estimator such as ridge regression or PCR that trades a little bias for a large drop in variance.
     \end{itemize}
 \end{frame}

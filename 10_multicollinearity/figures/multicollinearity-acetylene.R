@@ -145,6 +145,28 @@ round(fit_k$vif, 2)                                    # VIFs of the ridge estim
 k_tab <- unique(trace[, c("k", "r2", "maxvif")])
 print(k_tab[round(k_tab$k, 6) %in% c(0, 0.001, 0.005, 0.01, 0.02, 0.032, 0.05), ], row.names = FALSE)
 
+# ---- Figure: how much ridge shrinks each eigen-direction ------------------------
+# Ridge uses W'W + kI: every direction gets k more spread, lambda_j -> lambda_j + k.
+# Along direction j it reports c_j * alpha_hat_j with c_j = lambda_j / (lambda_j + k).
+shrink <- data.frame(j = 1:p, lambda = lambda, c = lambda / (lambda + k_sel))
+round(shrink, 4)          # c: 0.992 0.985 0.973 0.970 0.923 0.607 0.298 0.138 0.003
+shrink$lab  <- sprintf("%d\n%s", shrink$j, formatC(shrink$lambda, digits = 2, format = "fg", flag = "#"))
+shrink$clab <- ifelse(shrink$c < 0.01, sprintf("%.3f", shrink$c), sprintf("%.2f", shrink$c))
+
+p_shrink <- ggplot(shrink, aes(x = factor(j), y = c)) +
+    geom_col(width = 0.65, fill = pt_col) +
+    geom_text(aes(label = clab), vjust = -0.4, size = 2.6, colour = "grey20") +
+    scale_x_discrete(labels = shrink$lab) +
+    scale_y_continuous(limits = c(0, 1.1), breaks = seq(0, 1, 0.25)) +
+    labs(x = expression("Direction " * j * " (eigenvalue " * lambda[j] * ")"),
+         y = expression("Shrink factor " * c[j])) +
+    theme_lecture() +
+    theme(panel.grid.major.x = element_blank(), axis.text.x = element_text(size = 7))
+
+p_shrink
+ggsave("acetylene_shrink_factors.pdf", p_shrink, bg = "transparent", device = cairo_pdf,
+       width = 1.3 * fig_w, height = 1.1 * fig_h)
+
 # Cross-check with MASS::lm.ridge: it scales by sd with divisor n, so lambda = n * k
 rr <- MASS::lm.ridge(acet$y ~ ., data = X, lambda = n * k_sel)
 b_orig <- fit_k$b * sqrt(SST) / sqrt(colSums(sweep(as.matrix(X), 2, colMeans(X))^2))
@@ -212,3 +234,33 @@ p_pcr <- ggplot(pcr_long, aes(x = m, y = b, group = term, colour = type)) +
 p_pcr
 ggsave("acetylene_pcr.pdf", p_pcr, bg = "transparent", device = cairo_pdf,
        width = 1.4 * fig_w, height = 1.4 * fig_h)
+
+# ---- Principal components: share of the total spread ------------------------------
+round(100 * lambda / p, 2)               # 46.72 24.02 12.65 11.56 4.28 0.55 0.15 0.06 0.00 (%)
+round(100 * cumsum(lambda) / p, 2)       # first five: 99.24%
+round(100 * sum(lambda[7:9]) / p, 2)     # last three: 0.21%
+
+# ---- Figure: how much of each direction ridge and PCR keep ---------------------------
+keep <- rbind(
+    data.frame(j = 1:p, method = "Ridge, theta = 0.032", factor = lambda / (lambda + k_sel)),
+    data.frame(j = 1:p, method = "PCR, m = 6", factor = as.numeric(1:p <= 6))
+)
+keep$method <- factor(keep$method, levels = c("Ridge, theta = 0.032", "PCR, m = 6"),
+                      labels = c("Ridge (theta == 0.032)", "PCR (m == 6)"))
+
+p_keep <- ggplot(keep, aes(x = factor(j), y = factor, fill = method)) +
+    geom_col(position = position_dodge(width = 0.75), width = 0.7) +
+    scale_fill_manual(values = c(pt_col, line_col), name = NULL,
+                      labels = c(expression("Ridge (" * theta == 0.032 * ")"),
+                                 expression("PCR (" * m == 6 * ")"))) +
+    scale_x_discrete(labels = shrink$lab) +
+    scale_y_continuous(breaks = seq(0, 1, 0.25)) +
+    labs(x = expression("Direction " * j * " (eigenvalue " * lambda[j] * ")"),
+         y = "Share of the least-squares\nestimate that is kept") +
+    theme_lecture() +
+    theme(panel.grid.major.x = element_blank(), axis.text.x = element_text(size = 7),
+          legend.position = "top")
+
+p_keep
+ggsave("acetylene_ridge_vs_pcr.pdf", p_keep, bg = "transparent", device = cairo_pdf,
+       width = 1.3 * fig_w, height = 1.2 * fig_h)
