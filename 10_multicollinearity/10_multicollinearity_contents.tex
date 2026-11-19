@@ -2,13 +2,15 @@
 
 
 \begin{frame}{A Recurring Issue}
+    \small
+    \textbf{A puzzle from Lecture 9.} Gasoline mileage: the model is highly significant as a whole ($F_0=14.66$, $p\approx10^{-6}$), yet all five $t$-tests are insignificant ($p>0.2$). How can a team be strong while every player looks useless? (Horsepower and torque are correlated at $0.96$.)
+
+    Earlier clues:
     \begin{itemize}
-        \item Lecture 4: $\Var(\hat\beta_j)=\sigma^2[(\bX'\bX)^{-1}]_{jj}$, which becomes large when $\bx_j$ is close to a linear combination of the other regressors.
+        \item Lecture 4: $\Var(\hat\beta_j)=\sigma^2[(\bX'\bX)^{-1}]_{jj}$ grows when $\bx_j$ is close to a linear combination of the other regressors.
         \item Lecture 8: centering $x_1$ and $x_2$ reduced the correlation between $x_1x_2$ and its components.
-        \item Lecture 9, gasoline mileage: all five $t$-tests insignificant ($p>0.2$), yet the overall $F_0=14.66$ ($p\approx10^{-6}$). Horsepower and torque are correlated at $0.96$.
-        \item Lecture 9, delivery time: adjusting distance for cases left only $1-0.824^2=0.321$ of its variation, and $1/0.321=3.12$ was called the variance inflation factor.
+        \item Lecture 9, delivery time: adjusting distance for cases left only $1-0.824^2=0.321$ of its variation; $1/0.321=3.12$ was called the variance inflation factor.
     \end{itemize}
-    \svspace{0.5em}
     This lecture gives the problem a name, measures it, and looks at what can be done about it.
 \end{frame}
 
@@ -83,15 +85,18 @@
 
 
 \begin{frame}{Why Dependence Confuses Least Squares}
-    Suppose $x_3=x_1+x_2$ exactly. For any number $c$,
-    \[
-    \beta_1x_1+\beta_2x_2+\beta_3x_3=(\beta_1+c)\,x_1+(\beta_2+c)\,x_2+(\beta_3-c)\,x_3 .
-    \]
+    \small
+    \textbf{Running shoes.} Predict a runner's speed from the sole thickness of the left shoe ($x_1$) and of the right shoe ($x_2$). Shoes come in pairs, so $x_1=x_2$ for every runner.
     \begin{itemize}
-        \item Every choice of $c$ gives the same fitted values, so the data cannot prefer one set of coefficients over another.
-        \item With a \emph{near} dependence, $x_3\approx x_1+x_2$, the fitted values change only slightly with $c$. The data do prefer one value of $c$, but only weakly: a little noise in $y$ moves the preferred value a lot.
-        \item That is the whole problem in one sentence: the data cannot separate the effects of regressors that move together.
+        \item The data only ever see the \emph{pair}: ``left adds 10 per mm, right adds 0'' predicts every runner exactly as well as ``left adds 50, right adds $-40$''.
+        \item In symbols: if $x_1=x_2$, then for every number $c$
+        \[
+        \beta_1x_1+\beta_2x_2=(\beta_1+c)\,x_1+(\beta_2-c)\,x_2 .
+        \]
+        All give the same fitted values, so least squares has no unique answer.
+        \item Near dependence (shoes worn unevenly, $x_1\approx x_2$): the data prefer one $c$, but only weakly; a little noise in $y$ moves the preferred split a lot.
     \end{itemize}
+    The whole problem in one sentence: the data cannot separate the effects of regressors that move together.
 \end{frame}
 
 
@@ -195,11 +200,19 @@
     \begin{itemize}
         \item $\beta_1$ is the change in $\E(y)$ when $x_1$ increases by one unit \emph{and $x_2$ stays fixed}.
         \item To estimate it, the data must contain observations in which $x_1$ changes while $x_2$ does not.
-        \item If $x_1$ and $x_2$ almost always move together, such observations are rare. Only the small part of $x_1$ that varies on its own carries information about $\beta_1$.
-        \item Less information means a less precise estimate: a larger variance of $\hat\beta_1$.
+        \item If $x_1$ and $x_2$ almost always move together, such observations are rare. Only the small part of $x_1$ that varies on its own carries information about $\beta_1$. (Lecture 9: this part is the horizontal axis of the added-variable plot, $e(x_1\mid x_2)$.)
+        \item \textbf{Information budget.} $x_2$ already accounts for the fraction $r_{12}^2$ of the variation in $x_1$, so only $1-r_{12}^2$ is left to estimate $\beta_1$. Less information means a larger variance: it is multiplied by $1/(1-r_{12}^2)$. With $r_{12}=0.95$, only $9.75\%$ is left, and the variance grows $10.3$ times (next slide).
     \end{itemize}
-    \svspace{0.5em}
-    Lecture 9 showed this part of $x_1$ directly: it is the horizontal axis of the added-variable plot, $e(x_1\mid x_2)$, the residual from regressing $x_1$ on $x_2$.
+\end{frame}
+
+
+\begin{frame}{A Running Example: Two Salespeople}
+    Salespeople A and B almost always visit clients together. Let $x_1$ = hours A spends with a client, $x_2$ = hours B spends, $y$ = sales. Because they work as a team, $x_1\approx x_2$: a strong positive correlation.
+    \begin{itemize}
+        \item \textbf{Combined credit}: how much sales rise per extra hour that A and B spend together with a client. The data show this clearly; every visit is informative about it.
+        \item \textbf{Who closed the deal}: how to split that credit between A and B. Only the rare visits where one stayed longer than the other are informative about this, so the data show it poorly.
+        \item In symbols: $\beta_1+\beta_2$ is well estimated, $\beta_1$ and $\beta_2$ separately are not. The next slides make this precise.
+    \end{itemize}
 \end{frame}
 
 
@@ -235,21 +248,38 @@
         \mode<article>{\includegraphics[width=0.9\linewidth]{figures/sim_beta_scatter.pdf}}
     \end{center}
     \vspace{-0.5em}
-    Each point is one replicate's pair of estimates. With $r_{12}=0.95$, $\operatorname{sd}(\hat\beta_1)$ grows from $0.18$ to $0.60$, and $\Corr(\hat\beta_1,\hat\beta_2)=-0.95$: a sample that overestimates $\beta_1$ tends to underestimate $\beta_2$, like a seesaw.
+    Each point is one replicate's pair of estimates. With $r_{12}=0.95$, $\operatorname{sd}(\hat\beta_1)$ grows from $0.18$ to $0.60$, and $\Corr(\hat\beta_1,\hat\beta_2)=-0.95$: a seesaw. A sample that gives salesperson A too much credit gives B too little.
 \end{frame}
 
 
+
+% \begin{frame}{Some Combinations Are Still Well Estimated}
+%     \small
+%     The seesaw suggests looking at the sum and the difference. Using $\Var(U\pm V)=\Var(U)+\Var(V)\pm2\Cov(U,V)$ and the formulas of the two-regressor case,
+%     \begin{align*}
+%         \Var(\hat b_1+\hat b_2) &= \frac{\sigma_w^2\,(2-2r_{12})}{1-r_{12}^2}=\frac{2\sigma_w^2}{1+r_{12}}, \\
+%         \Var(\hat b_1-\hat b_2) &= \frac{\sigma_w^2\,(2+2r_{12})}{1-r_{12}^2}=\frac{2\sigma_w^2}{1-r_{12}}.
+%     \end{align*}
+%     \begin{itemize}
+%         \item For $r_{12}=0.95$: the sum has variance $1.03\sigma_w^2$, the difference $40\sigma_w^2$.
+%         \item In the sum the seesaw errors cancel; in the difference they add up. The simulated cloud stretches along the line $\hat\beta_1+\hat\beta_2=4$ and is narrow across it.
+%         \item Salespeople: the team's combined credit ($b_1+b_2$) is well estimated; who closed the deal ($b_1-b_2$) is not.
+%     \end{itemize}
+% \end{frame}
+
+
 \begin{frame}{Some Combinations Are Still Well Estimated}
-    The seesaw suggests looking at the sum and the difference. Using $\Var(U\pm V)=\Var(U)+\Var(V)\pm2\Cov(U,V)$ and the formulas of the two-regressor case,
-    \begin{align*}
-        \Var(\hat b_1+\hat b_2) &= \frac{\sigma_w^2\,(2-2r_{12})}{1-r_{12}^2}=\frac{2\sigma_w^2}{1+r_{12}}, &
-        \Var(\hat b_1-\hat b_2) &= \frac{\sigma_w^2\,(2+2r_{12})}{1-r_{12}^2}=\frac{2\sigma_w^2}{1-r_{12}}.
-    \end{align*}
+    \begin{center}
+        % Figure: sim_sum_difference.pdf (see multicollinearity-simulation.R)
+        \mode<presentation>{\includegraphics[width=0.66\linewidth]{figures/sim_sum_difference.pdf}}
+        \mode<article>{\includegraphics[width=0.9\linewidth]{figures/sim_sum_difference.pdf}}
+    \end{center}
+    \vspace{-0.8em}
     \begin{itemize}
-        \item For $r_{12}=0.95$: the sum has variance $1.03\sigma_w^2$, the difference $40\sigma_w^2$.
-        \item In the sum, the seesaw errors cancel; in the difference, they add up. In the scatter plot, the cloud stretches along the line $\hat\beta_1+\hat\beta_2=4$ and is narrow across it.
-        \item The data say a lot about the combined effect of $x_1$ and $x_2$, and little about how to split it between them.
+        \item The same 2000 simulated samples ($r_{12}=0.95$). The seesaw: when $\hat\beta_1$ is too high, $\hat\beta_2$ tends to be too low. The errors cancel in the sum and add up in the difference, which is six times as spread out.
+        \item Salespeople: the data pin down the team's combined credit, not how to split it.
     \end{itemize}
+    \footnotesize Why: $\Var(U\pm V)=\Var(U)+\Var(V)\pm2\Cov(U,V)$ with $\Cov<0$, which gives $\Var(\hat b_1\pm\hat b_2)=2\sigma_w^2/(1\pm r_{12})$.
 \end{frame}
 
 
@@ -272,7 +302,7 @@
 \end{frame}
 
 
-% --- frame commented out (kept for reference) ---
+
 % \begin{frame}{The Estimates Are Too Long on Average}
 %     Measure how far the estimate is from the truth by the squared distance $L^2=\sum_j(\hat b_j-b_j)^2$. Since each $\hat b_j$ is unbiased, $\E(\hat b_j-b_j)^2=\Var(\hat b_j)$, and
 %     \[
@@ -288,7 +318,7 @@
 % \end{frame}
 
 
-% --- frame commented out (kept for reference) ---
+
 % \begin{frame}{Acetylene Data: Length of the Estimate}
 %     \begin{itemize}
 %         \item $\sum_j1/(1-R_j^2)=10{,}610$, against $9$ for uncorrelated regressors.
@@ -317,40 +347,83 @@
 
 
 \begin{frame}{Prediction Is Not Always Hurt}
-    A prediction uses the coefficients only in combination. With two regressors in unit-length form, the part of the prediction error at a new point $(w_{01},w_{02})$ that comes from the slopes is
-    \[
-    w_{01}(\hat b_1-b_1)+w_{02}(\hat b_2-b_2).
-    \]
+    \small
+    A prediction uses the coefficients only in combination. With two regressors in unit-length form, the part of the prediction error at a new point $(w_{01},w_{02})$ that comes from the slopes is $w_{01}(\hat b_1-b_1)+w_{02}(\hat b_2-b_2)$.
+
+    Plot one regressor against the other: correlated regressors fill a narrow band, which we call the \textbf{data corridor} (next slide).
     \begin{itemize}
-        \item If the new point follows the same pattern as the data (acetylene: high temperature with short contact time), this is a combination the data estimate well, and the prediction is precise (next slide).
-        \item If the new point breaks the pattern (high temperature with long contact time), it needs exactly the combination the data cannot estimate, and the prediction is poor.
-        \item So multicollinearity is mainly a problem for \emph{interpreting} coefficients and for \emph{extrapolating} outside the region of the data.
+        \item \textbf{Inside the corridor}: the new point follows the pattern of the data (A and B visit a new client together; acetylene: high temperature, short contact time). The data estimate this combination well: a precise prediction.
+        \item \textbf{Outside the corridor}: the new point breaks the pattern (A visits without B; high temperature, long contact time). It needs the combination the data cannot estimate: a poor prediction.
     \end{itemize}
+    Multicollinearity mainly hurts \emph{interpreting} coefficients and \emph{extrapolating} outside the corridor.
 \end{frame}
 
 
-\begin{frame}{Why the Errors Cancel: Two Regressors}
-    \footnotesize
+\begin{frame}{Inside and Outside the Data Corridor}
     \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \textbf{$r_{12}>0$: $x_1$ and $x_2$ rise together.}
+        \begin{column}{0.45\textwidth}
+            \small
+            Simulated hours of A and B ($r_{12}=0.95$): the observed clients (green) fill a narrow corridor. Two new clients:
             \begin{itemize}
-                \item $\Corr(\hat b_1,\hat b_2)=-r_{12}<0$: the errors tend to have opposite signs (the seesaw).
-                \item A typical new point has both regressors up together: $w_{01}=w_{02}=w$.
-                \item Its error is $w\,[(\hat b_1-b_1)+(\hat b_2-b_2)]$, the \emph{sum}: opposite errors cancel. Variance $2w^2\sigma_w^2/(1+r_{12})$: small.
+                \item \textbf{Joint visit}: both spend more time than average; inside the corridor. Prediction sd $0.28$.
+                \item \textbf{A alone}: A more, B less; outside the corridor. Prediction sd $1.76$, six times larger.
             \end{itemize}
+            Same model, same data: only where the new point lies differs.
         \end{column}
-        \begin{column}{0.5\textwidth}
-            \textbf{$r_{12}<0$: one rises as the other falls (acetylene).}
-            \begin{itemize}
-                \item $\Corr(\hat b_1,\hat b_2)=-r_{12}>0$: the errors tend to have the \emph{same} sign.
-                \item A typical new point has one regressor up, the other down: $w_{02}=-w_{01}$.
-                \item Its error is $w_{01}[(\hat b_1-b_1)-(\hat b_2-b_2)]$, the \emph{difference}: like errors cancel. Variance $2w_{01}^2\sigma_w^2/(1-r_{12})$: small, since $r_{12}<0$.
-            \end{itemize}
+        \begin{column}{0.55\textwidth}
+            \centering
+            % Figure: sim_prediction_corridor.pdf (see multicollinearity-simulation.R)
+            \mode<presentation>{\includegraphics[height=0.66\textheight]{figures/sim_prediction_corridor.pdf}}
+            \mode<article>{\includegraphics[width=0.8\linewidth]{figures/sim_prediction_corridor.pdf}}
         \end{column}
     \end{columns}
-    \svspace{0.5em}
-    Both variances come from $\Var(\hat b_1\pm\hat b_2)$ on ``Some Combinations Are Still Well Estimated''. With $|r_{12}|=0.95$: $1.03\,w^2\sigma_w^2$ along the pattern, $40\,w^2\sigma_w^2$ against it.
+\end{frame}
+
+
+
+% \begin{frame}{Why the Errors Cancel: Two Regressors}
+%     \footnotesize
+%     \begin{columns}[T]
+%         \begin{column}{0.5\textwidth}
+%             \textbf{$r_{12}>0$: $x_1$ and $x_2$ rise together (salespeople).}
+%             \begin{itemize}
+%                 \item $\Corr(\hat b_1,\hat b_2)=-r_{12}<0$: the errors tend to have opposite signs (the seesaw).
+%                 \item A typical new point has both regressors up together: $w_{01}=w_{02}=w$.
+%                 \item Its error is $w\,[(\hat b_1-b_1)+(\hat b_2-b_2)]$, the \emph{sum}: opposite errors cancel. Variance $2w^2\sigma_w^2/(1+r_{12})$: small.
+%             \end{itemize}
+%         \end{column}
+%         \begin{column}{0.5\textwidth}
+%             \textbf{$r_{12}<0$: one rises as the other falls (acetylene).}
+%             \begin{itemize}
+%                 \item $\Corr(\hat b_1,\hat b_2)=-r_{12}>0$: the errors tend to have the \emph{same} sign.
+%                 \item A typical new point has one regressor up, the other down: $w_{02}=-w_{01}$.
+%                 \item Its error is $w_{01}[(\hat b_1-b_1)-(\hat b_2-b_2)]$, the \emph{difference}: like errors cancel. Variance $2w_{01}^2\sigma_w^2/(1-r_{12})$: small, since $r_{12}<0$.
+%             \end{itemize}
+%         \end{column}
+%     \end{columns}
+%     \svspace{0.5em}
+%     Both variances come from $\Var(\hat b_1\pm\hat b_2)$ on ``Some Combinations Are Still Well Estimated''. With $|r_{12}|=0.95$: $1.03\,w^2\sigma_w^2$ along the pattern, $40\,w^2\sigma_w^2$ against it.
+% \end{frame}
+
+
+\begin{frame}{Why the Errors Cancel}
+    The data estimate well exactly the combination that a typical observation uses, and a prediction inside the corridor uses that combination.
+    \begin{center}
+        \footnotesize
+        \setlength{\tabcolsep}{4pt}
+        \begin{tabular}{lll}
+            \toprule
+            & $r_{12}>0$ (salespeople) & $r_{12}<0$ (acetylene) \\
+            \midrule
+            Data pattern & rise together & one up, one down \\
+            Estimation errors & opposite signs & same sign \\
+            They cancel in & the sum $\hat\beta_1+\hat\beta_2$ & the difference $\hat\beta_1-\hat\beta_2$ \\
+            Inside the corridor (precise) & joint visit $\to$ sum & high temp., short time $\to$ difference \\
+            Outside the corridor (poor) & A alone $\to$ difference & high temp., long time $\to$ sum \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+    The corridor numbers are the histograms scaled by 1.5: sd $1.5\times0.19=0.28$ for the joint visit at $(1.5,1.5)$, and $1.5\times1.17\approx1.76$ for A alone at $(1.5,-1.5)$.
 \end{frame}
 
 
@@ -452,6 +525,38 @@
 \end{frame}
 
 
+\begin{frame}{How a Dependency Can Hide from Pairs}
+    Think of $x_1,\dots,x_4$ as a \textbf{budget} of about 10 units split among four items.
+    \svspace{0.3em}
+    \begin{columns}[T]
+        \begin{column}{0.36\textwidth}
+            \centering
+            \footnotesize
+            Webster data, all 12 rows:\\[0.3em]
+            \begin{tabular}{lcccc|c}
+                \toprule
+                Rows & $x_1$ & $x_2$ & $x_3$ & $x_4$ & sum \\
+                \midrule
+                1 & 8 & 1 & 1 & 1 & 11 \\
+                2--3 & 8 & 1 & 1 & 0 & 10 \\
+                4--6 & 0 & 0 & 9 & 1 & 10 \\
+                7--9 & 2 & 7 & 0 & 1 & 10 \\
+                10--12 & 0 & 0 & 0 & 10 & 10 \\
+                \bottomrule
+            \end{tabular}
+        \end{column}
+        \begin{column}{0.64\textwidth}
+            \footnotesize
+            \begin{itemize}
+                \item \textbf{One item says little about another single item.} $x_1=0$ in six rows, but $x_3=9$ in three of them and $x_3=0$ in the other three: the rest of the budget can go anywhere. So every pairwise correlation is moderate.
+                \item \textbf{Three items almost fix the fourth}: $x_4\approx10-x_1-x_2-x_3$, so regressing $x_4$ on the others gives $R_4^2=0.997$.
+                \item A pairwise correlation looks at two regressors at a time, so it cannot see a rule involving four. $R_j^2$ (hence the VIF) and the eigenvalues use all regressors at once, so they can.
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
 \begin{frame}{Question: Is a Small Pairwise Correlation Reassuring?}
     \begin{itemize}
         \item With exactly two regressors, does a small $|r_{12}|$ rule out multicollinearity?
@@ -470,6 +575,7 @@
 
 
 \begin{frame}{Variance Inflation Factor}
+    \small
     The factor $1/(1-R_j^2)$ from ``The General Case'' gets a name:
     \[
     \VIF_j=\frac{1}{1-R_j^2}=C_{jj}=\bigl[(\bW'\bW)^{-1}\bigr]_{jj},
@@ -478,14 +584,14 @@
     \]
     \begin{itemize}
         \item $R_j^2$: the $R^2$ from regressing $x_j$ on the other regressors, i.e.\ how well the others predict $x_j$.
-        \item Only the fraction $1-R_j^2$ of the variation in $x_j$ is free to estimate $\beta_j$. The VIF is its reciprocal: how many times larger $\Var(\hat\beta_j)$ is than if $x_j$ were uncorrelated with the other regressors.
+        \item Only the fraction $1-R_j^2$ of the variation in $x_j$ is free to estimate $\beta_j$. The VIF is its reciprocal: how many times larger $\Var(\hat\beta_j)$ is than if $x_j$ were uncorrelated with the other regressors. With $\VIF_j=10$, only $10\%$ of the variation in $x_j$ is its own: like estimating $\beta_j$ from a tenth of the spread.
         \item Standard errors and confidence intervals are inflated by $\sqrt{\VIF_j}$.
         \item $\VIF_j\ge1$, with equality when $x_j$ is uncorrelated with every other regressor.
     \end{itemize}
 \end{frame}
 
 
-% --- frame commented out (kept for reference) ---
+
 % \begin{frame}{Why $C_{jj}=1/(1-R_j^2)$}
 %     Put $\bw_j$ first: $\bW=[\bw_j\ \ \bW_{(-j)}]$. By the formula for the inverse of a partitioned matrix,
 %     \[
@@ -660,6 +766,7 @@
 
 
 \begin{frame}{Eigenvalues Are the Spreads}
+    \small
     The directions of largest and smallest spread are the \textbf{eigenvectors} of $\bW'\bW$, and the spreads are the \textbf{eigenvalues}:
     \[
     \bW'\bW\bv_j=\lambda_j\bv_j,\ \ \bv_j'\bv_j=1
@@ -668,10 +775,9 @@
     \]
     \begin{itemize}
         \item With $k$ regressors there are $k$ perpendicular directions $\bv_1,\dots,\bv_k$, with spreads $\lambda_1\ge\cdots\ge\lambda_k>0$. In matrix form, $\bW'\bW=\bV\bLambda\bV'$.
-        \item The total spread is fixed: $\sum_j\lambda_j=k$, because each column has length 1.
-        \item Uncorrelated regressors: a round cloud, all $\lambda_j=1$.
-        \item A small $\lambda_j$ is a thin direction: a near dependence, and the entries of $\bv_j$ show which regressors take part.
-        \item Delivery data: $\lambda=1.824,\ 0.176$; acetylene: the smallest is $0.000097$.
+        \item The total spread is fixed, $\sum_j\lambda_j=k$, because each column has length 1.
+        \item Uncorrelated regressors: a round ball, all $\lambda_j=1$. Correlation squashes it into a cigar or a paper-thin sheet, with some $\lambda_j$ near 0.
+        \item A small $\lambda_j$ is a thin direction, a near dependence; the entries of $\bv_j$ show which regressors take part. Delivery data: $\lambda=1.824,\ 0.176$; acetylene: the smallest is $0.000097$.
     \end{itemize}
 \end{frame}
 
@@ -695,7 +801,7 @@
 
 \begin{frame}{Condition Number and Condition Indices}
     \small
-    How elongated is the cloud? Compare the widest direction with each of the others:
+    How elongated is the cloud? The condition number is its \textbf{aspect ratio} in squared units: the spread along the longest axis over the spread along the thinnest. Each condition index compares the longest axis with axis $j$:
     \[
     \kappa=\frac{\lambda_{\max}}{\lambda_{\min}},
     \qquad
@@ -733,7 +839,7 @@
         \end{tabular}
     \end{center}
     \begin{itemize}
-        \item $\kappa=43{,}381$: severe. One condition index exceeds 1000, two more lie between 100 and 1000.
+        \item $\kappa=43{,}381$: severe. The cloud is $\sqrt{\kappa}\approx208$ times longer than it is thick: a paper-thin sheet. One condition index exceeds 1000, two more lie between 100 and 1000.
         \item $\det(\bW'\bW)=1.4\times10^{-9}$.
         \item The eigenvalues sum to $9=k$, but four of them hold almost all of it.
     \end{itemize}
@@ -743,38 +849,56 @@
 \subsection{Finding the Dependency}
 
 
-\begin{frame}{Acetylene Data: Which Terms Are Involved?}
-    The thinnest direction: eigenvector for $\lambda_9=0.000097$.
-    \begin{center}
-        \small
-        \begin{tabular}{ccccccccc}
-            \toprule
-            $x_1$ & $x_2$ & $x_3$ & $x_1x_2$ & $x_1x_3$ & $x_2x_3$ & $x_1^2$ & $x_2^2$ & $x_3^2$ \\
-            \midrule
-            0.174 & $-0.003$ & 0.237 & 0.003 & 0.797 & 0.008 & 0.412 & 0.005 & 0.329 \\
-            \bottomrule
-        \end{tabular}
-    \end{center}
-    \[
-    0.17\,\bw_{x_1}+0.24\,\bw_{x_3}+0.80\,\bw_{x_1x_3}+0.41\,\bw_{x_1^2}+0.33\,\bw_{x_3^2}\approx\bzero
-    \]
-    \begin{itemize}
-        \item Only temperature and contact time terms take part; the hydrogen ratio does not.
-        \item The largest element of $\bW\bv_9$ is $0.0045$ in absolute value.
-    \end{itemize}
+\begin{frame}{Finding the Dependency in Four Steps}
+    \small
+    The eigenvalues say \emph{how many} near dependencies there are; the eigenvectors say \emph{what} they are.
+    \begin{enumerate}
+        \item \textbf{Find the thin directions}: eigenvalues near 0, i.e.\ condition indices $\kappa_j$ above 1000 (severe) or 100 (moderate). Each one is a near dependency.
+        \item \textbf{Read its eigenvector.} The entries of an eigenvector are called its \textbf{loadings}: the weight each regressor gets in that direction. A loading far from 0 (either sign) means the regressor takes part; a loading near 0 means it does not.
+        \item \textbf{Write the near-zero combination}: $\sum_l(\text{loading of }x_l)\,\bw_l\approx\bzero$ for every observation. Dividing each loading by $\sqrt{S_{ll}}$ states it in the original units.
+        \item \textbf{Interpret it}: what produced this rule? A sampling plan, a budget or mixture constraint, a physical law, \dots
+    \end{enumerate}
+    \svspace{0.3em}
+    The next three slides apply the steps to the acetylene, Webster and gasoline data.
 \end{frame}
 
 
-\begin{frame}{Webster Data: One Hidden Dependency}
+\begin{frame}{Acetylene Data: Finding the Dependency}
+    \small
+    \textbf{Finding:} one severe dependency, among the temperature and contact time terms.
+    \begin{center}
+        \footnotesize
+        Loadings of $\bv_9$, the thinnest direction:\\[0.2em]
+        \begin{tabular}{lccccccccc}
+            \toprule
+            & $x_1$ & $x_2$ & $x_3$ & $x_1x_2$ & $x_1x_3$ & $x_2x_3$ & $x_1^2$ & $x_2^2$ & $x_3^2$ \\
+            \midrule
+            Loading & 0.174 & $-0.003$ & 0.237 & 0.003 & 0.797 & 0.008 & 0.412 & 0.005 & 0.329 \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+    \footnotesize
+    \begin{enumerate}
+        \setlength{\itemsep}{0.2em}
+        \item Only $\lambda_9=0.000097$ is severe ($\kappa_9=43{,}381$); $\lambda_7$ and $\lambda_8$ are moderate ($\kappa_j=309$ and $820$).
+        \item The loadings (table) are large for the terms built from $x_1$ and $x_3$, and near 0 for every term involving $x_2$.
+        \item $0.17\,\bw_{x_1}+0.24\,\bw_{x_3}+0.80\,\bw_{x_1x_3}+0.41\,\bw_{x_1^2}+0.33\,\bw_{x_3^2}\approx\bzero$: at most $0.0045$ in absolute value in every run.
+        \item Temperature and contact time were varied together when the data were collected ($r=-0.958$), so all terms built from them move together.
+    \end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Webster Data: Finding the Hidden Budget Rule}
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
-            \small
-            \begin{itemize}
-                \item $\lambda$: 2.4288, 1.5462, 0.9221, 0.7940, 0.3079, 0.0011.
-                \item $\kappa=2196$: severe, one near dependency.
-                \item $\bv_6$ loads only on $x_1$--$x_4$.
-                \item Dividing the loadings by the column lengths $\sqrt{S_{jj}}$ gives $1.00$, $1.06$, $1.05$, $1.05$, $0.04$, $0.03$: in original units the dependency is $x_1+x_2+x_3+x_4\approx$ constant.
-            \end{itemize}
+            \footnotesize
+            \textbf{Finding:} $x_1+x_2+x_3+x_4\approx$ constant, recovered from the data alone.
+            \begin{enumerate}
+                \item Eigenvalues 2.43, 1.55, 0.92, 0.79, 0.31 and 0.0011: one thin direction, $\kappa=2196$.
+                \item Loadings of $\bv_6$ (right): $0.42$ to $0.57$ for $x_1$--$x_4$; near 0 for $x_5$, $x_6$.
+                \item In original units (loadings $\div\sqrt{S_{jj}}$): $1.00$, $1.06$, $1.05$, $1.05$, $0.04$, $0.03$, i.e.\ $x_1+x_2+x_3+x_4\approx$ constant.
+                \item The budget rule of ``How a Dependency Can Hide from Pairs'': invisible to pairwise correlations, found here without being told.
+            \end{enumerate}
         \end{column}
         \begin{column}{0.5\textwidth}
             \centering
@@ -786,18 +910,19 @@
 \end{frame}
 
 
-\begin{frame}{Gasoline Mileage: Condition Indices}
+\begin{frame}{Gasoline Mileage: Finding the Dependency}
     \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \small
-            \begin{itemize}
-                \item $\kappa=1820$: severe.
-                \item One $\kappa_j$ above 1000, two between 100 and 1000.
-                \item Eigenvector of the smallest eigenvalue: displacement $0.55$, horsepower $0.31$, torque $-0.77$; all others below $0.08$ in absolute value.
-                \item The worst dependency links displacement, horsepower and torque.
-            \end{itemize}
+        \begin{column}{0.5\textwidth}
+            \footnotesize
+            \textbf{Finding:} torque is almost fixed by displacement and horsepower.
+            \begin{enumerate}
+                \item $\kappa=1820$: one condition index above 1000, two between 100 and 1000 (right). Take the severe one, $\lambda_{10}$.
+                \item Loadings of $\bv_{10}$: displacement $0.55$, horsepower $0.31$, torque $-0.77$; all others below $0.08$ in absolute value.
+                \item $0.55\,\bw_{\text{disp}}+0.31\,\bw_{\text{hp}}-0.77\,\bw_{\text{torque}}\approx\bzero$, that is, $\bw_{\text{torque}}\approx0.71\,\bw_{\text{disp}}+0.40\,\bw_{\text{hp}}$.
+                \item A bigger engine delivers more of both horsepower and torque, so the three engine-size measures move together.
+            \end{enumerate}
         \end{column}
-        \begin{column}{0.52\textwidth}
+        \begin{column}{0.5\textwidth}
             \centering
             % Figure: gas_condition_indices.pdf (see multicollinearity-gasoline.R)
             \mode<presentation>{\includegraphics[width=\linewidth]{figures/gas_condition_indices.pdf}}
@@ -807,7 +932,7 @@
 \end{frame}
 
 
-% --- frame commented out (kept for reference) ---
+
 % \begin{frame}{Variance-Decomposition Proportions}
 %     Belsley, Kuh and Welsch (1980) split each variance by eigenvalue. From $\bC=\bV\bLambda^{-1}\bV'$,
 %     \[
@@ -824,7 +949,7 @@
 % \end{frame}
 
 
-% --- frame commented out (kept for reference) ---
+
 % \begin{frame}{Acetylene Data: Variance-Decomposition Proportions}
 %     \begin{center}
 %         \small
@@ -951,8 +1076,8 @@
 
 \begin{frame}{Ridge Regression: The Idea}
     \begin{itemize}
-        \item Along a thin direction the data carry almost no information, so least squares fits the noise there. The result is large coefficients that offset one another: acetylene, $x_1x_3$: $-2.03$, $x_1^2$: $-0.83$, $x_3^2$: $-1.00$.
-        \item Ridge regression adds a penalty for large coefficients. In unit-length form, it minimizes
+        \item Along a thin direction the data carry almost no information, so least squares fits the noise there. It makes large bets that offset one another: acetylene, $x_1x_3$: $-2.03$, $x_1^2$: $-0.83$, $x_3^2$: $-1.00$.
+        \item Ridge regression puts the coefficients on a \textbf{leash}: it adds a penalty for large coefficients, so they can grow only if that clearly improves the fit. In unit-length form, it minimizes
         \[
         \underbrace{(\by^*-\bW\bb)'(\by^*-\bW\bb)}_{\text{lack of fit}}+\underbrace{\theta\,\bb'\bb}_{\text{size of the coefficients}},\qquad\theta\ge0 .
         \]
@@ -965,7 +1090,7 @@
 \end{frame}
 
 
-% --- frame commented out (kept for reference) ---
+
 % \begin{frame}{Ridge as Least Squares on Augmented Data}
 %     Append $k$ pseudo-observations: rows $\sqrt{\theta}\,\bI$ to $\bW$ and zeros to $\by^*$:
 %     \[
@@ -981,7 +1106,7 @@
 % \end{frame}
 
 
-% --- frame commented out (kept for reference) ---
+
 % \begin{frame}{What Ridge Does in Each Direction}
 %     Look at the coefficients along each eigen-direction: $\alpha_j=\bv_j'\bb$ (true), $\hat\alpha_j=\bv_j'\hat{\bb}$ (least squares), and $\bv_j'\hat{\bb}_R$ (ridge).
 %     \begin{itemize}
@@ -996,7 +1121,7 @@
 % \end{frame}
 
 
-% --- frame commented out (kept for reference) ---
+
 % \begin{frame}{Bias and Variance of the Ridge Estimator}
 %     \small
 %     In direction $j$ the ridge estimate is $c_j\hat\alpha_j$ with $c_j=\lambda_j/(\lambda_j+\theta)$, and $\Var(\hat\alpha_j)=\sigma_w^2/\lambda_j$.
@@ -1019,7 +1144,7 @@
             \footnotesize
             \begin{itemize}
                 \setlength{\itemsep}{0.3em}
-                \item Ridge uses $\bW'\bW+\theta\bI$ in place of $\bW'\bW$: it pretends every direction of the data cloud has $\theta$ more spread than it really has, $\lambda_j\to\lambda_j+\theta$.
+                \item Ridge uses $\bW'\bW+\theta\bI$ in place of $\bW'\bW$: it pretends every direction of the data cloud has $\theta$ more spread than it really has, $\lambda_j\to\lambda_j+\theta$: a \textbf{floor} under the paper-thin directions.
                 \item Least squares estimates the coefficient along direction $j$, $\alpha_j=\bv_j'\bb$, by $\hat\alpha_j=\bv_j'\bW'\by^*/\lambda_j$. Ridge divides by the padded spread instead, so it reports $c_j\hat\alpha_j$ with $c_j=\lambda_j/(\lambda_j+\theta)$: real spread over padded spread.
                 \item Wide directions hardly notice the padding ($c_j\approx1$); in thin ones it dominates ($c_j\approx0$).
             \end{itemize}
@@ -1147,7 +1272,7 @@
 \end{frame}
 
 
-% --- frame commented out (kept for reference) ---
+
 % \begin{frame}{Principal-Component Regression: The Idea}
 %     Ridge shrinks every direction a little, by the factor $\lambda_j/(\lambda_j+\theta)$. Principal-component regression (PCR) makes the choice all or nothing:
 %     \begin{itemize}
@@ -1163,7 +1288,7 @@
 % \end{frame}
 
 
-% --- frame commented out (kept for reference) ---
+
 % \begin{frame}{Principal-Component Regression: The Estimator}
 %     \begin{itemize}
 %         \item Because the components are uncorrelated, each coefficient is estimated as in a simple regression: $\hat\alpha_j=\bz_j'\by^*/\lambda_j$, with $\Var(\hat\alpha_j)=\sigma_w^2/\lambda_j$ (the spread of $\bz_j$ is $\lambda_j$).
@@ -1181,47 +1306,82 @@
 
 
 \begin{frame}{Background: Principal Component Analysis}
-    Principal component analysis (PCA) replaces $k$ correlated variables by $k$ new variables that are \textbf{combinations} of the originals, \textbf{uncorrelated} with one another, and \textbf{ordered} from the one that varies most to the one that varies least.
-    \svspace{0.5em}
+    \small
+    Principal component analysis (PCA) replaces $k$ correlated variables by $k$ new variables, the \textbf{principal components}. Each is a \textbf{combination} of the originals (a weighted sum, such as $0.71\,w_1+0.71\,w_2$); they are \textbf{uncorrelated} with one another; and they are \textbf{ordered} by spread, the first varying the most.
+    \svspace{0.3em}
 
-    They are the eigen-directions of the eigenvalue section. The $j$th \textbf{principal component} is each observation's position along $\bv_j$, $\bz_j=\bW\bv_j=\sum_lv_{lj}\bw_l$, and its spread is $\lambda_j$. Since $\sum_j\lambda_j=k$, component $j$ carries the share $\lambda_j/k$ of the total spread.
+    Where they come from (eigenvalue section): the eigenvectors $\bv_1,\dots,\bv_k$ are perpendicular directions through the data cloud, and $\lambda_j$ is the spread of the cloud along $\bv_j$, the sum of squares of the observations' positions along it.
     \begin{itemize}
-        \item Two regressors, $r=0.95$: $\bz_1\propto\bw_1+\bw_2$, the overall level (97.5\% of the spread), and $\bz_2\propto\bw_1-\bw_2$, the difference (2.5\%): the long and short lines of the earlier figure.
-        \item Acetylene: the first five components carry 99.2\% of the spread, the last three 0.2\%.
+        \item The $j$th principal component is each observation's position along $\bv_j$: $\bz_j=\bW\bv_j=\sum_lv_{lj}\bw_l$. The weights are the entries of $\bv_j$.
+        \item Its spread is $\lambda_j$. The total spread is $\sum_j\lambda_j=k$, so component $j$ carries the share $\lambda_j/k$ of it.
     \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Principal-Component Regression: The Idea}
+\begin{frame}{Principal Components: Two Examples}
+    \small
     \begin{itemize}
-        \item Regress $y$ on the principal components instead of on the original regressors. The model is the same, only rewritten: with $\bZ=\bW\bV$ and $\balpha=\bV'\bb$,
+        \item \textbf{Two regressors with $r=0.95$} (the salespeople). The directions are $\bv_1=(1,1)'/\sqrt2$ and $\bv_2=(1,-1)'/\sqrt2$, so
+        \begin{align*}
+            \bz_1&=(\bw_1+\bw_2)/\sqrt2 && \text{(the overall level)},\\
+            \bz_2&=(\bw_1-\bw_2)/\sqrt2 && \text{(the difference)} .
+        \end{align*}
+        The overall level is high when both regressors are high and low when both are low. It carries $\lambda_1/2=1.95/2=97.5\%$ of the spread, the difference only $2.5\%$. These are the long and short lines in the figure on ``Two Regressors: The Spread in Each Direction''.
+        \item \textbf{Acetylene}, nine terms: the first five components carry $99.2\%$ of the spread, the last three only $0.2\%$.
+    \end{itemize}
+    \svspace{0.5em}
+    A component with a tiny share is a combination that barely varies in the data: a near dependence.
+\end{frame}
+
+
+\begin{frame}{Principal-Component Regression: The Idea}
+    \footnotesize
+    \begin{itemize}
+        \setlength{\itemsep}{0.3em}
+        \item Regress $y$ on the principal components instead of the original regressors. Nothing is lost: the components are the regressors seen from rotated axes ($\bZ=\bW\bV$, and back again $\bW=\bZ\bV'$). With $\balpha=\bV'\bb$ the same model reads
         \[
         \by^*=\bW\bb+\bvarepsilon^*=\bZ\balpha+\bvarepsilon^* .
         \]
-        \item The components are uncorrelated, so each coefficient is estimated on its own, as in simple regression:
+        \item \textbf{Why uncorrelated regressors help}: each coefficient can be estimated by its own simple regression, ignoring the others. A simple regression through the origin has slope $\sum zy/\sum z^2$ and variance $\sigma^2/\sum z^2$ (Lecture 2's $\sigma^2/S_{xx}$). For component $j$, $\sum_iz_{ij}^2$ is its spread $\lambda_j$, so
         \[
-        \hat\alpha_j=\frac{\bz_j'\by^*}{\lambda_j},\qquad \Var(\hat\alpha_j)=\frac{\sigma_w^2}{\lambda_j}\qquad\Bigl(\text{compare }\frac{\sigma^2}{S_{xx}}\text{: the spread of }\bz_j\text{ is }\lambda_j\Bigr).
+        \hat\alpha_j=\frac{\bz_j'\by^*}{\lambda_j},\qquad \Var(\hat\alpha_j)=\frac{\sigma_w^2}{\lambda_j} .
         \]
-        \item A component with almost no spread gives a hopelessly noisy coefficient. PCR keeps the first $m$ components and drops the rest.
-        \item Translate back to the regressors ($\bb=\bV\balpha$): $\hat{\bb}_{PC}=\sum_{j=1}^m\hat\alpha_j\bv_j$.
+        \item A component with almost no spread is like a simple regression in which $x$ barely varies: a hopelessly noisy slope. PCR keeps the first $m$ components and drops the rest.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Principal-Component Regression: Back to the Original Regressors}
+    \footnotesize
+    We want coefficients for the original regressors (temperature, contact time, \dots), not for the components.
+    \begin{itemize}
+        \setlength{\itemsep}{0.3em}
+        \item The PCR fitted values add up the kept components, and each component is a weighted sum of the regressors, $\bz_j=\bW\bv_j$:
+        \[
+        \hat\by^*=\sum_{j\le m}\hat\alpha_j\bz_j=\sum_{j\le m}\hat\alpha_j\bW\bv_j=\bW\Bigl(\sum_{j\le m}\hat\alpha_j\bv_j\Bigr),
+        \qquad\text{so}\qquad
+        \hat{\bb}_{PC}=\sum_{j=1}^m\hat\alpha_j\bv_j .
+        \]
+        \item In words: each kept component hands its estimate back to the regressors in proportion to its weights. Keeping all $k$ components gives exactly least squares.
+        \item Salespeople, keeping only $\bz_1$: $\hat{\bb}_{PC}=\hat\alpha_1(1,1)'/\sqrt2$, so A and B get equal coefficients. PCR estimates the combined credit and splits it evenly, since the data cannot tell how to split it.
+        \item The price is bias: a dropped $\alpha_j$ is set to 0, which is wrong unless it really is 0.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Ridge vs.\ PCR}
     \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
+        \begin{column}{0.56\textwidth}
             \footnotesize
             \begin{itemize}
-                \setlength{\itemsep}{0.3em}
-                \item Both work direction by direction and keep a share of each least-squares estimate $\hat\alpha_j$.
-                \item Ridge: a smooth share $c_j=\lambda_j/(\lambda_j+\theta)$.
-                \item PCR: all or nothing, 1 for the $m$ widest directions and 0 for the rest.
-                \item PCR's variance is $\sigma_w^2\sum_{j\le m}1/\lambda_j$: the huge terms from the thin directions are gone.
-                \item The price is bias: a dropped direction's coefficient is set to 0, which is wrong unless its true $\alpha_j$ is 0.
+                \setlength{\itemsep}{0.1em}
+                \item Both keep a share of each direction's least-squares estimate $\hat\alpha_j$ (the bars).
+                \item Ridge is like a \textbf{dimmer switch} on a lamp: it turns each estimate down by $c_j=\lambda_j/(\lambda_j+\theta)$, a factor between 0 and 1, barely in wide directions and almost to 0 in thin ones. Nothing is switched fully off.
+                \item PCR is like an ordinary \textbf{on/off switch}: each direction is kept in full (1) or dropped (0). The \textbf{cutoff} $m$ sets where it switches.
+                \item PCR's blind spot: it picks directions from the regressors alone, never looking at $y$, so a thin direction that predicts $y$ is dropped anyway.
             \end{itemize}
         \end{column}
-        \begin{column}{0.5\textwidth}
+        \begin{column}{0.44\textwidth}
             \centering
             % Figure: acetylene_ridge_vs_pcr.pdf (see multicollinearity-acetylene.R)
             \mode<presentation>{\includegraphics[width=\linewidth]{figures/acetylene_ridge_vs_pcr.pdf}}

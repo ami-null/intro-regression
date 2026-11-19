@@ -79,6 +79,75 @@ p_scatter <- ggplot(sims, aes(x = b1, y = b2)) +
 p_scatter
 ggsave("sim_beta_scatter.pdf", p_scatter, bg = "transparent", device = cairo_pdf, width = 2 * fig_w, height = 1.2 * fig_h)
 
+# ---- Figure: the sum is well estimated, the difference is not (r = 0.95) ----------
+# Same 2000 replicates. Theory: Var(b1 + b2) = 2 sigma^2 / [(n - 1)(1 + r)],
+#                               Var(b1 - b2) = 2 sigma^2 / [(n - 1)(1 - r)].
+s95_sd <- subset(sims, rho == 0.95)
+comb <- rbind(
+    data.frame(what = "Sum", value = s95_sd$b1 + s95_sd$b2, centre = beta[2] + beta[3]),
+    data.frame(what = "Difference", value = s95_sd$b1 - s95_sd$b2, centre = beta[2] - beta[3])
+)
+comb_sd <- tapply(comb$value, comb$what, sd)
+comb_sd                                                  # Sum 0.19, Difference 1.17
+sqrt(2 * sigma^2 / ((n - 1) * c(1 + 0.95, 1 - 0.95)))    # theory: 0.188, 1.174
+comb_sd["Difference"] / comb_sd["Sum"]                    # about 6 times wider
+
+comb$panel <- factor(comb$what, levels = c("Sum", "Difference"),
+                     labels = c("hat(beta)[1] + hat(beta)[2]~~'(combined credit)'",
+                                "hat(beta)[1] - hat(beta)[2]~~'(who closed the deal)'"))
+# equal x-ranges in both panels, so the widths can be compared by eye
+span   <- 3.6
+frame_ <- data.frame(panel = rep(levels(comb$panel), each = 2),
+                     value = c(4 - span, 4 + span, -span, span))
+frame_$panel <- factor(frame_$panel, levels = levels(comb$panel))
+sd_lab <- data.frame(panel = factor(levels(comb$panel), levels = levels(comb$panel)),
+                     x = c(4 + span, span) - 0.1,
+                     lab = sprintf("sd = %.2f", comb_sd[c("Sum", "Difference")]))
+
+p_comb <- ggplot(comb, aes(x = value)) +
+    geom_blank(data = frame_) +
+    geom_histogram(binwidth = 0.1, fill = pt_col, colour = NA) +
+    geom_vline(aes(xintercept = centre), linetype = "dashed", colour = line_col) +
+    geom_text(data = sd_lab, aes(x = x, y = Inf, label = lab), hjust = 1, vjust = 1.6,
+              size = 3, colour = "grey20") +
+    facet_wrap(~ panel, scales = "free_x", labeller = label_parsed) +
+    labs(x = "Estimate (2000 simulated samples, true value dashed)", y = "Count") +
+    theme_lecture()
+
+p_comb
+ggsave("sim_sum_difference.pdf", p_comb, bg = "transparent", device = cairo_pdf,
+       width = 2 * fig_w, height = 1.1 * fig_h)
+
+# ---- Figure: predictions inside and outside the data corridor ---------------------
+# r = 0.95 design (salespeople A and B, hours standardized). The slope part of the
+# prediction error at a new point (x01, x02) is x01 (b1_hat - b1) + x02 (b2_hat - b2), with
+# variance sigma^2 (x01^2 + x02^2 - 2 r x01 x02) / [(1 - r^2) (n - 1)].
+rho_c   <- 0.95
+new_pts <- data.frame(x1 = c(1.5, 1.5), x2 = c(1.5, -1.5), what = c("joint visit", "A alone"))
+new_pts$sd_theory <- with(new_pts, sigma * sqrt((x1^2 + x2^2 - 2 * rho_c * x1 * x2) / ((1 - rho_c^2) * (n - 1))))
+s95 <- subset(sims, rho == rho_c)
+new_pts$sd_sim <- sapply(seq_len(nrow(new_pts)), function(i)
+    sd(new_pts$x1[i] * s95$b1 + new_pts$x2[i] * s95$b2))
+new_pts                      # sd: joint visit 0.28, A alone 1.76 (theory and simulation agree)
+new_pts$sd_theory[2] / new_pts$sd_theory[1]          # 6.2 times larger outside the corridor
+new_pts$lab <- sprintf("%s\nprediction sd %.2f", new_pts$what, new_pts$sd_theory)
+
+corridor <- make_design(rho_c)
+p_corr <- ggplot(corridor, aes(x = x1, y = x2)) +
+    geom_point(size = 1.2, alpha = 0.6, colour = pt_col) +
+    geom_point(data = new_pts, shape = 17, size = 3, colour = line_col) +
+    geom_text(data = new_pts, aes(label = lab), hjust = 0, nudge_x = 0.35, size = 2.6,
+              lineheight = 0.9, colour = "grey15") +
+    coord_equal(xlim = c(-2.6, 4.2), ylim = c(-2.6, 2.6)) +
+    labs(x = "Hours with client, salesperson A (standardized)",
+         y = "Hours, salesperson B (standardized)") +
+    theme_lecture() +
+    theme(axis.title = element_text(size = 8))
+
+p_corr
+ggsave("sim_prediction_corridor.pdf", p_corr, bg = "transparent", device = cairo_pdf,
+       width = 1.2 * fig_w, height = 1.2 * fig_h)
+
 # ---- Figure: VIF as a function of the correlation between two regressors -------
 vif_curve <- data.frame(r = seq(0, 0.99, by = 0.001))
 vif_curve$vif <- 1 / (1 - vif_curve$r^2)
