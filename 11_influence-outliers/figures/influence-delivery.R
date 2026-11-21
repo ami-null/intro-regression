@@ -249,13 +249,13 @@ p_rvl <- ggplot() +
     linewidth = 0.65,
     alpha = 0.80
   ) +
-  # Contour text annotations
-  annotate("text", x = 0.44, y = sqrt(p * 0.5 * (1 - 0.44) / 0.44) + 0.22,
-           label = "D == 0.5", parse = TRUE, size = 3.0, colour = "#e41a1c") +
-  annotate("text", x = 0.48, y = sqrt(p * 1.0 * (1 - 0.48) / 0.48) + 0.22,
-           label = "D == 1.0", parse = TRUE, size = 3.0, colour = "#e41a1c") +
-  # Leverage cutoff annotation
-  annotate("text", x = h_cut2 + 0.008, y = -3.1, label = "2*p/n == 0.24",
+  # Contour text annotations, placed just past the right-hand ends of the curves
+  annotate("text", x = 0.537, y = c(1, -1) * sqrt(p * 0.5 * (1 - 0.53) / 0.53),
+           label = "D == 0.5", parse = TRUE, hjust = 0, size = 3.0, colour = "#e41a1c") +
+  annotate("text", x = 0.537, y = c(1, -1) * sqrt(p * 1.0 * (1 - 0.53) / 0.53),
+           label = "D == 1", parse = TRUE, hjust = 0, size = 3.0, colour = "#e41a1c") +
+  # Leverage cutoff annotation (top of the plot, clear of the contours)
+  annotate("text", x = h_cut2 + 0.008, y = 4.05, label = "2*p/n == 0.24",
            parse = TRUE, hjust = 0, size = 3.0, colour = ref_col) +
   # Observations
   geom_point(
@@ -266,15 +266,14 @@ p_rvl <- ggplot() +
   annotate("text", x = h_ii[9] - 0.015, y = r_std[9],
            label = "Obs 9\n(D = 3.42)", hjust = 1, vjust = 0.4, size = 3.2,
            fontface = "bold", colour = pt_flag_col) +
-  annotate("text", x = h_ii[22] + 0.015, y = r_std[22] - 0.15,
-           label = "Obs 22\n(D = 0.45)", hjust = 0, vjust = 0.5, size = 3.2,
+  # Obs 22 sits on the D = 0.5 contour, so its label goes above-left, in empty space
+  annotate("text", x = h_ii[22] - 0.01, y = r_std[22] + 0.25,
+           label = "Obs 22\n(D = 0.45)", hjust = 1, vjust = 0, size = 3.2,
            fontface = "bold", colour = pt_lev_col) +
   annotate("text", x = h_ii[10] + 0.012, y = r_std[10],
            label = "10", hjust = 0, vjust = 0.3, size = 2.8, colour = "grey35") +
   annotate("text", x = h_ii[16] + 0.012, y = r_std[16],
            label = "16", hjust = 0, vjust = 0.3, size = 2.8, colour = "grey35") +
-  annotate("text", x = h_ii[1] + 0.012, y = r_std[1],
-           label = "1", hjust = 0, vjust = 0.3, size = 2.8, colour = "grey35") +
   scale_colour_manual(
     name = "Diagnostic Status:",
     values = c("Typical" = pt_col, "High Leverage" = pt_lev_col, "Cook's D > 1.0" = pt_flag_col)
@@ -289,7 +288,7 @@ p_rvl <- ggplot() +
   ) +
   scale_x_continuous(
     name = expression(Leverage ~ (italic(h)[italic(ii)])),
-    limits = c(0.02, 0.54),
+    limits = c(0.02, 0.60),
     breaks = seq(0, 0.5, by = 0.1)
   ) +
   scale_y_continuous(
@@ -322,10 +321,11 @@ p_cook <- ggplot(delivery, aes(x = obs, y = cook_d)) +
   # Points
   geom_point(aes(colour = cook_d > 1.0, size = cook_d > 1.0)) +
   # Cutoff labels
-  annotate("text", x = 0.5, y = d_cut_n + 0.10, label = "4/n == 0.160",
-           parse = TRUE, hjust = 0, size = 2.9, colour = ref_col) +
-  annotate("text", x = 0.5, y = 1.0 + 0.12, label = "D == 1.0",
-           parse = TRUE, hjust = 0, size = 2.9, colour = pt_flag_col) +
+  # Cutoff labels placed where no stem or other label is nearby
+  annotate("text", x = 14, y = d_cut_n + 0.10, label = "4/n == 0.16",
+           parse = TRUE, hjust = 0.5, size = 2.9, colour = ref_col) +
+  annotate("text", x = 25.6, y = 1.0 + 0.12, label = "D == 1",
+           parse = TRUE, hjust = 1, size = 2.9, colour = pt_flag_col) +
   # Observation labels
   annotate("text", x = 9, y = cook_d[9] + 0.18,
            label = "Obs 9 (D = 3.42)", hjust = 0.5, size = 3.2,
@@ -391,7 +391,7 @@ p_dfb <- ggplot(dfb_long, aes(x = obs, y = dfbeta)) +
   scale_colour_manual(values = c("FALSE" = pt_col, "TRUE" = pt_flag_col), guide = "none") +
   scale_x_continuous(name = "Observation Index (i)", breaks = seq(2, 24, by = 4)) +
   scale_y_continuous(
-    name = expression(DFBETAS[italic(jk)]),
+    name = expression(DFBETAS[italic(j) * "," * italic(i)]),
     limits = c(-1.3, 1.8),
     breaks = seq(-1.0, 1.5, by = 0.5)
   ) +
@@ -426,11 +426,12 @@ p_cov <- ggplot(delivery, aes(x = obs, y = cov_r)) +
            label = "1 - 3*p/n == 0.64 ~ (Degrades ~ Precision)",
            parse = TRUE, hjust = 0, size = 2.8, colour = pt_flag_col) +
   # Observation labels
-  annotate("text", x = 9, y = cov_r[9] - 0.07,
-           label = "Obs 9 (0.34)\nDegrades precision", hjust = 0.5, size = 2.9,
+  # Two-line labels anchored by their edge (vjust) so they clear the point and the cutoff line
+  annotate("text", x = 9, y = cov_r[9] - 0.05,
+           label = "Obs 9 (0.34)\nDegrades precision", hjust = 0.5, vjust = 1, size = 2.9,
            fontface = "bold", colour = pt_flag_col) +
-  annotate("text", x = 22, y = cov_r[22] + 0.07,
-           label = "Obs 22 (1.40)\nEnhances precision", hjust = 0.5, size = 2.9,
+  annotate("text", x = 22, y = cov_r[22] + 0.05,
+           label = "Obs 22 (1.40)\nEnhances precision", hjust = 0.5, vjust = 0, size = 2.9,
            fontface = "bold", colour = pt_lev_col) +
   annotate("text", x = 16, y = cov_r[16] + 0.06,
            label = "16", hjust = 0.5, size = 2.8, colour = "grey30") +
@@ -440,8 +441,8 @@ p_cov <- ggplot(delivery, aes(x = obs, y = cov_r)) +
   scale_x_continuous(name = "Observation Index (i)", breaks = seq(1, 25, by = 2)) +
   scale_y_continuous(
     name = expression(COVRATIO[italic(i)]),
-    limits = c(0.25, 1.55),
-    breaks = seq(0.4, 1.5, by = 0.2)
+    limits = c(0.10, 1.68),
+    breaks = seq(0.2, 1.6, by = 0.2)
   ) +
   theme_lecture()
 
@@ -459,12 +460,13 @@ p_dff <- ggplot(delivery, aes(x = obs, y = dff)) +
   geom_segment(aes(x = obs, xend = obs, y = 0, yend = dff),
                colour = "grey60", linewidth = 0.6) +
   geom_point(aes(colour = abs(dff) > dff_cut), size = 2.1) +
-  annotate("text", x = 0.5, y = dff_cut + 0.25,
-           label = "2*sqrt(p/n) == 0.693", parse = TRUE,
-           hjust = 0, size = 2.9, colour = ref_col) +
-  annotate("text", x = 0.5, y = -dff_cut - 0.25,
-           label = "-2*sqrt(p/n) == -0.693", parse = TRUE,
-           hjust = 0, size = 2.9, colour = ref_col) +
+  # Cutoff labels placed where no point or other label is nearby
+  annotate("text", x = 25.6, y = dff_cut + 0.25,
+           label = "2*sqrt(p/n) == 0.69", parse = TRUE,
+           hjust = 1, size = 2.9, colour = ref_col) +
+  annotate("text", x = 13, y = -dff_cut - 0.25,
+           label = "-2*sqrt(p/n) == -0.69", parse = TRUE,
+           hjust = 0.5, size = 2.9, colour = ref_col) +
   annotate("text", x = 9, y = dff[9] + 0.35,
            label = "Obs 9 (+4.30)", hjust = 0.5, size = 3.0,
            fontface = "bold", colour = pt_flag_col) +

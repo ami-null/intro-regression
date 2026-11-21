@@ -59,12 +59,12 @@ y_hat_center <- b0_base + b1_base * x_bar
 
 # ---- Define the 4 target points ----------------------------------------------
 # 1. Inlier: low leverage (at x = 5.0), small residual (on regression line)
-# 2. y-Outlier: low leverage (at x = 5.0), large residual (+5 units above line)
+# 2. y-Outlier: low leverage (at x = 5.0), large residual (+5.2 units above line)
 # 3. Good Leverage: high leverage (at x = 13.5), small residual (conforms to line)
-# 4. Bad Leverage: high leverage (at x = 13.5), discordant y (pulled down to y = 7.0)
+# 4. Bad Leverage: high leverage (at x = 13.5), discordant y (pulled down to y = 6.8)
 
 x_target_high <- 13.5
-y_target_good <- b0_base + b1_base * x_target_high + 0.1   # ~22.3
+y_target_good <- b0_base + b1_base * x_target_high + 0.1   # ~21.5
 y_target_bad  <- 6.8                                       # severe drop
 
 scenarios <- list(
@@ -150,7 +150,8 @@ cat(sprintf("  Slope without: b1 = %.3f | Slope with: b1 = %.3f (delta = %+.3f)\
   )
   
   # Annotation label showing key diagnostics inside each panel
-  diag_label <- sprintf("h[ii] == %.3f ~~~~~ r[i] == %+.2f\nD[i] == %.3f",
+  # (plotmath ignores "\n", so all three values go on one line)
+  diag_label <- sprintf("h[ii] == %.3f*','~~r[i] == %+.2f*','~~D[i] == %.3f",
                         h_t, r_t, cook_t)
   annot_scen <- data.frame(
     panel = s$panel_title,
@@ -201,8 +202,8 @@ p_geom <- ggplot() +
     size = 3.6,
     stroke = 1.4
   ) +
-  # Diagnostic metrics annotation
-  geom_text(
+  # Diagnostic metrics annotation (filled box so the x-bar line does not cross the text)
+  geom_label(
     data = plot_annot,
     aes(x = x, y = y, label = label),
     parse = TRUE,
@@ -210,7 +211,9 @@ p_geom <- ggplot() +
     vjust = 1,
     size = 2.9,
     colour = "grey25",
-    lineheight = 0.95
+    fill = "white",
+    linewidth = 0,
+    label.padding = unit(0.12, "lines")
   ) +
   # Faceting: 2x2 grid corresponding to the 4 quadrants
   facet_wrap(~ panel, nrow = 2, ncol = 2) +
