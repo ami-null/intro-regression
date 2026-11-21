@@ -59,7 +59,7 @@ y_hat_center <- b0_base + b1_base * x_bar
 
 # ---- Define the 4 target points ----------------------------------------------
 # 1. Inlier: low leverage (at x = 5.0), small residual (on regression line)
-# 2. y-Outlier: low leverage (at x = 5.0), large residual (+5.2 units above line)
+# 2. y-Outlier: low leverage (at x = 5.0), large residual (+10 units above line, so the upward shift of the line is visible)
 # 3. Good Leverage: high leverage (at x = 13.5), small residual (conforms to line)
 # 4. Bad Leverage: high leverage (at x = 13.5), discordant y (pulled down to y = 6.8)
 
@@ -77,7 +77,7 @@ scenarios <- list(
   q2 = list(
     panel_title = "(b) Response Outlier (y-Outlier)\nLow Leverage, Large Residual",
     x_t = 5.0,
-    y_t = y_hat_center + 5.2,
+    y_t = y_hat_center + 10,
     desc = "Shifts intercept upward\nSlope virtually unchanged"
   ),
   q3 = list(
