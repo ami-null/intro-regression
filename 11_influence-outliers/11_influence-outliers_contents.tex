@@ -272,7 +272,7 @@
         \item A suspect who sits on their own jury. Two fixes:
         \begin{enumerate}
             \item Divide by $\sqrt{1-h_{ii}}$: the studentized residual $r_i=e_i/\sqrt{\MSRes(1-h_{ii})}$.
-            \item Also keep the point out of the estimate of $\sigma^2$: $\MSRes$ contains $e_i^2$, so a large residual inflates its own yardstick.
+            \item Keep the point out of the \textbf{yardstick}: a residual counts as large or small relative to $\hat\sigma=\sqrt{\MSRes}$, the estimated error sd. But $\MSRes$ contains $e_i^2$, so a large residual stretches the very yardstick it is measured with.
         \end{enumerate}
     \end{itemize}
     \svspace{0.3em}
@@ -290,7 +290,7 @@
         t_i &= \frac{e_i}{\sqrt{S_{(i)}^2(1-h_{ii})}}
         && \text{(R-student)}
     \end{align*}
-    Observation 9: $\MSRes=10.62$ but $S_{(9)}^2=5.90$. Once observation 9 stops inflating the yardstick, its residual looks larger: $r_9=3.21$ becomes $t_9=4.31$.
+    $S_{(i)}$ is the yardstick without observation $i$. Observation 9: $\sqrt{\MSRes}=3.26$ but $S_{(9)}=2.43$. Measured with the shorter, uninflated yardstick, its residual looks larger: $r_9=3.21$ becomes $t_9=4.31$.
 \end{frame}
 
 
@@ -794,7 +794,7 @@
     \begin{itemize}
         \item Outlier (unusual $y$), high leverage (unusual $\bx$) and influence (changes the fit) are different things. Influence needs both a push and a lever arm.
         \item Leverage $h_{ii}$ is the distance of $\bx_i$ from the centre of the data, measured along the data cloud; its fair share is $p/n$.
-        \item R-student keeps the point out of its own yardstick and has an exact $t_{n-p-1}$ distribution; test the largest with a Bonferroni cutoff.
+        \item R-student measures $e_i$ against an error sd estimated without point $i$, so an outlier cannot inflate its own yardstick; it has an exact $t_{n-p-1}$ distribution; test the largest with a Bonferroni cutoff.
         \item Cook's $D$, DFBETAS, DFFITS and COVRATIO measure what deleting a point does to $\hat{\bbeta}$, to one $\hat\beta_j$, to $\hat y_i$ and to precision.
         \item Flagged points call for investigation. Delete only with a reason from outside the data, and report both fits when in doubt.
     \end{itemize}
