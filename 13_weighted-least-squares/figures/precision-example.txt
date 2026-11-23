@@ -1,0 +1,7 @@
+ reading sd_reading variance    weight fraction
+      10          1        1 1.0000000      0.9
+      16          3        9 0.1111111      0.1
+                   method estimate sampling_variance
+1           Ordinary mean     13.0               2.5
+2 Precision-weighted mean     10.6               0.9
+Minimum total weighted squared error: 3.6 
