@@ -86,3 +86,25 @@ capture.output({
                      weighted_error = root_w * residuals(wls), leverage = hatvalues(wls),
                      standardized_error = rstandard(wls)), row.names = FALSE)
 }, file = file.path(out, "utility-wls.txt"))
+
+# Compare residual spreads within each fit using the same usage quartiles.
+simple <- lm(y ~ x, customers, weights = max(x) / x)
+group <- cut(customers$x, quantile(customers$x), include.lowest = TRUE)
+fits_to_compare <- list(OLS = ols, Inverse_usage = simple, Estimated_power = wls)
+comparison <- t(vapply(fits_to_compare, function(fit) {
+    standardized <- rstandard(fit)
+    c(slope_per_100 = 100 * coef(fit)[[2]], se_per_100 = 100 * coef(summary(fit))[2, 2],
+      quartile_sd = unname(tapply(standardized, group, sd)))
+}, numeric(6)))
+new_weight <- (at_1000$x / max(customers$x))^(-2 * gamma)
+mean_fit <- predict(wls, at_1000, se.fit = TRUE)
+individual_se <- sqrt(mean_fit$se.fit^2 + sigma(wls)^2 / new_weight)
+individual_interval <- mean_fit$fit + c(-1, 1) * qt(0.975, df.residual(wls)) * individual_se
+software_interval <- predict(wls, at_1000, interval = "prediction", weights = new_weight)
+stopifnot(isTRUE(all.equal(as.numeric(individual_interval), as.numeric(software_interval[1, 2:3]))))
+capture.output({
+    cat("\nSensitivity analysis: slope and SE in kW per 100 kWh; SD of standardized residuals by usage quartile\n")
+    print(comparison)
+    cat("At 1000 kWh: weight, mean SE, residual scale, individual SE, 95% prediction limits\n")
+    print(c(new_weight, mean_fit$se.fit, sigma(wls), individual_se, individual_interval))
+}, file = file.path(out, "utility-wls.txt"), append = TRUE)

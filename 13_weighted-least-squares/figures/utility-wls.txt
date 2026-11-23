@@ -178,3 +178,16 @@ Customer-level diagnostics
  0.02812624         0.27773533
  0.05605843        -1.55679825
  0.02914219        -0.45446422
+
+Sensitivity analysis: slope and SE in kW per 100 kWh; SD of standardized residuals by usage quartile
+                slope_per_100 se_per_100 quartile_sd1 quartile_sd2 quartile_sd3
+OLS                 0.3682843 0.03338970    0.3674946     1.117177     1.202704
+Inverse_usage       0.3537889 0.03446871    0.5489054     1.326234     1.151011
+Estimated_power     0.3537606 0.03471065    0.5703312     1.344888     1.139677
+                quartile_sd4
+OLS                1.2454615
+Inverse_usage      0.9205062
+Estimated_power    0.8864849
+At 1000 kWh: weight, mean SE, residual scale, individual SE, 95% prediction limits
+[1]  4.083507003  0.187483612  2.869947101  1.432546669 -0.002974545
+[6]  5.748940339

@@ -1,0 +1,3 @@
+    mean_slope empirical_sd  exact_sd
+OLS   3.007240    0.3499648 0.3494217
+WLS   3.001575    0.2316045 0.2329965
