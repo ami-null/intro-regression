@@ -881,98 +881,98 @@
 \end{frame}
 
 
-\section{Deviance Information Criterion}
+% \section{Deviance Information Criterion}
 
 
-\begin{frame}{A Minimal Bayesian Set-up}
-    In Bayesian statistics the parameters are random: we start with a \emph{prior} $\pi(\btheta)$ and update it with the data to a \emph{posterior}
-    \[
-    \pi(\btheta\mid\by)\propto L(\btheta)\,\pi(\btheta).
-    \]
-    \begin{itemize}
-        \item Regression with the reference prior $\pi(\bbeta,\sigma^2)\propto1/\sigma^2$ (no prior information): the posterior is known exactly.
-        \[
-        \sigma^2\mid\by\sim\frac{\SSRes}{\chi^2_{n-p}},
-        \qquad
-        \bbeta\mid\sigma^2,\by\sim N\bigl(\hat{\bbeta},\ \sigma^2(\bX'\bX)^{-1}\bigr).
-        \]
-        \item So we can simulate draws of $(\bbeta,\sigma^2)$ directly. For more complex models the draws come from Markov chain Monte Carlo (MCMC).
-        \item Instead of one estimate we get thousands of plausible parameter values, and can ask how well the model fits across all of them.
-    \end{itemize}
-\end{frame}
+% \begin{frame}{A Minimal Bayesian Set-up}
+%     In Bayesian statistics the parameters are random: we start with a \emph{prior} $\pi(\btheta)$ and update it with the data to a \emph{posterior}
+%     \[
+%     \pi(\btheta\mid\by)\propto L(\btheta)\,\pi(\btheta).
+%     \]
+%     \begin{itemize}
+%         \item Regression with the reference prior $\pi(\bbeta,\sigma^2)\propto1/\sigma^2$ (no prior information): the posterior is known exactly.
+%         \[
+%         \sigma^2\mid\by\sim\frac{\SSRes}{\chi^2_{n-p}},
+%         \qquad
+%         \bbeta\mid\sigma^2,\by\sim N\bigl(\hat{\bbeta},\ \sigma^2(\bX'\bX)^{-1}\bigr).
+%         \]
+%         \item So we can simulate draws of $(\bbeta,\sigma^2)$ directly. For more complex models the draws come from Markov chain Monte Carlo (MCMC).
+%         \item Instead of one estimate we get thousands of plausible parameter values, and can ask how well the model fits across all of them.
+%     \end{itemize}
+% \end{frame}
 
 
-\begin{frame}{DIC}
-    Spiegelhalter et al.\ (2002). Deviance $D(\btheta)=-2\ln L(\btheta)$, computed for every posterior draw.
-    \begin{columns}[T]
-        \begin{column}{0.46\textwidth}
-            \small
-            \begin{itemize}
-                \item \textbf{Fit}: posterior mean deviance $\bar D=\E[D(\btheta)\mid\by]$.
-                \item \textbf{Complexity}: $p_D=\bar D-D(\bar{\btheta})$, with $\bar{\btheta}$ the posterior mean.
-                \item $\DIC=\bar D+p_D$.
-            \end{itemize}
-            Same shape as AIC, but the parameter count $p_D$ is \emph{estimated} from the posterior.
-        \end{column}
-        \begin{column}{0.54\textwidth}
-            \centering
-            % Figure: deviance-posterior-cement.pdf (see dic-cement.R)
-            \mode<presentation>{\includegraphics[width=\linewidth]{figures/deviance-posterior-cement.pdf}}
-            \mode<article>{\includegraphics[width=0.7\linewidth]{figures/deviance-posterior-cement.pdf}}
-            \par{\footnotesize $\{x_1,x_2\}$, 20\,000 posterior draws}
-        \end{column}
-    \end{columns}
-\end{frame}
+% \begin{frame}{DIC}
+%     Spiegelhalter et al.\ (2002). Deviance $D(\btheta)=-2\ln L(\btheta)$, computed for every posterior draw.
+%     \begin{columns}[T]
+%         \begin{column}{0.46\textwidth}
+%             \small
+%             \begin{itemize}
+%                 \item \textbf{Fit}: posterior mean deviance $\bar D=\E[D(\btheta)\mid\by]$.
+%                 \item \textbf{Complexity}: $p_D=\bar D-D(\bar{\btheta})$, with $\bar{\btheta}$ the posterior mean.
+%                 \item $\DIC=\bar D+p_D$.
+%             \end{itemize}
+%             Same shape as AIC, but the parameter count $p_D$ is \emph{estimated} from the posterior.
+%         \end{column}
+%         \begin{column}{0.54\textwidth}
+%             \centering
+%             % Figure: deviance-posterior-cement.pdf (see dic-cement.R)
+%             \mode<presentation>{\includegraphics[width=\linewidth]{figures/deviance-posterior-cement.pdf}}
+%             \mode<article>{\includegraphics[width=0.7\linewidth]{figures/deviance-posterior-cement.pdf}}
+%             \par{\footnotesize $\{x_1,x_2\}$, 20\,000 posterior draws}
+%         \end{column}
+%     \end{columns}
+% \end{frame}
 
 
-\begin{frame}{Cement Data: DIC}
-    Flat prior, 20\,000 exact posterior draws per model.
-    \begin{center}
-        \small
-        \begin{tabular}{lcrrrr}
-            \toprule
-            Model & $k$ & $\bar D$ & $p_D$ & DIC & AIC \\
-            \midrule
-            $x_1,x_2$ & 4 & 61.06 & 3.43 & 64.49 & 64.31 \\
-            $x_1,x_4$ & 4 & 64.41 & 3.44 & 67.85 & 67.63 \\
-            $x_1,x_2,x_3$ & 5 & 60.17 & 4.24 & 64.40 & 63.90 \\
-            $x_1,x_2,x_4$ & 5 & 60.16 & 4.24 & 64.40 & 63.87 \\
-            $x_1,x_3,x_4$ & 5 & 60.88 & 4.17 & 65.05 & 64.62 \\
-            $x_1,x_2,x_3,x_4$ & 6 & 61.84 & 4.94 & 66.78 & 65.84 \\
-            \bottomrule
-        \end{tabular}
-    \end{center}
-    \begin{itemize}
-        \item $k=p+1$ counts $\sigma^2$; AIC is in R's form, on the same scale as DIC.
-        \item $p_D$ is close to $k$ (a little below, because $\sigma^2$ is plugged in at its posterior mean).
-        \item The top three models are tied within simulation error.
-    \end{itemize}
-\end{frame}
+% \begin{frame}{Cement Data: DIC}
+%     Flat prior, 20\,000 exact posterior draws per model.
+%     \begin{center}
+%         \small
+%         \begin{tabular}{lcrrrr}
+%             \toprule
+%             Model & $k$ & $\bar D$ & $p_D$ & DIC & AIC \\
+%             \midrule
+%             $x_1,x_2$ & 4 & 61.06 & 3.43 & 64.49 & 64.31 \\
+%             $x_1,x_4$ & 4 & 64.41 & 3.44 & 67.85 & 67.63 \\
+%             $x_1,x_2,x_3$ & 5 & 60.17 & 4.24 & 64.40 & 63.90 \\
+%             $x_1,x_2,x_4$ & 5 & 60.16 & 4.24 & 64.40 & 63.87 \\
+%             $x_1,x_3,x_4$ & 5 & 60.88 & 4.17 & 65.05 & 64.62 \\
+%             $x_1,x_2,x_3,x_4$ & 6 & 61.84 & 4.94 & 66.78 & 65.84 \\
+%             \bottomrule
+%         \end{tabular}
+%     \end{center}
+%     \begin{itemize}
+%         \item $k=p+1$ counts $\sigma^2$; AIC is in R's form, on the same scale as DIC.
+%         \item $p_D$ is close to $k$ (a little below, because $\sigma^2$ is plugged in at its posterior mean).
+%         \item The top three models are tied within simulation error.
+%     \end{itemize}
+% \end{frame}
 
 
-\begin{frame}{DIC Against AIC}
-    \begin{center}
-        % Figure: dic-vs-aic-cement.pdf (see dic-cement.R)
-        \mode<presentation>{\includegraphics[width=0.92\linewidth,height=0.62\textheight,keepaspectratio]{figures/dic-vs-aic-cement.pdf}}
-        \mode<article>{\includegraphics[width=0.9\linewidth]{figures/dic-vs-aic-cement.pdf}}
-    \end{center}
-    \vspace{-0.4em}
-    With a flat prior, DIC and AIC agree to within 1 unit for all 15 subsets: DIC adds nothing new here. It earns its keep in models where AIC's parameter count is unclear.
-\end{frame}
+% \begin{frame}{DIC Against AIC}
+%     \begin{center}
+%         % Figure: dic-vs-aic-cement.pdf (see dic-cement.R)
+%         \mode<presentation>{\includegraphics[width=0.92\linewidth,height=0.62\textheight,keepaspectratio]{figures/dic-vs-aic-cement.pdf}}
+%         \mode<article>{\includegraphics[width=0.9\linewidth]{figures/dic-vs-aic-cement.pdf}}
+%     \end{center}
+%     \vspace{-0.4em}
+%     With a flat prior, DIC and AIC agree to within 1 unit for all 15 subsets: DIC adds nothing new here. It earns its keep in models where AIC's parameter count is unclear.
+% \end{frame}
 
 
-\begin{frame}{When Is DIC Useful?}
-    \begin{itemize}
-        \item With a flat prior and a simple model, DIC tells us nothing AIC does not. Its use is in models where ``the number of parameters'' is unclear:
-        \begin{itemize}
-            \item hierarchical (random-effects) models, where many parameters are pulled towards a common mean and each counts as less than one;
-            \item models with informative priors, which also restrict the parameters.
-        \end{itemize}
-        In those models $p_D$ comes out smaller than the nominal count.
-        \item DIC is computed directly from MCMC output, so it is built into Bayesian software.
-        \item Limitations: it changes if the model is reparameterized, $p_D$ can even be negative, and it behaves poorly for mixture models. Newer alternatives: WAIC and leave-one-out cross-validation.
-    \end{itemize}
-\end{frame}
+% \begin{frame}{When Is DIC Useful?}
+%     \begin{itemize}
+%         \item With a flat prior and a simple model, DIC tells us nothing AIC does not. Its use is in models where ``the number of parameters'' is unclear:
+%         \begin{itemize}
+%             \item hierarchical (random-effects) models, where many parameters are pulled towards a common mean and each counts as less than one;
+%             \item models with informative priors, which also restrict the parameters.
+%         \end{itemize}
+%         In those models $p_D$ comes out smaller than the nominal count.
+%         \item DIC is computed directly from MCMC output, so it is built into Bayesian software.
+%         \item Limitations: it changes if the model is reparameterized, $p_D$ can even be negative, and it behaves poorly for mixture models. Newer alternatives: WAIC and leave-one-out cross-validation.
+%     \end{itemize}
+% \end{frame}
 
 
 \section{Choosing a Model for the Cement Data}
@@ -992,7 +992,7 @@
             Min $C_p$ & $\{x_1,x_2\}$ \\
             Min AIC, HQIC & $\{x_1,x_2,x_4\}$, then $\{x_1,x_2,x_3\}$ \\
             Min BIC, $\AICc$ & $\{x_1,x_2\}$ \\
-            Min DIC & three-way tie \\
+            % Min DIC & three-way tie \\
             \bottomrule
         \end{tabular}
     \end{center}
@@ -1105,7 +1105,7 @@
             AIC & $n\ln(\SSRes/n)+2p$ & $\approx2$ & prediction \\
             HQIC & $n\ln(\SSRes/n)+2p\ln\ln n$ & $\approx2\ln\ln n$ & true model \\
             BIC & $n\ln(\SSRes/n)+p\ln n$ & $\approx\ln n$ & true model \\
-            DIC & $\bar D+p_D$ & $\approx2$ (flat prior) & Bayesian models \\
+            % DIC & $\bar D+p_D$ & $\approx2$ (flat prior) & Bayesian models \\
             \bottomrule
         \end{tabular}
     \end{center}
