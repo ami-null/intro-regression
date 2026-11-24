@@ -30,6 +30,18 @@ orange <- "#d95f02"
 save_plot <- function(name, plot, width, height) {
     ggsave(file.path(out, name), plot, width = width, height = height, bg = "transparent")
 }
+usage_plot <- ggplot(customers, aes(x, y)) +
+    geom_point(colour = teal) +
+    labs(x = "Usage (kWh)", y = "Demand (kW)")
+save_plot("utility-demand.pdf", usage_plot, 5.5, 3.7)
+
+ols_diagnostics <- data.frame(fitted = fitted(ols), residual = rstudent(ols))
+residual_plot <- ggplot(ols_diagnostics, aes(fitted, residual)) +
+    geom_hline(yintercept = 0, colour = blue, linetype = "dashed") +
+    geom_point(colour = teal) +
+    labs(x = "Fitted demand (kW)", y = "Externally studentized residual")
+save_plot("utility-ols-studentized.pdf", residual_plot, 5.5, 3.7)
+
 spread_plot <- ggplot(customers, aes(log(x), log(abs_error))) +
     geom_point(colour = teal) +
     geom_abline(intercept = coef(spread)[1], slope = gamma, colour = blue) +

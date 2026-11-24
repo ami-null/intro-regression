@@ -3,14 +3,14 @@
 \begin{frame}{How precisely can we predict demand?}
     In Lecture 07 we studied 53 customers of an electric utility. How does maximum demand (kW) vary with electricity usage (kWh)?
     \begin{center}
-        \includegraphics[width=.58\linewidth,height=.49\textheight,keepaspectratio]{../07_transformation-of-variables/figures/eu_scatter.pdf}
+        \includegraphics[width=.58\linewidth,height=.49\textheight,keepaspectratio]{figures/utility-demand.pdf}
     \end{center}
     Compare customers near 500 kWh with those near 1500 kWh. Look separately at the average demand and the vertical spread.
 \end{frame}
 
 \begin{frame}{Read the residuals before choosing a remedy}
     \begin{center}
-        \includegraphics[width=.60\linewidth,height=.56\textheight,keepaspectratio]{../07_transformation-of-variables/figures/eu_rstudent_original.pdf}
+        \includegraphics[width=.60\linewidth,height=.56\textheight,keepaspectratio]{figures/utility-ols-studentized.pdf}
     \end{center}
     Residuals at low fitted demand cluster near zero. Farther right, customers with similar fitted demand can have quite different observed demands.
 \end{frame}
