@@ -77,42 +77,24 @@
 
 
 \begin{frame}{Leaving Out Regressors: Bias}
-    \small
-    Split the full model into the $p$ columns we keep and the $r$ columns we drop:
-    \[
-    \by=\bX_p\bbeta_p+\bX_r\bbeta_r+\bvarepsilon .
-    \]
-    The subset estimate $\hat{\bbeta}_p=(\bX_p'\bX_p)^{-1}\bX_p'\by$ has
-    \[
-    \E(\hat{\bbeta}_p)=\bbeta_p+\bA\bbeta_r,
-    \qquad
-    \bA=(\bX_p'\bX_p)^{-1}\bX_p'\bX_r .
-    \]
+    Cement samples with more tricalcium silicate tend to contain less dicalcium silicate. Suppose both compounds influence the heat released.
     \begin{itemize}
-        \item $\bA$ (the \emph{alias matrix}) regresses each dropped column on the kept ones. The kept coefficients pick up the part of the dropped effects that their regressors can imitate.
-        \item No bias only if $\bbeta_r=\bzero$ (the dropped regressors really do not matter) or $\bX_p'\bX_r=\bzero$ (they are orthogonal to the kept ones).
-        \item $\MSRes(p)$ is biased upward too: the missing effects end up in the residuals.
+        \item If we leave out dicalcium silicate, the slope for tricalcium silicate can pick up part of the omitted compound's contribution. Even across many samples, the estimated slope can be too high or too low. This is \emph{omitted-variable bias}.
+        \item Dropping a regressor with no effect introduces no bias. The retained slopes also stay unbiased if the omitted regressor is uncorrelated with every retained regressor.
+        \item Any variation in heat that the retained regressors cannot explain ends up in the residuals. An omitted effect can therefore make random error appear larger than it is.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Keeping Too Many: Variance}
-    If the dropped regressors do not matter, the full model is still unbiased, but its estimates are more variable:
-    \[
-    \Var(\hat{\bbeta}_p^{\,\text{full}})-\Var(\hat{\bbeta}_p)\ \text{is positive semidefinite.}
-    \]
-    Each extra regressor can only add to the variance of the coefficients already in the model. Cement data, coefficient of $x_2$:
-    \begin{center}
-        \small
-        \begin{tabular}{lccc}
-            \toprule
-            Model & $\{x_1,x_2\}$ & $\{x_1,x_2,x_4\}$ & $\{x_1,x_2,x_3,x_4\}$ \\
-            \midrule
-            $\hat{\beta}_2$ (se) & 0.662 (0.046) & 0.416 (0.186) & 0.510 (0.724) \\
-            \bottomrule
-        \end{tabular}
-    \end{center}
-    Adding $x_4$, which is almost a copy of $x_2$, multiplies the standard error by 4; adding $x_3$ as well, by 16 (variance $\times250$).
+    Adding a regressor with no effect keeps the slopes unbiased. But if it overlaps with a regressor already in the model, their slopes can vary more from sample to sample.
+    \svspace{0.5em}
+    The cement data illustrate this loss of precision for \textbf{tricalcium silicate}.
+    \begin{itemize}
+        \item With just the first two compounds, its estimated slope is 0.662 and its standard error is 0.046.
+        \item Adding dicalcium silicate changes the slope to 0.416 and raises its standard error to 0.186. The two silicate percentages move in opposite directions so consistently that their separate contributions are hard to estimate.
+        \item With all four compounds, the slope is 0.510 and its standard error is 0.724, about sixteen times the original standard error.
+    \end{itemize}
 \end{frame}
 
 
@@ -138,16 +120,11 @@
 
 
 \begin{frame}{Grading Your Own Exam}
-    The training error is too optimistic because the same data were used to fit the model and to grade it. For a model with no bias:
-    \[
-    \E[\SSRes(p)]=(n-p)\,\sigma^2,
-    \qquad
-    \E\Bigl[\textstyle\sum_i (y_i^{\text{new}}-\hat y_i)^2\Bigr]=(n+p)\,\sigma^2 .
-    \]
+    A regression model uses the training data to estimate its slopes. If we judge it on those same observations, it gets credit for fitting some of their random noise.
     \begin{itemize}
-        \item The fit chases the noise in its own data, so on its own data it looks $p\sigma^2$ better than the noise level. On new data it is $p\sigma^2$ worse: the cost of estimating $p$ parameters.
-        \item The gap between the two is $2p\sigma^2$. Simulation at $p=4$: $\sigma^2(1-p/n)=0.867$ against 0.870, and $\sigma^2(1+p/n)=1.133$ against 1.14.
-        \item Every criterion in this lecture adds a penalty to the training error to correct this optimism. They differ in how large the penalty is.
+        \item In the simulation, the model with the three relevant regressors had an average squared error of 0.870 on the training data and 1.14 on new data.
+        \item Adding another regressor can improve the training fit even when it contributes nothing to prediction.
+        \item One way to choose a subset is to measure its error on held-out observations. Another is to penalize the training fit for each parameter estimated.
     \end{itemize}
 \end{frame}
 
@@ -513,51 +490,15 @@
 \subsection{Mallows' $C_p$}
 
 
-\begin{frame}{What Should a Good Subset Minimize?}
-    Mallows (1973): judge a subset by how far its fitted values are from the \emph{true} mean response, on average, in units of $\sigma^2$:
-    \[
-    \Gamma_p=\frac1{\sigma^2}\sum_{i=1}^n\E\bigl[\hat y_i-\E(y_i)\bigr]^2
-    =\frac1{\sigma^2}\Biggl\{\underbrace{\sum_{i=1}^n\bigl[\E(\hat y_i)-\E(y_i)\bigr]^2}_{\text{bias}^2\ (\SSB)}
-    +\underbrace{\sum_{i=1}^n\Var(\hat y_i)}_{\text{variance}}\Biggr\}.
-    \]
-    \begin{itemize}
-        \item Too few regressors: the bias term is large.
-        \item Too many: the variance term is large.
-        \item $\Gamma_p$ is the total mean squared error of the fit. It depends on unknowns, so we have to estimate it.
-    \end{itemize}
-\end{frame}
-
-
-\begin{frame}{Estimating the Two Parts}
-    \textbf{Variance.} $\Var(\hat{\by})=\sigma^2\bH_p$, so
-    \[
-    \sum_{i=1}^n\Var(\hat y_i)=\sigma^2\tr(\bH_p)=p\,\sigma^2 ,
-    \]
-    the trace of the hat matrix again (Lecture 11): each parameter adds $\sigma^2$.
-    \svspace{0.5em}
-    \textbf{Bias.} The residual sum of squares absorbs the missing effects:
-    \[
-    \E[\SSRes(p)]=(n-p)\,\sigma^2+\SSB(p)
-    \quad\Longrightarrow\quad
-    \SSB(p)=\E[\SSRes(p)]-(n-p)\,\sigma^2 .
-    \]
-    Putting them together,
-    \[
-    \Gamma_p=\frac{\E[\SSRes(p)]}{\sigma^2}-n+2p .
-    \]
-\end{frame}
-
-
 \begin{frame}{Mallows' $C_p$}
-    Replace $\E[\SSRes(p)]$ by its observed value and $\sigma^2$ by $\hat\sigma^2=\MSRes$ of the \emph{full} model:
+    How well does a subset estimate the mean response? Mallows' $C_p$ balances the variation left unexplained against the number of fitted coefficients.
     \[
     C_p=\frac{\SSRes(p)}{\hat\sigma^2}-n+2p .
     \]
     \begin{itemize}
-        \item If the subset has no bias, $\SSRes(p)\approx(n-p)\sigma^2$ and $C_p\approx p$. Subsets with bias lie \emph{above} the line $C_p=p$.
-        \item For the full model, $C_{K+1}=K+1$ exactly. A useful check.
-        \item Another way to read it: $\hat\sigma^2 C_p=\SSRes(p)+2p\hat\sigma^2-n\hat\sigma^2$, the training error plus a penalty of $2\hat\sigma^2$ per parameter. The penalty is the optimism $2p\sigma^2$ from the ``grading your own exam'' frame.
-        \item Prefer subsets with small $C_p$, close to or below $p$.
+        \item Use the subset's residual sum of squares and the \emph{full model's} residual mean square as the noise estimate. Here $n$ counts observations and $p$ counts coefficients, including the intercept.
+        \item Smaller is better. An extra regressor earns its place only if it reduces the residual sum of squares by more than twice the estimated noise variance.
+        \item A score near $p$ is consistent with little bias. A score far above $p$ suggests the subset misses a pattern. The full model scores exactly $p$ by construction.
     \end{itemize}
 \end{frame}
 
@@ -587,11 +528,11 @@
 
 \begin{frame}{Question: Below the Line}
     \begin{itemize}
-        \item $\{x_1,x_2\}$ has $C_p=2.68$, below its $p=3$. Since $\Gamma_p\ge p$ for every subset (bias can only add), what does a value below $p$ mean?
+        \item $\{x_1,x_2\}$ has $C_p=2.68$, below its $p=3$. If a score near $p$ suggests little bias, how might sampling variation explain a score just below $p$?
         \item What would happen to every $C_p$ if the full model itself were badly wrong, say with a missing curvature term?
     \end{itemize}
     % Answer:
-    % - Nothing special: C_p is an estimate of Gamma_p, and estimates scatter around their target. A value below p is consistent with no bias; it does not mean "better than unbiased".
+    % - Nothing special: The score can fluctuate from sample to sample. A value below p is consistent with no bias; it does not mean "better than unbiased".
     % - sigma^2-hat comes from the full model. If the full model is inadequate, sigma^2-hat is too large, every SSRes(p)/sigma^2-hat is too small, and all subsets look unbiased. C_p only compares subsets with the full model; it cannot detect what the full model is missing. Check the full model first (Lectures 6, 7, 10, 11).
 \end{frame}
 
@@ -602,98 +543,60 @@
 \subsection{AIC}
 
 
-\begin{frame}{From Least Squares to Likelihood}
-    With normal errors, the maximized log-likelihood of a $p$-term model is (Lectures 3 and 4)
-    \[
-    -2\ln\hat L_p=n\ln(2\pi)+n\ln\!\left(\frac{\SSRes(p)}{n}\right)+n,
-    \]
-    using $\hat\sigma^2_{\ML}=\SSRes(p)/n$.
-    \begin{itemize}
-        \item Smaller $\SSRes$ means larger likelihood. So the maximized likelihood, like $R^2$, always favours the biggest model.
-        \item The likelihood gives a common language for comparing models, also beyond least squares (logistic regression, time series, \dots).
-        \item Information criteria add a penalty for the number of parameters.
-    \end{itemize}
-\end{frame}
-
-
-\begin{frame}{Fit Plus Penalty}
-    Every information criterion has the form
-    \[
-    \text{IC}=\underbrace{-2\ln\hat L}_{\text{lack of fit}}+\underbrace{c(n)\times k}_{\text{penalty}},
-    \]
-    with $k$ the number of estimated parameters. Smaller is better; only differences between models matter.
+\begin{frame}{Information Criteria}
+    An information criterion gives each model a score for how well it fits, then adds a penalty for each estimated parameter. Compare models fitted to the same response and observations. Within each criterion, \textbf{the lowest score wins}.
     \begin{center}
         \small
-        \begin{tabular}{lll}
+        \begin{tabular}{ll}
             \toprule
-            Criterion & Penalty $c(n)$ & Aims at \\
+            Criterion & Final formula \\
             \midrule
-            AIC & 2 & best prediction \\
-            HQIC & $2\ln\ln n$ & the true model, with a light penalty \\
-            BIC & $\ln n$ & the most probable model \\
+            Akaike information criterion (AIC) & $-2\ln\hat L+2k$ \\
+            Hannan--Quinn information criterion (HQIC) & $-2\ln\hat L+2k\ln\ln n$ \\
+            Bayesian information criterion (BIC) & $-2\ln\hat L+k\ln n$ \\
             \bottomrule
         \end{tabular}
     \end{center}
+    A larger maximized likelihood $\hat L$ means a better fit. Here $n$ counts observations and $k$ counts all estimated parameters, including the error variance in normal linear regression.
 \end{frame}
 
 
-\begin{frame}{AIC: Correcting for Grading Your Own Exam}
-    Akaike (1973): choose the model whose fitted distribution $\hat f$ is closest to the true distribution $g$ of the data, measured by the \emph{Kullback--Leibler divergence}
+\begin{frame}{Using the Formulas in Linear Regression}
+    For normal linear regression, these shorter formulas give the same model rankings. Here $p$ counts the regression coefficients, including the intercept.
     \[
-    \KL(g,\hat f)=\E_g\bigl[\ln g(Y)\bigr]-\E_g\bigl[\ln\hat f(Y)\bigr].
+    \begin{aligned}
+        \AIC_p  &= n\ln(\SSRes(p)/n)+2p,\\
+        \HQIC_p &= n\ln(\SSRes(p)/n)+2p\ln\ln n,\\
+        \BIC_p  &= n\ln(\SSRes(p)/n)+p\ln n .
+    \end{aligned}
     \]
-    \begin{itemize}
-        \item The first term is the same for every model. So we want the model with the largest expected log-likelihood \emph{for new data}.
-        \item $\ln\hat L$ on the data used for fitting is optimistic, just like $\SSRes$. Akaike showed that the optimism is about $k$, one unit per estimated parameter.
-        \item Correcting for it:
-        \[
-        \AIC=-2\ln\hat L+2k .
-        \]
-    \end{itemize}
+    All three reward a reduction in the average squared residual. They differ in how much improvement an extra regressor must deliver.
+    \svspace{0.4em}
+    R's \texttt{step()} uses the shorter AIC. For the two-regressor cement model it gives 25.42, while \texttt{AIC()} gives 64.31. The same constant separates the two scores for every subset.
 \end{frame}
 
 
-\begin{frame}{AIC for Linear Regression}
-    Dropping the terms that are the same for every model (MPV's form, also used by R's \texttt{step()} and \texttt{extractAIC()}):
+\begin{frame}{AIC and Its Small-Sample Correction}
+    \textbf{AIC} aims to predict new observations well. Its fixed penalty can let a weak predictor into the model when it improves fit enough to help prediction.
+    \svspace{0.5em}
+    \textbf{Corrected AIC (AICc)} uses a larger penalty when there are few observations per estimated parameter.
     \[
-    \AIC_p=n\ln\!\left(\frac{\SSRes(p)}{n}\right)+2p .
+    \AICc=\AIC+\frac{2k(k+1)}{n-k-1},\qquad n>k+1 .
     \]
-    \begin{itemize}
-        \item R's \texttt{AIC()} keeps the constant $n\ln(2\pi)+n$ and counts $\sigma^2$ as a parameter ($k=p+1$): $+38.89$ for every cement model ($\{x_1,x_2\}$: $25.42$ or $64.31$). The ranking is the same.
-        \item Small samples: AIC's penalty is too light when $n/k$ is small. The corrected version (Hurvich \& Tsai, 1989) is $\AICc=\AIC+2k(k+1)/(n-k-1)$, recommended when $n/k<40$. Cement data: $n/k\approx3$.
-    \end{itemize}
+    Use the likelihood-based AIC and count the error variance in $k$. With plenty of observations relative to $k$, the correction becomes small.
+    \svspace{0.5em}
+    With only 13 cement samples, AIC favors adding a third regressor. AICc gives the lower score to the two-regressor model.
 \end{frame}
 
 
 \subsection{BIC and HQIC}
 
 
-\begin{frame}{BIC: Which Model Is Most Probable?}
-    Schwarz (1978): give each model $M_j$ a prior probability and compute its posterior probability
-    \[
-    P(M_j\mid\by)\propto P(\by\mid M_j)\,P(M_j).
-    \]
+\begin{frame}{How BIC and HQIC Treat an Extra Regressor}
     \begin{itemize}
-        \item $P(\by\mid M_j)$ averages the likelihood over the prior for the parameters. For large $n$,
-        \[
-        -2\ln P(\by\mid M_j)\approx-2\ln\hat L_j+k_j\ln n=\BIC_j .
-        \]
-        \item Regression form: $\BIC_p=n\ln(\SSRes(p)/n)+p\ln n$.
-        \item With equal prior probabilities, $P(M_j\mid\by)\approx\exp(-\tfrac12\BIC_j)\big/\sum_m\exp(-\tfrac12\BIC_m)$.
-        \item A BIC difference of 2 is odds of about $e\approx2.7$ to 1; a difference of 6, about 20 to 1.
-    \end{itemize}
-\end{frame}
-
-
-\begin{frame}{HQIC}
-    Hannan \& Quinn (1979):
-    \[
-    \HQIC_p=n\ln\!\left(\frac{\SSRes(p)}{n}\right)+2p\ln\ln n .
-    \]
-    \begin{itemize}
-        \item Built from the law of the iterated logarithm: $2\ln\ln n$ is about the slowest-growing penalty that still picks the true model with probability tending to 1.
-        \item A compromise between AIC (constant penalty) and BIC (penalty growing like $\ln n$).
-        \item Popular in time series, for choosing the number of lags in autoregressive models.
+        \item \textbf{BIC} asks for stronger evidence as the sample grows. A chance improvement in fit becomes less likely to earn an extra regressor a place.
+        \item \textbf{HQIC} also raises the penalty with sample size, but more slowly. In large samples it can retain a weak regressor that BIC drops.
+        \item Both can identify the true subset increasingly often as data accumulate, provided it is among the candidates and the model assumptions hold.
     \end{itemize}
 \end{frame}
 
@@ -703,8 +606,8 @@
         \begin{column}{0.40\textwidth}
             \footnotesize
             \begin{itemize}
-                \item BIC's penalty exceeds AIC's once $\ln n>2$, i.e.\ $n>e^2\approx7.4$. In practice: always.
-                \item HQIC's exceeds AIC's only once $2\ln\ln n>2$, i.e.\ $n>e^e\approx15.2$.
+                \item BIC charges more per parameter than AIC from eight observations onward.
+                \item HQIC charges more than AIC from sixteen observations onward.
                 \item Cement data, $n=13$: AIC 2, \textbf{HQIC 1.88}, BIC 2.56. HQIC is the \emph{lightest} of the three here.
                 \item At $n=1000$: AIC 2, HQIC 3.87, BIC 6.91.
             \end{itemize}
@@ -723,7 +626,7 @@
     \begin{itemize}
         \item \textbf{Consistent} (BIC, HQIC): if the true model is among the candidates, the probability of choosing it tends to 1 as $n\to\infty$.
         \item \textbf{Efficient} (AIC, $C_p$, PRESS): in large samples, the chosen model predicts as well as the best candidate, even if the true model is not among them. But the probability of including a useless regressor does not go to 0.
-        \item Why AIC keeps overfitting: a useless regressor lowers AIC if its partial $F$ exceeds about 2, and in large samples that happens with probability $P(\chi^2_1>2)=0.157$, whatever $n$ is.
+        \item AIC keeps the same penalty as the sample grows, so a useless regressor can still earn its place through chance improvements in fit.
         \item No criterion has both properties (Yang, 2005).
     \end{itemize}
     \svspace{0.3em}
@@ -742,7 +645,7 @@
     \footnotesize
     5 candidates, true model $\{x_1,x_2\}$, all 32 subsets scored, 1000 replications per $n$.
     \begin{itemize}
-        \item $n=1000$: BIC 0.98, HQIC 0.87, AIC and $C_p$ 0.60 $\approx(1-0.157)^3$ (each of 3 useless regressors gets in 16\% of the time).
+        \item $n=1000$: BIC 0.98, HQIC 0.87, AIC and $C_p$ about 0.60. AIC and $C_p$ more often retained at least one unnecessary regressor.
         \item $n=15$: all near 0.3, and BIC \emph{underfits} most often (0.43). A heavy penalty also keeps out real effects.
     \end{itemize}
 \end{frame}
@@ -805,7 +708,7 @@
             \]
             \begin{itemize}
                 \item With AIC: \emph{Akaike weights}.
-                \item With BIC: approximate posterior model probabilities.
+                \item With BIC: approximate posterior model probabilities when the candidate models have equal prior probabilities.
             \end{itemize}
         \end{column}
         \begin{column}{0.55\textwidth}
@@ -832,10 +735,9 @@
 
 \begin{frame}{Every Criterion Is an Entry Fee}
     \small
-    Adding one regressor to a $p$-term model lowers a criterion with penalty $c(n)$ per parameter exactly when its partial $F$ exceeds
-    \[
-    F^*=(n-p-1)\bigl(e^{c(n)/n}-1\bigr)\approx c(n)\quad\text{(large $n$)}.
-    \]
+    Each criterion requires a different improvement in fit before it will keep an extra regressor. We can express that requirement as a cutoff for the partial $F$ statistic.
+
+
     Cement data, adding $x_4$ to $\{x_1,x_2\}$ ($n-p-1=9$): \textbf{partial $F=1.86$}.
     \begin{center}
         \footnotesize
